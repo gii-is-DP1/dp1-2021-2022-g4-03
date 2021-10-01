@@ -32,8 +32,24 @@
 
     </properties>
 
-    <developers>
-        <developer>
+        
+    <developers> 
+        <developer> 
+          <id>Sergio</id> 
+          <name>Sergio Rivas Roa</name> 
+          <email>sergiorivasroa@gmail.com</email> 
+          <url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url> 
+          <roles> 
+            <role>Analista</role> 
+          </roles> 
+          <properties> 
+            <picUrl> 
+            https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8
+    </picUrl> 
+          </properties> 
+        </developer> 
+     
+      <developer>
             <id>Rafa</id>
             <name>Rafael Ángel Jiménez Fernández</name>
             <email>rafaelangeljimenezfer@gmail.com</email>
@@ -47,7 +63,8 @@
                 </picUrl>
             </properties>
         </developer>
-    </developers> 
+        <!-- More developers ...--> 
+    </developers>
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
@@ -235,7 +252,7 @@
                 <version>${wro4j.version}</version>
                 <executions>
                     <execution>
-                      <?m2e execute onConfiguration?>
+                        <?m2e execute onConfiguration?>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
