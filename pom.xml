@@ -32,6 +32,7 @@
 
     </properties>
 
+        
     <developers> 
         <developer> 
           <id>Sergio</id> 
@@ -48,6 +49,20 @@
           </properties> 
         </developer> 
      
+      <developer>
+            <id>Rafa</id>
+            <name>Rafael Ángel Jiménez Fernández</name>
+            <email>rafaelangeljimenezfer@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://estaticos.muyinteresante.es/media/cache/1000x460_thumb/uploads/images/gallery/5f4ed2dd5cafe83e1ab75516/7-zorro-rojo-en-el-bosque.jpg                
+                </picUrl>
+            </properties>
+        </developer>
         <!-- More developers ...--> 
     </developers>
 
