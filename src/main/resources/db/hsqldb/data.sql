@@ -9,7 +9,7 @@ INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
 
 -- Inserting serrivroa to users table and giving role 'Owner'
-INSERT INTO users(username, password, enabled) VALUES ('rafjimfer', 'default', TRUE);
+INSERT INTO users(username, password, enabled) VALUES ('rafjimfer', 'rafa', TRUE);
 INSERT INTO authorities(id, username, authority) VALUES (4, 'rafjimfer', 'owner');
 INSERT INTO users(username, password, enabled) VALUES ('serrivroa', 'default', TRUE);
 INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner');
