@@ -63,6 +63,20 @@
                 </picUrl>
             </properties>
         </developer>
+        <developer>
+            <id>frabotrom</id>
+            <name>Francisco Botello Romero</name>
+            <email>franbotello70@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>Chief Developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://imgur.com/a9y1k8U                
+                </picUrl>
+            </properties>
+        </developer>
         <!-- More developers ...--> 
     </developers>
 
