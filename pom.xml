@@ -77,6 +77,20 @@
                 </picUrl>
             </properties>
         </developer>
+        <developer>
+            <id>pabquide</id>
+            <name>Pablo Quindos de la Riva</name>
+            <email>pabloquindosdelariva1b@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>tech master</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://imgur.com/Rnj7kZj
+                </picUrl>
+            </properties>
+        </developer>
         <!-- More developers ...--> 
     </developers>
 
