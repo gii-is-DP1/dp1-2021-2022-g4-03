@@ -32,6 +32,68 @@
 
     </properties>
 
+        
+    <developers> 
+        <developer> 
+          <id>Sergio</id> 
+          <name>Sergio Rivas Roa</name> 
+          <email>sergiorivasroa@gmail.com</email> 
+          <url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url> 
+          <roles> 
+            <role>Analista</role> 
+          </roles> 
+          <properties> 
+            <picUrl> 
+            https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8
+    </picUrl> 
+          </properties> 
+        </developer> 
+     
+      <developer>
+            <id>Rafa</id>
+            <name>Rafael Ángel Jiménez Fernández</name>
+            <email>rafaelangeljimenezfer@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://estaticos.muyinteresante.es/media/cache/1000x460_thumb/uploads/images/gallery/5f4ed2dd5cafe83e1ab75516/7-zorro-rojo-en-el-bosque.jpg                
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>frabotrom</id>
+            <name>Francisco Botello Romero</name>
+            <email>franbotello70@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>Chief Developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://imgur.com/a9y1k8U                
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>pabquide</id>
+            <name>Pablo Quindos de la Riva</name>
+            <email>pabloquindosdelariva1b@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>tech master</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://imgur.com/Rnj7kZj
+                </picUrl>
+            </properties>
+        </developer>
+        <!-- More developers ...--> 
+    </developers>
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
@@ -218,6 +280,7 @@
                 <version>${wro4j.version}</version>
                 <executions>
                     <execution>
+                        <?m2e execute onConfiguration?>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
