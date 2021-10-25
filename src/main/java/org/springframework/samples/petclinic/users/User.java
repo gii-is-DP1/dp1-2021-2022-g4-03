@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.configuration.Users;
+package org.springframework.samples.petclinic.users;
 
 import java.util.Set;
 

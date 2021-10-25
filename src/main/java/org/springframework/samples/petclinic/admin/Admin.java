@@ -1,9 +1,9 @@
-package org.springframework.samples.petclinic.configuration.Admin;
+package org.springframework.samples.petclinic.admin;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.configuration.Users.User;
+import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
 import lombok.Setter;
