@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.admin;
+package org.springframework.samples.petclinic.player;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "admins")
-public class Admin extends User{
-  
+@Table(name = "players")
+public class Player extends User{
+    
 }
