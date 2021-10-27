@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.users;
+package org.springframework.samples.petclinic.userDwarf;
 
 import java.util.Set;
 
@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
+@Table(name = "users")
 public class User extends BaseEntity{
 
     @Column(name = "nickname")
