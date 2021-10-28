@@ -2,7 +2,9 @@ package org.springframework.samples.petclinic.user;
 
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "users")
 @Entity
+@DiscriminatorValue( "null" )
 public class User extends BaseEntity{
 
     @Column(name = "nickname")
