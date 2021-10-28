@@ -27,6 +27,10 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
+	public Iterable<User> getAllUsers(){
+		return userRepository.findAll();
+	}
+
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
 	}
@@ -44,6 +48,5 @@ public class UserService {
 		}
 		return usuario;
 	}
-//comentario
 
 }
