@@ -8,16 +8,29 @@
 
     <h2>Información de Usuarios</h2>
 
-
-    <table class="table table-striped">
+    <table id="usersTable" class="table table-striped">
+        <thead>
         <tr>
-            <th>Nombre de usuario</th>
-            <td><b><c:out value="${users.nickname}"/></b></td>
+            <th style="width: 150px;">NickName</th>
+            <th style="width: 200px;">Email</th>
+            <th style="width: 100px;">Activo</th>
         </tr>
-        <tr>
-            <th>Contraseña</th>
-            <td><c:out value="${users.pass}"/></td>
-        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${users}" var="user">
+            <tr>
+                <td>
+                    <c:out value="${user.nickname}"/></a>
+                </td>
+                <td>
+                    <c:out value="${user.email}"/>
+                </td>
+                <td>
+                    <c:out value="${user.active}"/>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
     </table>
 
 </petclinic:layout>

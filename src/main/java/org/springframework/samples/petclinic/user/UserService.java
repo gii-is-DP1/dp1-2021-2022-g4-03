@@ -2,6 +2,8 @@
 package org.springframework.samples.petclinic.user;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,10 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
-	public Iterable<User> getAllUsers(){
-		return userRepository.findAll();
+	public List<User> getAllUsers(){
+		List<User> userList= new ArrayList<>();
+		userRepository.findAll().iterator().forEachRemaining(userList::add);
+		return userList;
 	}
 
 	public Optional<User> findUser(String username) {

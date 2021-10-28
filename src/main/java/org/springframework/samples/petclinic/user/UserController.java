@@ -1,6 +1,7 @@
 
 package org.springframework.samples.petclinic.user;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -52,14 +53,10 @@ public class UserController {
 	}
 
 	@GetMapping(value="/users")
-	public UserRepository viewUsersList(){
-		
+	public String viewUsersList(Map<String, Object> model){
+		List<User> users= userService.getAllUsers();
+        model.put("users", users);
+        return "users/userView";
 	}
 
-	@GetMapping("/users")
-    public ModelAndView showUser() {
-        ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        mav.addObject(this.ownerService.findOwnerById(ownerId));
-        return mav;
-	}
 }
