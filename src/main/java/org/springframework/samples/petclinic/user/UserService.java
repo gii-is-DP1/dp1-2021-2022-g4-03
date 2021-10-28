@@ -35,8 +35,8 @@ public class UserService {
 		return userList;
 	}
 
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
+	public Optional<User> findUser(String id) {
+		return userRepository.findById(id);
 	}
 
 	@Transactional
