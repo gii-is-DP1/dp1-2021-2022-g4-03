@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
     <artifactId>spring-petclinic</artifactId>
@@ -32,24 +30,24 @@
 
     </properties>
 
-        
-    <developers> 
-        <developer> 
-          <id>Sergio</id> 
-          <name>Sergio Rivas Roa</name> 
-          <email>sergiorivasroa@gmail.com</email> 
-          <url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url> 
-          <roles> 
-            <role>Analista</role> 
-          </roles> 
-          <properties> 
-            <picUrl> 
-            https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8
-    </picUrl> 
-          </properties> 
-        </developer> 
-     
-      <developer>
+
+    <developers>
+        <developer>
+            <id>Sergio</id>
+            <name>Sergio Rivas Roa</name>
+            <email>sergiorivasroa@gmail.com</email>
+            <url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url>
+            <roles>
+                <role>Analista</role>
+            </roles>
+            <properties>
+                <picUrl> 
+                    https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8
+                </picUrl>
+            </properties>
+        </developer>
+
+        <developer>
             <id>Rafa</id>
             <name>Rafael Ángel Jiménez Fernández</name>
             <email>rafaelangeljimenezfer@gmail.com</email>
@@ -60,6 +58,34 @@
             <properties>
                 <picUrl>
                     https://estaticos.muyinteresante.es/media/cache/1000x460_thumb/uploads/images/gallery/5f4ed2dd5cafe83e1ab75516/7-zorro-rojo-en-el-bosque.jpg                
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>frabotrom</id>
+            <name>Francisco Botello Romero</name>
+            <email>franbotello70@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>Chief Developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://imgur.com/a9y1k8U                
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>pabquide</id>
+            <name>Pablo Quindos de la Riva</name>
+            <email>pabloquindosdelariva1b@gmail.com</email>
+            <url></url>
+            <roles>
+                <role>tech master</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://imgur.com/Rnj7kZj
                 </picUrl>
             </properties>
         </developer>
@@ -84,16 +110,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>  
-            <groupId>org.springframework.security</groupId>  
-            <artifactId>spring-security-taglibs</artifactId>  
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
         </dependency>
         <!-- Databases - Uses H2 by default -->
         <!-- dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <scope>runtime</scope>
-        </dependency-->        
+        </dependency-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -289,7 +315,6 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-
 
 
 </project>
