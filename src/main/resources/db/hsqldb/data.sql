@@ -14,6 +14,10 @@ INSERT INTO authorities(id, username, authority) VALUES (4, 'rafjimfer', 'owner'
 INSERT INTO users(username, password, enabled) VALUES ('serrivroa', 'default', TRUE);
 INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner');
 
+INSERT INTO usersDwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
+INSERT INTO usersDwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
+
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
