@@ -1,9 +1,17 @@
 
 
-INSERT INTO users(nickname, email, pass, active) VALUES ('owner1','5678@test.com','0wn3r',TRUE);
-INSERT INTO users(nickname, email, pass, active) VALUES ('vet1','vet@test.com','v3t',TRUE);
-INSERT INTO users(nickname, email, pass, active) VALUES ('rafjimfer','raf@test.com', 'rafa', TRUE);
-INSERT INTO users(nickname, email, pass, active) VALUES ('serrivroa','ser@test.com', 'default', TRUE);
+
+INSERT INTO usersDwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
+INSERT INTO usersDwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
+
+
+INSERT INTO vets VALUES (1, 'James', 'Carter');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+
 
 
 
