@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.user;
+package org.springframework.samples.petclinic.vet;
 
-
-import java.util.Optional;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -30,22 +29,19 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  */
 @Service
-public class UserService {
+public class VetService {
 
-	private UserRepository userRepository;
+	private VetRepository vetRepository;
+
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	public VetService(VetRepository vetRepository) {
+		this.vetRepository = vetRepository;
+	}		
 
-	@Transactional
-	public void saveUser(User user) throws DataAccessException {
-		user.setEnabled(true);
-		userRepository.save(user);
-	}
-	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
-	}
+	@Transactional(readOnly = true)	
+	public Collection<Vet> findVets() throws DataAccessException {
+		return vetRepository.findAll();
+	}	
+
 }
