@@ -28,7 +28,7 @@
         <petclinic:pivotal/>
     </div>
 </div>
-<petclinic:footer/>
+
 <jsp:invoke fragment="customScript" />
 
 </body>
