@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -32,7 +33,7 @@ public class UserDwarfController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-    @GetMapping("/userDwarf/list")
+    @GetMapping("/usersDwarf/list")
     public String UserDwarfList(ModelMap modelMap){
         
         String view = "/usersDwarf/userDwarfList";
@@ -69,25 +70,23 @@ public class UserDwarfController {
 	}
 
     @GetMapping(value = "/usersDwarf")
-	public String processFindForm(UserDwarf user, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(@RequestParam("username") String username, Map<String, Object> model) {
 
-		// find users by username
-		Collection<UserDwarf> results = this.userDwarfService.findUserByUsername(user.getUsername());
-		if (results.isEmpty()) {
-			// no users found
-			result.rejectValue("username", "notFound", "not found");
-			return "usersDwarf/findUsers";
+		System.out.println(username + "********************") ;
+
+		if(username==null){
+			username =("");
 		}
-		else if (results.size() == 1) {
-			// 1 user found
-			user = results.iterator().next();
+		Collection<UserDwarf> results = this.userDwarfService.findUserByUsername(username);
+		if (results.isEmpty()) {
+			return "/usersDwarf/userDwarfList";
+		}
+		else{
+			UserDwarf user = results.iterator().next();
+			model.put("user", user);
 			return "redirect:/usersDwarf/" + user.getId();
 		}
-		else {
-			// multiple owners found
-			model.put("usersDwarf", results);
-			return "usersDwarf/userDwarfList";
-		}
+		
 	}
 
     @GetMapping("/usersDwarf/{userId}")
