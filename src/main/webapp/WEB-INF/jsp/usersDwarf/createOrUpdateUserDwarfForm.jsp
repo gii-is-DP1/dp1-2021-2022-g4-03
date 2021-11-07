@@ -8,18 +8,19 @@
 
 <petclinic:layout pageName="users">
     <h2>
-        <c:if test="${user['new']}">New </c:if> User
+        <c:if test="${userDwarf['new']}">New </c:if> User
     </h2>
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
+    <form:form modelAttribute="userDwarf" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Username" name="user.username"/>
-            <petclinic:inputField label="Password" name="user.pass"/>
-            <petclinic:inputField label="Email" name="user.email"/>
+            <petclinic:inputField label="Username" name="username"/>
+            <petclinic:inputField label="Password" name="pass"/>
+            <petclinic:inputField label="Email" name="email"/>
+            <petclinic:inputField label="Active" name="active"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
-                    <c:when test="${user['new']}">
+                    <c:when test="${userDwarf['new']}">
                         <button class="btn btn-default" type="submit">Add User</button>
                     </c:when>
                     <c:otherwise>
