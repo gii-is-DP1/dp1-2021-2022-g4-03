@@ -10,18 +10,18 @@
 
 
     <table class="table table-striped">
-        <tr>
+        <tr> 
             <th>Username</th>
-            <td><b><c:out value="${user.username}"/></b></td>
+            <td><b><c:out value="${userDwarf.username}"/></b></td>
         </tr>
         <tr>
             <th>Email</th>
-            <td><c:out value="${user.email}"/></td>
+            <td><c:out value="${userDwarf.email}"/></td>
         </tr>
     </table>
 
     <spring:url value="{userId}/edit" var="editUrl">
-        <spring:param name="userId" value="${user.id}"/>
+        <spring:param name="userId" value="${userDwarf.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
 

@@ -47,7 +47,7 @@ public class UserDwarfController {
     @GetMapping(value = "/usersDwarf/new")
 	public String initCreationForm(Map<String, Object> model) {
 		UserDwarf user = new UserDwarf();
-		model.put("user", user);
+		model.put("userDwarf", user);
 		return VIEWS_USER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -70,7 +70,7 @@ public class UserDwarfController {
 	}
 
     @GetMapping(value = "/usersDwarf")
-	public String processFindForm(@RequestParam("username") String username, Map<String, Object> model) {
+	public String processFindForm(@RequestParam("username") String username) {
 
 		System.out.println(username + "********************") ;
 
@@ -78,12 +78,12 @@ public class UserDwarfController {
 			username =("");
 		}
 		Collection<UserDwarf> results = this.userDwarfService.findUserByUsername(username);
+		System.out.println(results.size());
 		if (results.isEmpty()) {
-			return "/usersDwarf/userDwarfList";
+			return "redirect:/usersDwarf/list";
 		}
 		else{
 			UserDwarf user = results.iterator().next();
-			model.put("user", user);
 			return "redirect:/usersDwarf/" + user.getId();
 		}
 		
@@ -92,19 +92,19 @@ public class UserDwarfController {
     @GetMapping("/usersDwarf/{userId}")
 	public ModelAndView showUser(@PathVariable("userId") int userId) {
 		ModelAndView mav = new ModelAndView("usersDwarf/userDetails");
-		mav.addObject(this.userDwarfService.findById(userId));
+		mav.addObject("userDwarf",this.userDwarfService.findById(userId));
 		return mav;
 	}
 
     @GetMapping(value = "/usersDwarf/{userId}/edit")
 	public String initUpdateUserForm(@PathVariable("userId") int userId, Model model) {
 		UserDwarf user = this.userDwarfService.findById(userId);
-		model.addAttribute(user);
+		model.addAttribute("userDwarf", user);
 		return VIEWS_USER_CREATE_OR_UPDATE_FORM;
 	}
 
     @PostMapping(value = "/usersDwarf/{userId}/edit")
-	public String processUpdateUserForm(@Valid UserDwarf user, BindingResult result,
+	public String processUpdateUserForm(UserDwarf user, BindingResult result,
 			@PathVariable("userId") int userId) {
 		if (result.hasErrors()) {
 			return VIEWS_USER_CREATE_OR_UPDATE_FORM;

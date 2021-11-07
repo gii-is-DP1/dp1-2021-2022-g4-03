@@ -38,7 +38,6 @@ public class UserDwarfService {
 		//creating user
 		userDwarfRepository.save(user);		
 		//creating authorities
-		authoritiesService.saveAuthorities(user.getUsername(), "user");
 	}
 
     @Transactional(readOnly = true)
