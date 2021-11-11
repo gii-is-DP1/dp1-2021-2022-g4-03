@@ -10,9 +10,9 @@ public interface UserDwarfRepository extends CrudRepository<UserDwarf, Integer>{
 
     Collection<UserDwarf> findAll() throws DataAccessException;
 
-    @Query("SELECT DISTINCT user FROM UserDwarf user WHERE user.username LIKE :username")
+    @Query("SELECT DISTINCT userDwarf FROM UserDwarf userDwarf WHERE userDwarf.username LIKE :username")
 	public Collection<UserDwarf> findByUsername(@Param("username") String username);
 
-    @Query("SELECT user FROM UserDwarf user WHERE user.id =:id")
+    @Query("SELECT userDwarf FROM UserDwarf userDwarf WHERE userDwarf.id =:id")
 	public UserDwarf findById(@Param("id") int id);
 }

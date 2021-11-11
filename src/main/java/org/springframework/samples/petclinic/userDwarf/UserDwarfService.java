@@ -34,14 +34,14 @@ public class UserDwarfService {
 	}
 
     @Transactional
-	public void saveUser(UserDwarf user) throws DataAccessException {
+	public void saveUser(UserDwarf userDwarf) throws DataAccessException {
 		//creating user
-		userDwarfRepository.save(user);		
+		userDwarfRepository.save(userDwarf);		
 		//creating authorities
 	}
 
     @Transactional(readOnly = true)
-	public Collection<UserDwarf> findUserByUsername(String username) throws DataAccessException {
+	public Collection<UserDwarf> findUserDwarfByUsername(String username) throws DataAccessException {
 		return userDwarfRepository.findByUsername(username);
 	}
 }

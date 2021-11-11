@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserDwarfController {
 
-    private static final String VIEWS_USER_CREATE_OR_UPDATE_FORM = "usersDwarf/createOrUpdateUserDwarfForm";
+    private static final String VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM = "usersDwarf/createOrUpdateUserDwarfForm";
 
     @Autowired
     private UserDwarfService userDwarfService; 
@@ -46,26 +46,26 @@ public class UserDwarfController {
 
     @GetMapping(value = "/usersDwarf/new")
 	public String initCreationForm(Map<String, Object> model) {
-		UserDwarf user = new UserDwarf();
-		model.put("userDwarf", user);
-		return VIEWS_USER_CREATE_OR_UPDATE_FORM;
+		UserDwarf userDwarf = new UserDwarf();
+		model.put("userDwarf", userDwarf);
+		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/usersDwarf/new")
-	public String processCreationForm(@Valid UserDwarf user, BindingResult result) {
+	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result) {
 		if (result.hasErrors()) {
-			return VIEWS_USER_CREATE_OR_UPDATE_FORM;
+			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			//creating owner, user, and authority
-			this.userDwarfService.saveUser(user);
+			//creating userDwarf
+			this.userDwarfService.saveUser(userDwarf);
 			return "redirect:/";
 		}
 	}
 
     @GetMapping(value = "/usersDwarf/find")
 	public String initFindForm(Map<String, Object> model) {
-		model.put("user", new UserDwarf());
+		model.put("userDwarf", new UserDwarf());
 		return "usersDwarf/findUsers";
 	}
 
@@ -77,42 +77,42 @@ public class UserDwarfController {
 		if(username==null){
 			username =("");
 		}
-		Collection<UserDwarf> results = this.userDwarfService.findUserByUsername(username);
+		Collection<UserDwarf> results = this.userDwarfService.findUserDwarfByUsername(username);
 		System.out.println(results.size());
 		if (results.isEmpty()) {
 			return "redirect:/usersDwarf/list";
 		}
 		else{
-			UserDwarf user = results.iterator().next();
-			return "redirect:/usersDwarf/" + user.getId();
+			UserDwarf userDwarf = results.iterator().next();
+			return "redirect:/usersDwarf/" + userDwarf.getId();
 		}
 		
 	}
 
-    @GetMapping("/usersDwarf/{userId}")
-	public ModelAndView showUser(@PathVariable("userId") int userId) {
+    @GetMapping("/usersDwarf/{userDwarfId}")
+	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {
 		ModelAndView mav = new ModelAndView("usersDwarf/userDetails");
-		mav.addObject("userDwarf",this.userDwarfService.findById(userId));
+		mav.addObject("userDwarf",this.userDwarfService.findById(userDwarfId));
 		return mav;
 	}
 
-    @GetMapping(value = "/usersDwarf/{userId}/edit")
-	public String initUpdateUserForm(@PathVariable("userId") int userId, Model model) {
-		UserDwarf user = this.userDwarfService.findById(userId);
-		model.addAttribute("userDwarf", user);
-		return VIEWS_USER_CREATE_OR_UPDATE_FORM;
+    @GetMapping(value = "/usersDwarf/{userDwarfId}/edit")
+	public String initUpdateUserDwarfForm(@PathVariable("userDwarfId") int userDwarfId, Model model) {
+		UserDwarf userDwarf = this.userDwarfService.findById(userDwarfId);
+		model.addAttribute("userDwarf", userDwarf);
+		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
-    @PostMapping(value = "/usersDwarf/{userId}/edit")
-	public String processUpdateUserForm(UserDwarf user, BindingResult result,
-			@PathVariable("userId") int userId) {
+    @PostMapping(value = "/usersDwarf/{userDwarfId}/edit")
+	public String processUpdateUserDwarfForm(UserDwarf userDwarf, BindingResult result,
+			@PathVariable("userDwarfId") int userDwarfId) {
 		if (result.hasErrors()) {
-			return VIEWS_USER_CREATE_OR_UPDATE_FORM;
+			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			user.setId(userId);
-			this.userDwarfService.saveUser(user);
-			return "redirect:/usersDwarf/{userId}";
+			userDwarf.setId(userDwarfId);
+			this.userDwarfService.saveUser(userDwarf);
+			return "redirect:/usersDwarf/{userDwarfId}";
 		}
 	}
 
