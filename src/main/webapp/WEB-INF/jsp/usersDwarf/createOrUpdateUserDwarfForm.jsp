@@ -15,7 +15,7 @@
             <petclinic:inputField label="Username" name="username"/>
             <petclinic:inputField label="Password" name="pass"/>
             <petclinic:inputField label="Email" name="email"/>
-            <petclinic:inputField label="Active" name="active"/>
+            <petclinic:selectField name="active" label="Active" names="${boolList}" size="2"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

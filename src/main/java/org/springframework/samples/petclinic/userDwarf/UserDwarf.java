@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,5 +43,4 @@ public class UserDwarf extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
-    
 }
