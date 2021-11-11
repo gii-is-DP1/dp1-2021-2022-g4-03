@@ -6,20 +6,22 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <h1><fmt:message key="welcome"/></h1>
-    <div class="row">
-    <h2>Project ${title}</h2>
-    <p><h2>Group ${group}</h2></p>
-    <p><ul>
-    <c:forEach items="${persons}" var="person">
-        <li>${person.firstName}  ${person.lastName}</li>
-    </c:forEach>
-    </ul></p>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <spring:url value="/resources/images/pets.png" htmlEscape="true" var="petsImage"/>
-            <img class="img-responsive" src="${petsImage}"/>
-        </div>
-    </div>
+    
+        
+            <div class="btn-group-vertical">
+                <sec:authorize access="!isAuthenticated()">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick='redirectOnClickRegister()'>Register</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick='redirectOnClickLogin()'>Login</button>
+                </sec:authorize>
+            </div>  
+    
+
+    <script>
+        function redirectOnClickLogin(){
+            document.location ="/login";}
+    </script>
+    <script>
+        function redirectOnClickRegister(){
+            document.location ="/usersDwarf/register";}
+    </script>
 </petclinic:layout>
