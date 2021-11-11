@@ -43,6 +43,14 @@ public class UserDwarfController {
 
 	}
 
+	@GetMapping(value = "/usersDwarf/register")
+	public String initCreationFormRegister(Map<String, Object> model) {
+		UserDwarf userDwarf = new UserDwarf();
+		model.put("userDwarf", userDwarf);
+		model.put("registerCheck", true);
+		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
+	}
+
 	@GetMapping(value = "/usersDwarf/new")
 	public String initCreationForm(Map<String, Object> model) {
 		UserDwarf userDwarf = new UserDwarf();
@@ -51,7 +59,7 @@ public class UserDwarfController {
 		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping(value = "/usersDwarf/new")
+	@PostMapping(value = {"/usersDwarf/new","/usersDwarf/register"})
 	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
