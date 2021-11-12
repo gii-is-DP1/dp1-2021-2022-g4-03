@@ -7,13 +7,17 @@
 
 <petclinic:layout pageName="home">
     
-        
+    <div class="col-md" style="display: flex; justify-content: center;"> 
+        <div class="row" style="display: flex;">
             <div class="btn-group-vertical">
                 <sec:authorize access="!isAuthenticated()">
                         <button type="button" class="btn btn-primary btn-lg btn-block" onClick='redirectOnClickRegister()'>Register</button>
                         <button type="button" class="btn btn-primary btn-lg btn-block" onClick='redirectOnClickLogin()'>Login</button>
                 </sec:authorize>
-            </div>  
+            </div>
+        </div>
+     </div>
+              
     
 
     <script>
