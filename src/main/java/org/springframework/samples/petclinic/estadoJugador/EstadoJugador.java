@@ -3,10 +3,9 @@ package org.springframework.samples.petclinic.estadoJugador;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.EqualsAndHashCode;
@@ -48,10 +47,29 @@ public class EstadoJugador extends BaseEntity{
     @NotNull
     public Boolean active;
 
-    @Column(name="workers")
+    @Column(name="worker1")
     @NotNull
-    @Length(min = 4,max = 4)
-    public Integer[] workers = {9, 9, -1, -1};
+    @Max(value = 9)
+    @Min(value = -1)
+    public Integer worker1;
+
+    @Column(name="worker2")
+    @NotNull
+    @Max(value = 9)
+    @Min(value = -1)
+    public Integer worker2;
+
+    @Column(name="worker3")
+    @NotNull
+    @Max(value = 9)
+    @Min(value = -1)
+    public Integer worker3;
+
+    @Column(name="worker4")
+    @NotNull
+    @Max(value = 9)
+    @Min(value = -1)
+    public Integer worker4;
     //9 para los trabajadores disponibles pero no usados
     //-1 para los trabajadores no disponibles 
 }
