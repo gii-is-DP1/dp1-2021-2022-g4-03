@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.userDwarf;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,20 +23,23 @@ import lombok.Setter;
 @Table(name = "usersdwarf")
 public class UserDwarf extends BaseEntity{
 
+    @Column(name="username")
     @NotEmpty
     private String username;
 
+    @Column(name="pass")
     @NotEmpty
     private String pass;
 
+    @Column(name="email")
     @NotEmpty
     @Email
     private String email;
 
+    @Column(name="active")
     @NotNull
     boolean active;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
-    
 }

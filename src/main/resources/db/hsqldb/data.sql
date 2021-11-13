@@ -9,13 +9,13 @@ INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
 
 -- Inserting serrivroa to users table and giving role 'Owner'
-INSERT INTO users(username, password, enabled) VALUES ('rafjimfer', 'rafa', TRUE);
+INSERT INTO users(username, password, enabled) VALUES ('rafjimfer', 'default', TRUE);
 INSERT INTO authorities(id, username, authority) VALUES (4, 'rafjimfer', 'owner');
 INSERT INTO users(username, password, enabled) VALUES ('serrivroa', 'default', TRUE);
 INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner');
 
-INSERT INTO usersDwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
-INSERT INTO usersDwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
+INSERT INTO usersdwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
+INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
 
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
