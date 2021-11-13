@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.estadoJugador;
+package org.springframework.samples.petclinic.playerState;
 
 
 import javax.persistence.Column;
@@ -15,8 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Table(name = "entidades")
-public class EstadoJugador extends BaseEntity{
+@Table(name = "playerState")
+public class playerState extends BaseEntity{
 
     @Column(name="iron")
     @NotNull
