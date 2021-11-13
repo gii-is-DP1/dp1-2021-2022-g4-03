@@ -15,7 +15,7 @@ public class GameService {
 
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
-        game.setBoard(); //vacia hasta que exista board
+        // game.setBoard(); //vacia hasta que exista board
         game.setId(Integer.parseInt(UUID.randomUUID().toString()));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);
@@ -42,8 +42,8 @@ public class GameService {
         return game;
     }
 
-    public Game gamePlay() {
+    // public Game gamePlay() {
         
-    }
+    // }
 
 }
