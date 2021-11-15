@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.game;
 import java.security.InvalidParameterException;
 import java.util.UUID;
 
-import org.springframework.lang.Nullable;
+import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class GameService {
 
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
-        // game.setBoard(); //vacia hasta que exista board
+        // game.setBoard(new Board());; //vacia hasta que exista board
         game.setId(Integer.parseInt(UUID.randomUUID().toString()));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);
@@ -41,9 +41,5 @@ public class GameService {
         }
         return game;
     }
-
-    // public Game gamePlay() {
-        
-    // }
 
 }
