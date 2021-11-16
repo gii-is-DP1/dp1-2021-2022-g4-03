@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.userDwarf;
 
 import java.util.Collection;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -34,14 +34,20 @@ public class UserDwarfService {
 	}
 
     @Transactional
-	public void saveUser(UserDwarf userDwarf) throws DataAccessException {
-		//creating user
-		userDwarfRepository.save(userDwarf);		
-		//creating authorities
+	public void saveUserDwarf(UserDwarf userDwarf, String role) throws DataAccessException {
+        // Saving user to repository
+        userDwarfRepository.save(userDwarf);
+        
+        // Saving authorities
+        authoritiesService.saveAuthorities(userDwarf.getUsername(), role);   	
 	}
 
     @Transactional(readOnly = true)
 	public Collection<UserDwarf> findUserDwarfByUsername(String username) throws DataAccessException {
 		return userDwarfRepository.findByUsername(username);
+	}
+
+    public Optional<UserDwarf> findUserDwarfByUsername2(String username) {
+		return userDwarfRepository.findByUsername2(username);
 	}
 }

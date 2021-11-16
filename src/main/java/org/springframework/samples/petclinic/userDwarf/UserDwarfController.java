@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.user.Authorities;
+import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -48,6 +51,7 @@ public class UserDwarfController {
 		UserDwarf userDwarf = new UserDwarf();
 		model.put("userDwarf", userDwarf);
 		model.put("registerCheck", true);
+		model.put("role", "player");
 		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -56,16 +60,18 @@ public class UserDwarfController {
 		UserDwarf userDwarf = new UserDwarf();
 		model.put("userDwarf", userDwarf);
 		model.put("boolList", List.of("true", "false"));
+		model.put("roleList", List.of("player","moderator","admin"));
+		model.put("role", "");
 		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = {"/usersDwarf/new","/usersDwarf/register"})
-	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result) {
+	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result, Map<String,Object> model) {
 		if (result.hasErrors()) {
 			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 		} else {
 			// creating userDwarf
-			this.userDwarfService.saveUser(userDwarf);
+			this.userDwarfService.saveUserDwarf(userDwarf, model.get("role").toString());
 			return "redirect:/";
 		}
 	}
@@ -107,17 +113,21 @@ public class UserDwarfController {
 		UserDwarf userDwarf = this.userDwarfService.findById(userDwarfId);
 		model.addAttribute("userDwarf", userDwarf);
 		model.addAttribute("boolList", List.of("true", "false"));
+		model.addAttribute("roleList", List.of("player","moderator","admin"));
+		List<Authorities> userAuthorities= new ArrayList<>();
+		userDwarf.getAuthorities().forEach(x->userAuthorities.add(x));
+		model.addAttribute("role", userAuthorities.get(0).getAuthority());
 		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/usersDwarf/{userDwarfId}/edit")
 	public String processUpdateUserDwarfForm(UserDwarf userDwarf, BindingResult result,
-			@PathVariable("userDwarfId") int userDwarfId) {
+			@PathVariable("userDwarfId") int userDwarfId, Model model) {
 		if (result.hasErrors()) {
 			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 		} else {
 			userDwarf.setId(userDwarfId);
-			this.userDwarfService.saveUser(userDwarf);
+			this.userDwarfService.saveUserDwarf(userDwarf, model.getAttribute("role").toString());
 			return "redirect:/usersDwarf/{userDwarfId}";
 		}
 	}

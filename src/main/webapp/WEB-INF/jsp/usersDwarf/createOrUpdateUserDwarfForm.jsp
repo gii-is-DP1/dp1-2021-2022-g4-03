@@ -17,11 +17,13 @@
                                         <petclinic:inputField label="Email" name="email" />
                                         <c:choose>
                                             <c:when test="${registerCheck}">
-                                                    <input type="hidden" name="active" value="true" />
+                                                    <input type="hidden" name="active" value="true"/>
                                             </c:when>
                                             <c:otherwise>
                                                 <petclinic:selectField name="active" label="Active" names="${boolList}"
                                                     size="2" />
+                                                <petclinic:selectField name="${role}" label="Rol" names="${roleList}"
+                                                    size="3" />
                                             </c:otherwise>
                                         </c:choose>
 
