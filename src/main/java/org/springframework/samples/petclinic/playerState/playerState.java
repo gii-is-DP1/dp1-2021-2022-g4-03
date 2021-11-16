@@ -51,25 +51,25 @@ public class playerState extends BaseEntity{
     @NotNull
     @Max(value = 9)
     @Min(value = -1)
-    public Integer worker1;
+    public Integer worker1=9;
 
     @Column(name="worker2")
     @NotNull
     @Max(value = 9)
     @Min(value = -1)
-    public Integer worker2;
+    public Integer worker2=9;
 
     @Column(name="worker3")
     @NotNull
     @Max(value = 9)
     @Min(value = -1)
-    public Integer worker3;
+    public Integer worker3=-1;
 
     @Column(name="worker4")
     @NotNull
     @Max(value = 9)
     @Min(value = -1)
-    public Integer worker4;
+    public Integer worker4=-1;
     //9 para los trabajadores disponibles pero no usados
     //-1 para los trabajadores no disponibles 
 }
