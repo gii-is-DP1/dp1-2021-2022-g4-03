@@ -1,10 +1,10 @@
 package org.springframework.samples.petclinic.statistics;
 
-import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -12,7 +12,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import ch.qos.logback.core.util.Duration;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +25,8 @@ import lombok.Setter;
 public class Statistics extends BaseEntity{
     
     @Column(name="time_played")
-    @DateTimeFormat(pattern = "HH:mm:ss")
     @NotEmpty(message = "timePlayed may not be null")
-    private LocalTime timePlayed;
+    private Duration timePlayed;
 
     @Column(name="games_played")
     @NotEmpty(message = "gamesPlayed may not be null")
@@ -65,7 +65,9 @@ public class Statistics extends BaseEntity{
 
     //No olvidar poner (mappedBy = "userDwarf", cascade = CascadeType.ALL) en UserDwarf
     @OneToOne(optional = false)
-    @JoinColumn(name="userDwarf_id")
+    @JoinColumns({
+        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    })
     private UserDwarf userDwarf;
 
 }
