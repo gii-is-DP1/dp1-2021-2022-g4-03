@@ -7,15 +7,12 @@ import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-
 @Service
-@AllArgsConstructor
 public class GameService {
 
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
-        // game.setBoard(new Board());; //vacia hasta que exista board
+        //game.setBoard(new Board());
         game.setId(Integer.parseInt(UUID.randomUUID().toString()));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);

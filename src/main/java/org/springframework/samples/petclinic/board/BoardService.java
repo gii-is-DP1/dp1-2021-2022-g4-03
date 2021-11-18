@@ -15,4 +15,9 @@ public class BoardService {
 		return boardRepository.findById(id);
 	}
 
+	// public Board createBoard() {
+    //     Board board = new Board();
+    //     return board;
+    // }
+
 }
