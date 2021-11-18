@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CollectionType;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
@@ -29,9 +31,7 @@ public class Board extends BaseEntity {
     int width;
     int height;
 
-    String[][] cartas;
-    String[][] cartasAccionEspecial;
-    List<String> cartasMontaña;
+    
 
     public Board(){
         this.background="resources/images/boardBackground.jpg";
@@ -42,7 +42,11 @@ public class Board extends BaseEntity {
         this.cartasMontaña = new ArrayList<>();
     }
 
-    // @OneToMany(cascade = CascadeType.ALL,mappedBy = "board",fetch = FetchType.EAGER)
-    
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "board",fetch = FetchType.EAGER)
+    String[][] cartas;
+    String[][] cartasAccionEspecial;
+
+    @ElementCollection
+    List<String> cartasMontaña;
 
 }
