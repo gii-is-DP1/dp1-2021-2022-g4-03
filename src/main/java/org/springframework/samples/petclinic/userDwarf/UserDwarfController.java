@@ -60,18 +60,19 @@ public class UserDwarfController {
 		UserDwarf userDwarf = new UserDwarf();
 		model.put("userDwarf", userDwarf);
 		model.put("boolList", List.of("true", "false"));
-		model.put("roleList", List.of("player","moderator","admin"));
-		model.put("role", "");
 		return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = {"/usersDwarf/new","/usersDwarf/register"})
-	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result, Map<String,Object> model) {
+	public String processCreationForm(@Valid UserDwarf userDwarf, BindingResult result, @RequestParam("role") List<String> roles) {
+		System.out.println("********************"+roles);
+		System.out.println("********************"+userDwarf.getUsername());
+		System.out.println("********************"+result.toString());
 		if (result.hasErrors()) {
 			return VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM;
 		} else {
 			// creating userDwarf
-			this.userDwarfService.saveUserDwarf(userDwarf, model.get("role").toString());
+			this.userDwarfService.saveUserDwarf(userDwarf, roles);
 			return "redirect:/";
 		}
 	}

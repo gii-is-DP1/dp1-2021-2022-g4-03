@@ -22,17 +22,17 @@
                                             <c:otherwise>
                                                 <petclinic:selectField name="active" label="Active" names="${boolList}"
                                                     size="2" />
-                                                <div modelAttribute="role" class="form-group">
+                                                <div class="form-group">
                                                     <label class="col-sm-2 control-label">Role:</label>
                                                     <div class="col-sm-10">
                                                         <label class="checkbox-inline">
-                                                            <input type="checkbox" id="playerCheckbox" value="player"> Player
+                                                            <input type="checkbox" name="role" id="playerCheckbox" value="player"> Player
                                                         </label>
                                                         <label class="checkbox-inline">
-                                                            <input type="checkbox" id="moderatorCheckbox" value="moderator"> Moderator
+                                                            <input type="checkbox" name="role" id="moderatorCheckbox" value="moderator"> Moderator
                                                         </label>
                                                         <label class="checkbox-inline"> 
-                                                            <input type="checkbox" id="adminCheckbox" value="admin"> Admin
+                                                            <input type="checkbox" name="role" id="adminCheckbox" value="admin"> Admin
                                                         </label>
                                                     </div>
                                                 </div>

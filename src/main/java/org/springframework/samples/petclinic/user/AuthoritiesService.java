@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.user;
 
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +38,10 @@ public class AuthoritiesService {
 		if(userDwarf.isPresent()) {
 			authority.setUserDwarf(userDwarf.get());
 			authority.setAuthority(role);
+			if(userDwarf.get().getAuthorities()==null){
+				Set<Authorities> authorities= new HashSet<>();
+				userDwarf.get().setAuthorities(authorities);
+			}
 			userDwarf.get().getAuthorities().add(authority);
 			authoritiesRepository.save(authority);
 		}else

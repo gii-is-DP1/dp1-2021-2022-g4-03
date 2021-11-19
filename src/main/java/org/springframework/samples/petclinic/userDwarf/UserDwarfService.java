@@ -9,6 +9,8 @@ import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserDwarfService {
 
@@ -34,12 +36,13 @@ public class UserDwarfService {
 	}
 
     @Transactional
-	public void saveUserDwarf(UserDwarf userDwarf, String role) throws DataAccessException {
+	public void saveUserDwarf(UserDwarf userDwarf, List<String> roles) throws DataAccessException {
         // Saving user to repository
         userDwarfRepository.save(userDwarf);
         
         // Saving authorities
-        authoritiesService.saveAuthorities(userDwarf.getUsername(), role);   	
+        roles.stream().forEach(role->authoritiesService.saveAuthorities(userDwarf.getUsername(), role));
+        
 	}
 
     @Transactional(readOnly = true)
