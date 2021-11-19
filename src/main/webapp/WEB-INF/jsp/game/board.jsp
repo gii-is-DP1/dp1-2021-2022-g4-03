@@ -3,10 +3,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="game" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="board tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cartasMontaña" tagdir="/WEB-INF/tags" %>
 
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
-<game:layout pageName="board">
+<petclinic:layout pageName="board">
 
 
     <h2><fmt:message key="Board Example"/></h2>
@@ -25,4 +27,4 @@
             -->
         </div>
     </div>
-</game:layout>
+</petclinic:layout>

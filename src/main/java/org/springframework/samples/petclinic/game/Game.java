@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.game;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -39,7 +40,8 @@ public class Game extends BaseEntity{
     })
     private UserDwarf player3;
 
-    private String[] order;
+    @ElementCollection
+    private List<Integer> order;
     private Phase phase;
     private GameStatus gameStatus;
 

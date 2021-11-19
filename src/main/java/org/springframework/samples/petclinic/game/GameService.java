@@ -1,9 +1,9 @@
 package org.springframework.samples.petclinic.game;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,7 @@ public class GameService {
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
         //game.setBoard(new Board());
+        game.setOrder(List.of(1,2,3));
         game.setId(Integer.parseInt(UUID.randomUUID().toString()));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);
