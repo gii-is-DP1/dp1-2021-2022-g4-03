@@ -17,6 +17,8 @@ INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner'
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
 
+INSERT INTO achievements(id, last_change, dinamic, condition, description) VALUES (1, "2021/11/15", TRUE, (SELECT total_gold FROM statistics)=100 , "Consigue 100 de oro")
+INSERT INTO achievements(id, last_change, dinamic, condition, description) VALUES (1, "2021/11/15", TRUE, (SELECT total_iron FROM statistics)=200 , "Consigue 200 de hierro")
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');

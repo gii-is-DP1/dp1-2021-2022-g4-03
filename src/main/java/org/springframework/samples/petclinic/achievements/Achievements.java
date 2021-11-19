@@ -15,7 +15,8 @@ import lombok.Setter;
 
 import lombok.Getter;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name="achievements")
 public class Achievements extends NamedEntity{
@@ -25,9 +26,10 @@ public class Achievements extends NamedEntity{
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate lastChange;
     
-    @Getter
-    @Setter
     private boolean dinamic;
 
+	private boolean condition;
+
+	private String description;
 
 }

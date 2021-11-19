@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.userAchievements;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.PastOrPresent;
 
@@ -14,24 +15,23 @@ import org.springframework.samples.petclinic.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
+@Entity
 public class UserAchievements extends BaseEntity{
 
-    @Getter
-    @Setter
+    
 	@JoinColumn(name = "owner_id")
 	private User user;
 
-    @Getter
-    @Setter
+    
     @JoinColumn(name = "achievements_id")
     private Achievements achievements;
 
 
-    @Getter
-    @Setter
     @PastOrPresent(message = "La fecha no puede ser en el futuro")
-	@Column(name = "last_change")
+	@Column(name = "obtaining_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate lastChange;
+	private LocalDate obtainingDate;
     
 }
