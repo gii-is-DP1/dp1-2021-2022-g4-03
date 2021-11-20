@@ -10,14 +10,25 @@
 
 <petclinic:layout pageName="board">
 
-    <h2><fmt:message key="Ejemplo de Tablero"/></h2>
+    <h2><fmt:message key="titulo"/></h2>
     
     <p>	
     <h2><c:out value="${now}"/></h2>
 
     <div class="row">
         <div class="col-md-12">
-            <game:board board="${board}"/>
+            <canvas id="canvas" width="${board.width}" height="${board.height}"></canvas>
+                <img id="source" src="${board.background}" style="display:none">
+                <img id="carta1" src="resources/images/pets.png" style="display:none">
+                <img id="carta2" src="resources/images/pets.png" style="display:none">
+                <img id="carta3" src="resources/images/pets.png" style="display:none">
+                <script>
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext("2d");
+                    var image = document.getElementById('source');
+
+                    ctx.drawImage(image, 0, 0, ${board.width}, ${board.height});
+                </script>
         </div>
     </div>
 </petclinic:layout>

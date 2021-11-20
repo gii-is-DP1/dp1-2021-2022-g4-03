@@ -21,7 +21,7 @@ public class BoardController {
 
     @GetMapping(value = "/board")
     public String welcome(Map<String, Object> model, HttpServletResponse response) {
-        response.addHeader("Refresh","1");
+        // response.addHeader("Refresh","3");
         model.put("now", new Date());
         // model.put("board", boardService.findById(1).get());
         model.put("board", BoardService.createBoard());
