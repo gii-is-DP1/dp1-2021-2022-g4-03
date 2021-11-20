@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
-    
-    @Autowired 
+
+	@Autowired
 	BoardService boardRepository;
-	
-	public Optional<Board> findById(Integer id){
+
+	public Optional<Board> findById(Integer id) {
 		return boardRepository.findById(id);
 	}
 
-	// public Board createBoard() {
-    //     Board board = new Board();
-    //     return board;
-    // }
+	public static Board createBoard() {
+		Board board = new Board();
+		return board;
+	}
 
 }

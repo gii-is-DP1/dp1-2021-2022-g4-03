@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BoardController {
 
-	private final BoardService boardService;
+    private final BoardService boardService;
 
     @Autowired
-	public BoardController(BoardService dwarfService) {
-		this.boardService = dwarfService;
-	}
-	
+    public BoardController(BoardService dwarfService) {
+        this.boardService = dwarfService;
+    }
+
     @GetMapping(value = "/board")
-    public String welcome(Map<String, Object> model, HttpServletResponse response) {	    		
-        //response.addHeader("Refresh","1"); 
+    public String welcome(Map<String, Object> model, HttpServletResponse response) {
+        response.addHeader("Refresh","1");
         model.put("now", new Date());
-        model.put("board", boardService.findById(1).get());
-        return "welcome";
+        // model.put("board", boardService.findById(1).get());
+        model.put("board", BoardService.createBoard());
+        return "game/board";
     }
 
 }
