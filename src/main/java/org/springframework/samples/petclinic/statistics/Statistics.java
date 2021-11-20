@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.statistics;
 
 
+import java.time.Duration;
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,8 +15,6 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-
-import ch.qos.logback.core.util.Duration;
 
 import lombok.Getter;
 import lombok.Setter;

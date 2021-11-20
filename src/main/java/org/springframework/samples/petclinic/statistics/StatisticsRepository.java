@@ -11,7 +11,10 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
 
     Collection<Statistics> findAll() throws DataAccessException;
 
-    @Query("SELECT statistics FROM Statistics statistics WHERE statistics.userDwarf_id LIKE :username")
+    @Query("SELECT statistics FROM Statistics statistics WHERE statistics.id = :id")
+    public Statistics findByID(@Param("id") Integer id);
+
+    @Query("SELECT statistics FROM Statistics statistics WHERE statistics.userDwarf.username LIKE :username")
     public Statistics findByUsername(@Param("username") String username);
     
 }
