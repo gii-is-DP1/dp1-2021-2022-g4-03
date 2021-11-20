@@ -84,7 +84,7 @@ public class testUserDwarf {
 
         assertThat(violation.getPropertyPath().toString()).isEqualTo("pass");
         
-        assertThat(violation.getMessage()).isEqualTo("must contains 8 characters, one uppercase and numbers");
+        assertThat(violation.getMessage()).isEqualTo("must contain 8 characters, one uppercase and numbers");
         violation = var.next();
         assertThat(violation.getMessage()).isEqualTo("must not be empty");
         
@@ -110,7 +110,7 @@ public class testUserDwarf {
     //     assertThat(violation.getMessage()).isEqualTo("must not be empty");
     //     violation = var.next();
 
-    //     assertThat(violation.getMessage()).isEqualTo("must contains 8 characters, one uppercase and numbers");
+    //     assertThat(violation.getMessage()).isEqualTo("must contain 8 characters, one uppercase and numbers");
     //     violation = var.next();
 
     //     assertThat(violation.getPropertyPath().toString()).isEqualTo("username");

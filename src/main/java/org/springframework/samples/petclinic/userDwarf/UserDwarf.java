@@ -34,7 +34,7 @@ public class UserDwarf extends BaseEntity{
 
     @Column(name="pass")
     @NotEmpty
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z[0-9]]{8,}$" , message = "must contains 8 characters, one uppercase and numbers")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z[0-9]]{8,}$" , message = "must contain 8 characters, one uppercase and numbers")
     private String pass;
 
     @Column(name="email")
