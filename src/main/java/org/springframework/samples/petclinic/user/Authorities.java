@@ -21,7 +21,7 @@ public class Authorities extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumns({
-		@JoinColumn(name = "username", referencedColumnName = "username", unique = true) 
+		@JoinColumn(name = "username", referencedColumnName = "username") 
 	})
 	UserDwarf userDwarf;
 

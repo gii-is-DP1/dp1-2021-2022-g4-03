@@ -8,42 +8,42 @@
 
                             <petclinic:layout pageName="usersDwarf">
                                 <h2>
-                                    <c:if test="${userDwarf['new']}">New </c:if> User
+                                    <c:if test="${wrapper.userDwarf['new']}">New </c:if> User
                                 </h2>
-                                <form:form modelAttribute="userDwarf" class="form-horizontal" id="add-userDwarf-form">
+                                <form:form modelAttribute="wrapper" var="item" class="form-horizontal" id="add-userDwarf-form">
                                     <div class="form-group has-feedback">
-                                        <petclinic:inputField label="Username" name="username" />
-                                        <petclinic:inputField label="Password" name="pass" />
-                                        <petclinic:inputField label="Email" name="email" />
+                                        <petclinic:inputField label="Username" name="userDwarf.username" />
+                                        <petclinic:inputField label="Password" name="userDwarf.pass" />
+                                        <petclinic:inputField label="Email" name="userDwarf.email" />
                                         <c:choose>
                                             <c:when test="${registerCheck}">
-                                                    <input type="hidden" name="active" value="true"/>
+                                                <input type="hidden" name="userDwarf.active" value="true" />
                                             </c:when>
                                             <c:otherwise>
-                                                <petclinic:selectField name="active" label="Active" names="${boolList}"
+                                                <petclinic:selectField name="userDwarf.active" label="Active" names="${boolList}"
                                                     size="2" />
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">Role:</label>
-                                                    <div class="col-sm-10">
-                                                        <label class="checkbox-inline">
-                                                            <input type="checkbox" name="role" id="playerCheckbox" value="player"> Player
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="checkbox" name="role" id="moderatorCheckbox" value="moderator"> Moderator
-                                                        </label>
-                                                        <label class="checkbox-inline"> 
-                                                            <input type="checkbox" name="role" id="adminCheckbox" value="admin"> Admin
-                                                        </label>
-                                                    </div>
+                                                        <label class="col-sm-2 control-label">Role:</label>
+                                                        <div class="col-sm-10">
+                                                            <label class="checkbox-inline">
+                                                                <form:checkbox path="roles" name="roles" value="player" /> Player
+                                                            </label>
+                                                            <label class="checkbox-inline">
+                                                                <form:checkbox path="roles" name="roles" value="moderator" /> Moderator
+                                                            </label>
+                                                            <label class="checkbox-inline">
+                                                                <form:checkbox path="roles" name="roles" value="admin" /> Admin
+                                                            </label>
                                                 </div>
-                                            </c:otherwise>
-                                        </c:choose>
+                                    </div>
+                                    </c:otherwise>
+                                    </c:choose>
 
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <c:choose>
-                                                <c:when test="${userDwarf['new']}">
+                                                <c:when test="${userDwarf.userDwarf['new']}">
                                                     <button class="btn btn-default" type="submit">Add User</button>
                                                 </c:when>
                                                 <c:otherwise>

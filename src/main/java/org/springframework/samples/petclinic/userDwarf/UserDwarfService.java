@@ -50,7 +50,7 @@ public class UserDwarfService {
 		return userDwarfRepository.findByUsername(username);
 	}
 
-    public Optional<UserDwarf> findUserDwarfByUsername2(String username) {
+    public Optional<UserDwarf> findUserDwarfByUsername2(String username) throws DataAccessException{
 		return userDwarfRepository.findByUsername2(username);
 	}
 }
