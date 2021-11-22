@@ -10,6 +10,36 @@
 
 <petclinic:layout pageName="statistics">
 
-    <h2>Estadísticas</h2>
+    <h2>Statistics</h2>
+
+    <table class="table table-striped">
+        <tr> 
+            <th>Time Played</th>
+        </tr>
+        <tr>
+            <th>Games Played</th>
+        </tr>
+        <tr>
+            <th>Games Won</th>
+        </tr>
+        <tr>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Total Iron</th>
+        </tr>
+        <tr>
+            <th>Total Gold</th>
+        </tr>
+        <tr>
+            <th>Total Steel</th>
+        </tr>
+        <tr>
+            <th>Total Objects</th>
+        </tr>
+        <tr>
+            <th>Total Medals</th>
+        </tr>
+    </table>
 	
 </petclinic:layout>

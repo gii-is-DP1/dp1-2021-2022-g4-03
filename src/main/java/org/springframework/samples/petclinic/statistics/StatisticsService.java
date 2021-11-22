@@ -3,7 +3,9 @@ package org.springframework.samples.petclinic.statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StatisticsService {
 
     private StatisticsRepository statisticsRepository;
