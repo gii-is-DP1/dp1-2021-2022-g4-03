@@ -34,6 +34,12 @@
 					<span>Find users</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'statistics'}" url="/statistics"
+					title="statistics">
+					<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+					<span>Statistics</span>
+				</petclinic:menuItem>
+
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>

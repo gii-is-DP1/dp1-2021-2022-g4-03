@@ -2,8 +2,8 @@ package org.springframework.samples.petclinic.statistics;
 
 
 import java.time.Duration;
-import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -65,7 +65,7 @@ public class Statistics extends BaseEntity{
     private Integer totalMedal;
 
     //No olvidar poner (mappedBy = "userDwarf", cascade = CascadeType.ALL) en UserDwarf
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumns({
         @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
     })
