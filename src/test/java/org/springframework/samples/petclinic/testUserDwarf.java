@@ -3,7 +3,6 @@ package org.springframework.samples.petclinic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
