@@ -1,13 +1,15 @@
 package org.springframework.samples.petclinic.userDwarf;
 
 import java.util.Collection;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserDwarfService {
@@ -34,14 +36,21 @@ public class UserDwarfService {
 	}
 
     @Transactional
-	public void saveUser(UserDwarf userDwarf) throws DataAccessException {
-		//creating user
-		userDwarfRepository.save(userDwarf);		
-		//creating authorities
+	public void saveUserDwarf(UserDwarf userDwarf, List<String> roles) throws DataAccessException {
+        // Saving user to repository
+        userDwarfRepository.save(userDwarf);
+        
+        // Saving authorities
+        roles.stream().forEach(role->authoritiesService.saveAuthorities(userDwarf.getUsername(), role));
+        
 	}
 
     @Transactional(readOnly = true)
 	public Collection<UserDwarf> findUserDwarfByUsername(String username) throws DataAccessException {
 		return userDwarfRepository.findByUsername(username);
+	}
+
+    public Optional<UserDwarf> findUserDwarfByUsername2(String username) throws DataAccessException{
+		return userDwarfRepository.findByUsername2(username);
 	}
 }
