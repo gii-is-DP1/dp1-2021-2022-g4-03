@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.testPlayerState;
 
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.samples.petclinic.validatorFunction;
 import org.springframework.samples.petclinic.playerState.playerState;
 
 public class testPlayerState {

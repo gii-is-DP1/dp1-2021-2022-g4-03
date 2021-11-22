@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.testUserDwarf;
 
 import org.junit.Test;
 

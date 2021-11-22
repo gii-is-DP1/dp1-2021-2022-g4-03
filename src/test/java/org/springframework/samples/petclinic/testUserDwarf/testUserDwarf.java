@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.testUserDwarf;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -13,6 +13,7 @@ import javax.validation.Validator;
 
 import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.samples.petclinic.validatorFunction;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 public class testUserDwarf {
