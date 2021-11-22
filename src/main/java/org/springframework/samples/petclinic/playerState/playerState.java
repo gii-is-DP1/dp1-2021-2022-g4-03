@@ -14,7 +14,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @Table(name = "playerState")
 public class playerState extends BaseEntity{
 
