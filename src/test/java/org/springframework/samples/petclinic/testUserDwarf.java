@@ -56,4 +56,23 @@ public class testUserDwarf {
     
     }
 
+    @Test
+    public void shouldValidate(){
+
+    LocaleContextHolder.setLocale(Locale.ENGLISH);
+    UserDwarf userDwarf = new UserDwarf();
+    userDwarf.setEmail("test@test.com");
+    userDwarf.setUsername("test");
+    userDwarf.setPass("testT3st");
+    userDwarf.setActive(true);
+
+    Validator validator = validatorFunction.createValidator();
+    Set<ConstraintViolation<UserDwarf>> constraintViolations =
+    validator.validate(userDwarf);
+
+    assertThat(constraintViolations.size()).isEqualTo(0);
+    
+    }
+
+
 }
