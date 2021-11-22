@@ -1,10 +1,14 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -25,7 +29,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Entity
 @Table(name = "usersdwarf")
-public class UserDwarf extends BaseEntity{
+public class UserDwarf extends BaseEntity implements Serializable{
 
     @Column(name="username")
     @NotEmpty
@@ -46,6 +50,6 @@ public class UserDwarf extends BaseEntity{
     @NotNull
     boolean active;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userDwarf")
 	private Set<Authorities> authorities;
 }
