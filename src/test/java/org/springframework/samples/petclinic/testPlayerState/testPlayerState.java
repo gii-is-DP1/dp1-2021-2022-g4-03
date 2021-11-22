@@ -245,5 +245,28 @@ public class testPlayerState {
     );
     
     }
+
+    @Test
+    public void shouldValidatePlayerState(){
+
+    LocaleContextHolder.setLocale(Locale.ENGLISH);
+    playerState playerState = new playerState();
+    playerState.setIron(1);
+    playerState.setGold(1);
+    playerState.setSteel(1);
+    playerState.setObject(1);
+    playerState.setMedal(1);
+    playerState.setActive(true);
+    playerState.setWorker1(9);
+    playerState.setWorker2(9);
+    playerState.setWorker3(9);
+    playerState.setWorker4(9);
+
+    Validator validator = validatorFunction.createValidator();
+    Set<ConstraintViolation<playerState>> constraintViolations =
+    validator.validate(playerState);
+
+    assertThat(constraintViolations.size()).isEqualTo(0);
+    }
     
 }

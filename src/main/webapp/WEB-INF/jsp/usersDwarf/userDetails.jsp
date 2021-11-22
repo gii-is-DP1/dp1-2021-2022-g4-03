@@ -33,6 +33,13 @@
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
 
+    
+    <spring:url value="{userDwarfId}/delete" var="deleteUrl">
+        <spring:param name="userDwarfId" value="${wrapper.userDwarf.id}"/>
+    </spring:url>
+
+    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
+
     <br/>
     <br/>
     <br/>

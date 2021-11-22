@@ -19,4 +19,7 @@ public interface UserDwarfRepository extends CrudRepository<UserDwarf, Integer>{
 
     @Query("SELECT userDwarf FROM UserDwarf userDwarf WHERE userDwarf.id =:id")
 	public UserDwarf findById(@Param("id") int id);
+
+    @Query("SELECT userDwarf FROM UserDwarf userDwarf WHERE userDwarf.id =:id")
+	public Optional<UserDwarf> findByIdOptional(@Param("id") int id);
 }

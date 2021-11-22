@@ -15,6 +15,7 @@
             <th style="width: 200px;">Email</th>
             <th style="width: 120px">Pass</th>
             <th style="width: 120px">Active</th>
+            <th>Actions</th> 
         </tr>
         </thead>
         <tbody>
@@ -32,7 +33,14 @@
                 </td>
                 <td>
                     <c:out value="${userD.active}"/>
-                </td>            
+                </td>    
+                <td>
+                    <spring:url value="/usersDwarf/{userDwarfId}/delete" var="deleteUrl">
+                        <spring:param name="userDwarfId" value="${userD.id}"/>
+                    </spring:url>
+
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
+                </td>        
                
             </tr>
         </c:forEach>

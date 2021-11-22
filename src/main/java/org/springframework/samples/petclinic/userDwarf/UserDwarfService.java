@@ -35,6 +35,11 @@ public class UserDwarfService {
 		return userDwarfRepository.findById(id);
 	}
 
+    @Transactional(readOnly = true)
+	public Optional<UserDwarf> findByIdOptional(int id) throws DataAccessException {
+		return userDwarfRepository.findByIdOptional(id);
+	}
+
     @Transactional
 	public void saveUserDwarf(UserDwarf userDwarf, List<String> roles) throws DataAccessException {
         // Saving user to repository
@@ -53,4 +58,8 @@ public class UserDwarfService {
     public Optional<UserDwarf> findUserDwarfByUsername2(String username) throws DataAccessException{
 		return userDwarfRepository.findByUsername2(username);
 	}
+
+    public void deleteUserDwarf(UserDwarf userDwarf){
+        userDwarfRepository.delete(userDwarf);
+    }
 }

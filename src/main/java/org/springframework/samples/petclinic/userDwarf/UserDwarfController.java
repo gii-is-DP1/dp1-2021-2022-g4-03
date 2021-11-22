@@ -1,9 +1,11 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -159,5 +161,19 @@ public class UserDwarfController {
 			return "redirect:/usersDwarf/{userDwarfId}";
 		}
 	}
+
+	@GetMapping(value = "/usersDwarf/{userDwarfId}/delete")
+	public String deleteUserDwarf(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelmap) {
+		String view = "usersDwarf/userDwarfList";
+		Optional<UserDwarf> userDwarf  = this.userDwarfService.findByIdOptional(userDwarfId);
+		if(userDwarf.isPresent()){
+			userDwarfService.deleteUserDwarf(userDwarf.get());
+			modelmap.addAttribute("message","User successfully deleted");
+		}else{
+			modelmap.addAttribute("message","User not found");
+		}
+		return view;
+	}
+
 
 }
