@@ -17,6 +17,9 @@ INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner'
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
 
+-- Inserting test game and board --
+-- INSERT INTO board() -- 
+-- INSERT INTO game(player1, player2, player3, order, phase, gameStatus, board) VALUES ('rafjimfer', 'serrivroa', null, [1,2,3], 'INICIO', 'IN_PROGRESS', 1) --
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');

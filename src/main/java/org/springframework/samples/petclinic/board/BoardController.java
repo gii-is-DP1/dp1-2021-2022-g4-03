@@ -6,17 +6,24 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class BoardController {
 
+    @Autowired
     private final BoardService boardService;
+    private final GameService gameService;
+    private final UserDwarfService userDwarfService;
 
     @Autowired
-    public BoardController(BoardService dwarfService) {
-        this.boardService = dwarfService;
+    public BoardController(BoardService boardService, GameService gameService, UserDwarfService userDwarfService) {
+        this.boardService = boardService;
+        this.gameService = gameService;
+        this.userDwarfService = userDwarfService;
     }
 
     @GetMapping(value = "/board")
@@ -24,7 +31,10 @@ public class BoardController {
         // response.addHeader("Refresh","5");
         model.put("now", new Date());
         // model.put("board", boardService.findById(1).get());
-        model.put("board", BoardService.createBoard());
+        // model.put("board", BoardService.createBoard());
+        
+        // model.put("game", gameService.createGame(userDwarfService.findById(4)));
+        // model.put("board", gameService.getBoard(1));
         return "game/board";
     }
 

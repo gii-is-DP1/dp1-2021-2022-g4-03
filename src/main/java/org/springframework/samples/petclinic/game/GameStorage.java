@@ -23,6 +23,11 @@ public class GameStorage {
         return games;
     }
 
+    public Game getGame(Integer gameId) {
+        Game game = games.get(gameId);
+        return game; 
+    }
+
     public void setGame(Game game) {
         games.put(game.getId(), game);
     }

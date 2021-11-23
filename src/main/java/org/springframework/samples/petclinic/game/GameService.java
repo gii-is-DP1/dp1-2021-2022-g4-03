@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameService {
 
+    private static GameStorage gameStorage;
+
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
         game.setBoard(new Board());
@@ -39,6 +41,11 @@ public class GameService {
             GameStorage.getInstance().setGame(game);
         }
         return game;
+    }
+
+    public Board getBoard(Integer gameId) {
+        Game game = gameStorage.getGame(gameId);
+        return game.getBoard();
     }
 
 }
