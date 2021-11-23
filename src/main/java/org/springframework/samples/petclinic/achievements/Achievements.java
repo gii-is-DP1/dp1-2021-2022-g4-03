@@ -26,10 +26,13 @@ public class Achievements extends NamedEntity{
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate lastChange;
     
+	@Column(name = "dinamic")
     private boolean dinamic;
 
-	private boolean condition;
+	@Column(name = "condition")
+	private String condition;
 
+	@Column(name = "description")
 	private String description;
 
 }

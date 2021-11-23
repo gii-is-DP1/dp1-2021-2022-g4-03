@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.userAchievements;
+package org.springframework.samples.petclinic.achievements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
