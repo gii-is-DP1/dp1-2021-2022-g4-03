@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameService {
 
+    @Autowired
     private static GameStorage gameStorage;
+
+    @Autowired
+    private static GameRepository gameRepository;
 
     public Game createGame(UserDwarf player1) {
         Game game = new Game();
@@ -46,6 +51,27 @@ public class GameService {
     public Board getBoard(Integer gameId) {
         Game game = gameStorage.getGame(gameId);
         return game.getBoard();
+    }
+
+    // Guarda la partida en la bbdd y la elimina de la memoria de java
+    public void finishGame(Integer gameId) {
+        gameRepository.save(gameStorage.getGame(gameId));
+        gameStorage.getGames().remove(gameId);
+    }
+
+    // Método que saca al user de la partida (se activa con un botón) y si no quedan jugadores cierra la partida
+    public void surrender(Integer gameId, UserDwarf player) {
+        Game game = gameStorage.getGame(gameId);
+        if (player.equals(game.getPlayer1())) {
+            game.setPlayer1(null);
+        } else if(player.equals(game.getPlayer2())) {
+            game.setPlayer2(null);
+        } else if(player.equals(game.getPlayer3())) {
+            game.setPlayer3(null);
+        }
+        if (game.getPlayer1().equals(null) && game.getPlayer2().equals(null) && game.getPlayer3().equals(null)) {
+            finishGame(gameId);
+        }
     }
 
 }
