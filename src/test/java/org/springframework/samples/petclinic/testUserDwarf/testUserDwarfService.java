@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -106,15 +107,31 @@ public class testUserDwarfService {
         assertThat(uDS.get().getPass()).isEqualTo("rafa");
     }
 
-    // @Test
-    // @AfterAll
-    // @Transactional
-    // public void shouldDeleteUserDwarf() {
+    @Test
+    @AfterAll
+    @Transactional
+    public void shouldDeleteUserDwarf() {
 
-    //     UserDwarf userDwarf = this.userDwarfService.findById(2);
+        List<UserDwarf> user = new ArrayList<>();
 
+        UserDwarf userDwarf = new UserDwarf();
+        userDwarf.setActive(true);
+        userDwarf.setEmail("test@test.com");
+        userDwarf.setPass("Testtest123");
+        userDwarf.setUsername("testSubject");
+        userDwarf.setId(3);
+
+        List<String> roles = new ArrayList<>();
+        roles.add("admin");
+        this.userDwarfService.saveUserDwarf(userDwarf, roles);
+
+        assertThat(user.size()).isEqualTo(1);
+
+        user.add(userDwarf);
+        userDwarfService.deleteUserDwarf(user.get(0));
 		
-	// }
+        assertThat(user.size()).isEqualTo(0);
+	}
 
 
 
