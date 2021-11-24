@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class BoardController {
@@ -26,8 +27,8 @@ public class BoardController {
         this.userDwarfService = userDwarfService;
     }
 
-    @GetMapping(value = "/board")
-    public String welcome(Map<String, Object> model, HttpServletResponse response) {
+    @GetMapping(value = "/board/{gameId}")
+    public String welcome(@PathVariable("gameId") Integer gameId, Map<String, Object> model, HttpServletResponse response) {
         // response.addHeader("Refresh","5");
         model.put("now", new Date());
 
@@ -38,7 +39,7 @@ public class BoardController {
         // model.put("board", boardService.findById(1).get());
         // model.put("board", boardService.createBoard());
         // model.put("game", gameService.createGame(userDwarfService.findById(4)));
-        // model.put("board", gameService.getBoard(1));
+        model.put("board", gameService.getBoard(1));
         return "game/board";
     }
 
