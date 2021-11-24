@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
@@ -66,11 +65,11 @@ public class Statistics extends BaseEntity{
     private Integer totalMedal;
 
     //No olvidar poner (mappedBy = "userDwarf", cascade = CascadeType.ALL) en UserDwarf
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumns({
-        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
-    })
-    private UserDwarf userDwarf;
+    // @OneToOne(optional = false, cascade = CascadeType.ALL)
+    // @JoinColumns({
+    //     @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    // })
+    // private UserDwarf userDwarf;
 
 }
 

@@ -23,13 +23,14 @@ public class StatisticsService {
 
     @Transactional(readOnly = true)
     public Statistics findStatisticsByID(Integer id) throws DataAccessException{
+        System.out.println(id);
         return statisticsRepository.findByID(id);
     }    
 
-    @Transactional(readOnly = true)
-    public Statistics findStatisticsByUsername(String username) throws DataAccessException{
-        return statisticsRepository.findByUsername(username);
-    }
+    // @Transactional(readOnly = true)
+    // public Statistics findStatisticsByUsername(String username) throws DataAccessException{
+    //     return statisticsRepository.findByUsername(username);
+    // }
 
     @Transactional
     public void saveStatistics(Statistics statistics) throws DataAccessException{
