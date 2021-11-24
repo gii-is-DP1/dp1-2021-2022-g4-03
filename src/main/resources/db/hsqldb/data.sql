@@ -17,9 +17,9 @@ INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner'
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
 
-INSERT INTO achievements(id, last_change, dinamic, condition, description) VALUES (1, TO_DATE('2021/11/15', 'yyyy/MM/dd'), TRUE, 'total_gold=100', 'Consigue 100 de oro');
-INSERT INTO achievements(id, last_change, dinamic, condition, description) VALUES (2, TO_DATE('2021/11/15', 'yyyy/MM/dd'), TRUE, 'total_iron=300', 'Consigue 200 de hierro');
-INSERT INTO achievements(id, last_change, dinamic, condition, description) VALUES (3, TO_DATE('2021/11/15', 'yyyy/MM/dd'), TRUE, 'total_games=1', 'Juega tu primera partida');
+INSERT INTO achievements(id, last_change, condition, description) VALUES (1, TO_DATE('2021/11/15', 'yyyy/MM/dd'), 'total_gold=100', 'Consigue 100 de oro');
+INSERT INTO achievements(id, last_change, condition, description) VALUES (2, TO_DATE('2021/11/15', 'yyyy/MM/dd'), 'total_iron=300', 'Consigue 200 de hierro');
+INSERT INTO achievements(id, last_change, condition, description) VALUES (3, TO_DATE('2021/11/15', 'yyyy/MM/dd'), 'total_games=1', 'Juega tu primera partida');
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');

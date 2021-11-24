@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.userDwarf;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,7 @@ public interface UserDwarfRepository extends CrudRepository<UserDwarf, Integer>{
 
     @Query("SELECT user FROM UserDwarf user WHERE user.id =:id")
 	public UserDwarf findById(@Param("id") int id);
+
+    @Query("SELECT DISTINCT user FROM UserDwarf user WHERE user.username LIKE :username")
+	public Optional<UserDwarf> findByUsernameOpt(@Param("username") String username);
 }
