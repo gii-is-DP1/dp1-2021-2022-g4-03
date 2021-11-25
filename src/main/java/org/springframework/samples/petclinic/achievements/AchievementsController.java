@@ -29,12 +29,10 @@ public class AchievementsController {
     private static final String VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementsForm";
 
     private final AchievementsService achievementsService;
-    private final UserDwarfService userDwarfService;
 
     @Autowired
     public AchievementsController(final AchievementsService achievementService, final UserDwarfService userDwarfService) {
         this.achievementsService = achievementService;
-        this.userDwarfService = userDwarfService;
     }
 
 	@InitBinder
