@@ -40,6 +40,12 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'vets'}" url="/game/new"
+					title="new game">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Create Game</span>
+				</petclinic:menuItem>
+
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
