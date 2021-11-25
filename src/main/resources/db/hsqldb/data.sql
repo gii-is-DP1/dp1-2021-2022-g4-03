@@ -12,3 +12,7 @@ INSERT INTO authorities(id,username, authority) VALUES (3, 'frabotrom', 'admin')
 -- Inserting test game and board --
 -- INSERT INTO board() -- 
 -- INSERT INTO game(player1, player2, player3, order, phase, gameStatus, board) VALUES ('rafjimfer', 'serrivroa', null, [1,2,3], 'INICIO', 'IN_PROGRESS', 1) --
+
+INSERT INTO achievements(id,last_change,condition,description) VALUES (1,'2022-01-02','total_iron=100','Consigue 100 de hierro');
+INSERT INTO achievements(id,last_change,condition,description) VALUES (2,'2022-01-02','total_gold=100','Consigue 100 de oro');
+INSERT INTO achievements(id,last_change,condition,description) VALUES (3,'2022-01-02','total_steel=100','Consigue 100 de acero');
