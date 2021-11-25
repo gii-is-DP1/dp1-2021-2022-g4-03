@@ -2,11 +2,8 @@ package org.springframework.samples.petclinic.userDwarf;
 
 import java.util.Collection;
 import java.util.Optional;
-<<<<<<< HEAD
-import java.util.Set;
-=======
->>>>>>> develop
 
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.Authorities;

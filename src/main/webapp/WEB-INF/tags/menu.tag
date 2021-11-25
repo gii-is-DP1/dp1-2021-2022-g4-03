@@ -40,11 +40,7 @@
 					<span>Statistics</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem>
+			
 
 				<petclinic:menuItem active="${name eq 'achievements'}" url="/achievements/findAchievements"
 					title="achievements">
