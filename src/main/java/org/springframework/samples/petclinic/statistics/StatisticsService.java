@@ -35,5 +35,9 @@ public class StatisticsService {
     public void saveStatistics(Statistics statistics) throws DataAccessException{
         statisticsRepository.save(statistics);
     }
+
+    public void deleteStatistics(Statistics statistics){
+        statisticsRepository.delete(statistics);
+    }
     
 }
