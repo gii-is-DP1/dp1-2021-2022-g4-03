@@ -10,8 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
@@ -26,42 +26,42 @@ import lombok.Setter;
 public class Statistics extends BaseEntity{
     
     @Column(name="time_played")
-    @NotEmpty(message = "timePlayed may not be null")
+    @NotNull
     private Duration timePlayed;
 
     @Column(name="games_played")
-    @NotEmpty(message = "gamesPlayed may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer gamesPlayed;
 
     @Column(name="games_won")
-    @NotEmpty(message = "gamesWon may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer gamesWon;
 
     @Column(name="total_iron")
-    @NotEmpty(message = "totalIron may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer totalIron;
 
     @Column(name="total_gold")
-    @NotEmpty(message = "totalGold may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer totalGold;
 
     @Column(name="total_steel")
-    @NotEmpty(message = "totalSteel may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer totalSteel;
 
     @Column(name="total_object")
-    @NotEmpty(message = "totalObject may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer totalObject;
 
     @Column(name="total_medal")
-    @NotEmpty(message = "totalMedal may not be null")
-    @Min(value=0)
+    @NotNull
+    @PositiveOrZero
     private Integer totalMedal;
 
     @OneToOne(cascade = CascadeType.ALL)
