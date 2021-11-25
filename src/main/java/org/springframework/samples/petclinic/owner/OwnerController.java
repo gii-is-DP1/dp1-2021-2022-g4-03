@@ -124,7 +124,7 @@ public class OwnerController {
 		}
 		else {
 			owner.setId(ownerId);
-			this.ownerService.saveOwner(owner);
+			//this.ownerService.saveOwner(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}

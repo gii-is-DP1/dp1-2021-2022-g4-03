@@ -8,12 +8,12 @@
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 
-<petclinic:layout pageName="users">
+<petclinic:layout pageName="usersDwarf">
 
     <h2>Find Users</h2>
 
     
-    <form:form modelAttribute="user" action="/usersDwarf" method="get" class="form-horizontal"
+    <form:form modelAttribute="userDwarf" action="/usersDwarf" method="get" class="form-horizontal"
                id="search-user-form">
         <div class="form-group">
             <div class="control-group" id="username">

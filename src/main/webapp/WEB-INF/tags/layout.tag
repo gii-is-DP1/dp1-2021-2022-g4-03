@@ -25,7 +25,7 @@
 
         <jsp:doBody/>
 
-        <petclinic:pivotal/>
+       
     </div>
 </div>
 
