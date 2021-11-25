@@ -18,32 +18,34 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @Autowired
-    public StatisticsController(StatisticsService statisticsService){
+    public StatisticsController(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
     }
 
     @InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        dataBinder.setDisallowedFields("id");
+    }
 
     @GetMapping(value = "/statistics")
-    public String initStatistics(Map<String, Object> model){
+    public String initStatistics(Map<String, Object> model) {
         model.put("statistics", new Statistics());
         return "statistics/findStatistics";
     }
 
     @GetMapping(value = "/statistics/player")
-	public String processStatistics(@RequestParam("userDwarf") String username) {
+    public String processStatistics(@RequestParam("userDwarf") String username) {
         Statistics result = this.statisticsService.findStatisticsByUsername(username);
+        if (result == null)
+            return "redirect:/statistics";
         return "redirect:/statistics/player/" + result.getId();
 
-	}
+    }
 
     @GetMapping("/statistics/player/{statisticId}")
-	public ModelAndView showStatistics(@PathVariable("statisticId") int statisticId) {
-		ModelAndView mav = new ModelAndView("/statistics/statisticsList");
-		mav.addObject("statistics", this.statisticsService.findStatisticsByID(statisticId));
-		return mav;
-	}  
+    public ModelAndView showStatistics(@PathVariable("statisticId") int statisticId) {
+        ModelAndView mav = new ModelAndView("/statistics/statisticsList");
+        mav.addObject("statistics", this.statisticsService.findStatisticsByID(statisticId));
+        return mav;
+    }
 }
