@@ -108,11 +108,8 @@ public class testUserDwarfService {
     }
 
     @Test
-    @AfterAll
     @Transactional
     public void shouldDeleteUserDwarf() {
-
-        List<UserDwarf> user = new ArrayList<>();
 
         UserDwarf userDwarf = new UserDwarf();
         userDwarf.setActive(true);
@@ -120,17 +117,15 @@ public class testUserDwarfService {
         userDwarf.setPass("Testtest123");
         userDwarf.setUsername("testSubject");
         userDwarf.setId(3);
-
         List<String> roles = new ArrayList<>();
         roles.add("admin");
-        this.userDwarfService.saveUserDwarf(userDwarf, roles);
 
-        assertThat(user.size()).isEqualTo(1);
+        userDwarfService.saveUserDwarf(userDwarf, roles);
+        assertThat(userDwarfService.findByIdOptional(3).isPresent());
 
-        user.add(userDwarf);
-        userDwarfService.deleteUserDwarf(user.get(0));
+        userDwarfService.deleteUserDwarf(userDwarfService.findByIdOptional(3).get());
 		
-        assertThat(user.size()).isEqualTo(0);
+        assertThat(userDwarfService.findByIdOptional(3).isEmpty());
 	}
 
 
