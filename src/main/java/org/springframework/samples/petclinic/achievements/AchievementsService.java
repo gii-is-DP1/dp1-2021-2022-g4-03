@@ -3,11 +3,15 @@ package org.springframework.samples.petclinic.achievements;
 
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class AchievementsService {
 
     private final AchievementsRepository achievementsRepository;
@@ -38,5 +42,16 @@ public class AchievementsService {
 		//creating owner
 		this.achievementsRepository.save(achievement);
 	}
+
+	@Transactional
+	public Iterable<Achievements> findAll(){
+		return achievementsRepository.findAll();
+	}
+
+	@Transactional
+	public Optional<Achievements> findByIdOptional(int id) throws DataAccessException{
+		return achievementsRepository.findByIdOptional(id);
+	}
+
     
 }

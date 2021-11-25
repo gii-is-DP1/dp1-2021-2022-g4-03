@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.achievements;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,11 @@ public interface AchievementsRepository extends CrudRepository<Achievements, Str
 
     Achievements findById(int id) throws DataAccessException;
 
-    @Query("SELECT o FROM Achievements o WHERE o.achievements.condition = :condition")
+    @Query("SELECT DISTINCT ach FROM Achievements ach WHERE ach.condition LIKE :condition")
 	public Collection<Achievements> findAchievementByCondition(@Param("condition")String condition);
+
+    Collection<Achievements> findAll() throws DataAccessException;
+
+    @Query("SELECT achievements from Achievements achievements WHERE achievements.id =:id")
+    public Optional<Achievements> findByIdOptional(@Param("id") int id);
 }

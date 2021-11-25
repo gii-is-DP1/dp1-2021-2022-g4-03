@@ -1,15 +1,21 @@
 package org.springframework.samples.petclinic.achievements;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.PastOrPresent;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Setter;
 
@@ -19,17 +25,17 @@ import lombok.Getter;
 @Setter
 @Entity
 @Table(name="achievements")
-public class Achievements extends NamedEntity{
+public class Achievements extends BaseEntity{
 
-    @PastOrPresent(message = "La fecha no puede ser en el futuro")
+    @FutureOrPresent(message = "La fecha no puede ser en el pasado")
 	@Column(name = "last_change")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate lastChange;
+	public LocalDate lastChange;
 
 	@Column(name = "condition")
-	private String condition;
+	public String condition;
 
 	@Column(name = "description")
-	private String description;
+	public String description;
 
 }

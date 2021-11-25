@@ -17,7 +17,7 @@
                id="search-achievements-form">
         <div class="form-group">
             <div class="control-group" id="condition">
-                <label class="col-sm-2 control-label">Condition </label>
+                <label class="col-sm-2 control-label">Condition</label>
                 <div class="col-sm-10">
                     <form:input class="form-control" path="condition" size="30" maxlength="80"/>
                     <span class="help-inline"><form:errors path="*"/></span>

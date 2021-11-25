@@ -14,23 +14,27 @@
             <th style="width: 150px;">Description</th>
             <th style="width: 200px;">Condition</th>
             <th style="width: 120px">Last Change</th>
+            <th style="width: 120px">Action</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${selections}" var="achievements">
+        <c:forEach items="${achievements}" var="achievement">
             <tr>
                 <td>
-                    <spring:url value="/achievements/{achievementsId}" var="achievementsUrl">
-                        <spring:param name="achievementsId" value="${achievements.id}"/>
+                    <c:out value="${achievement.condition}"/>
+                </td>
+                <td>
+                    <c:out value="${achievement.lastChange}"/>
+                </td>   
+                <td>
+                    <c:out value="${achievement.description}"/>
+                </td>   
+                <td>
+                    <spring:url value="/achievements/{achievementsId}/delete" var="deleteUrl">
+                        <spring:param name = "achievementsId" value = "${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(achievementsUrl)}"><c:out value="${achievements.description}"/></a>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
                 </td>
-                <td>
-                    <c:out value="${achievements.condition}"/>
-                </td>
-                <td>
-                    <c:out value="${achievements.last_change}"/>
-                </td>        
             </tr>
         </c:forEach>
         </tbody>

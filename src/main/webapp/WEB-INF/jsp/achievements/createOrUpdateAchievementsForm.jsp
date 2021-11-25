@@ -10,11 +10,11 @@
     <h2>
         <c:if test="${achievements['new']}">New </c:if> Achievement
     </h2>
-    <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form">
+    <form:form modelAttribute="achievements" class="form-horizontal" id="add-achievement-form">
         <div class="form-group has-feedback">
             <petclinic:inputField label="Condition" name="condition"/>
             <petclinic:inputField label="Description" name="description"/>
-            <petclinic:inputField type= "hidden" label="Last Change" name="last_change" value="${LocalDate.now()}"/>
+            <petclinic:inputField label="Last Change" name="lastChange"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
