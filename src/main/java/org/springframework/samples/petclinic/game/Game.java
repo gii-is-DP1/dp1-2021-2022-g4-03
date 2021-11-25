@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.samples.petclinic.board.Board;
@@ -44,7 +45,9 @@ public class Game extends BaseEntity{
     @ElementCollection
     @Size(min=3,max=3)
     private List<Integer> order;
+    @NotNull
     private Phase phase;
+    @NotNull
     private GameStatus gameStatus;
 
     @OneToOne(cascade = CascadeType.ALL)

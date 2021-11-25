@@ -29,19 +29,33 @@ public class testGame {
         LocaleContextHolder.setLocale(Locale.ENGLISH);
         Game game = new Game();
         game.setOrder(List.of());
+        game.setPhase(null);
+        game.setGameStatus(null);
     
         Validator validator = validatorFunction.createValidator();
         Set<ConstraintViolation<Game>> constraintViolations = 
         validator.validate(game);
     
-        assertThat(constraintViolations.size()).isEqualTo(1);
+        assertThat(constraintViolations.size()).isEqualTo(3);
 
         assertAll("constrainViolations", 
             () -> {
                 List<String> violationsList = constraintViolations.stream()
                         .filter(c -> c.getPropertyPath().toString().equals("order")).map(v -> v.getMessage())
                         .collect(Collectors.toList());
-                assertThat(violationsList).containsExactlyInAnyOrder("must contain the order of the three players");
+                assertThat(violationsList).containsExactlyInAnyOrder("size must be between 3 and 3");
+            },
+            () -> {
+                List<String> violationsList = constraintViolations.stream()
+                        .filter(c -> c.getPropertyPath().toString().equals("phase")).map(v -> v.getMessage())
+                        .collect(Collectors.toList());
+                assertThat(violationsList).containsExactlyInAnyOrder("must not be null");
+            },
+            () -> {
+                List<String> violationsList = constraintViolations.stream()
+                        .filter(c -> c.getPropertyPath().toString().equals("gameStatus")).map(v -> v.getMessage())
+                        .collect(Collectors.toList());
+                assertThat(violationsList).containsExactlyInAnyOrder("must not be null");
             }
         );
 
