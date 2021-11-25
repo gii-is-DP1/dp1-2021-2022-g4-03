@@ -17,11 +17,12 @@ INSERT INTO authorities(id, username, authority) VALUES (5, 'serrivroa', 'owner'
 INSERT INTO usersdwarf(username, pass, email, active) VALUES ('rafjimfer', 'default','rafa@gmail.com', TRUE);
 INSERT INTO usersdwarf(username, pass, email, active) VALUES ('serrivroa', 'default','ss@gmail.com', TRUE);
 
--- INSERT INTO statistics VALUES (1, '0550', 8, 5, 150, 100, 75, 28, 15, 'rafjimfer');
--- INSERT INTO statistics VALUES (2, '48026', 7, 4, 120, 90, 77, 31, 18, 'serrivroa');
+-- Time Played is expressed in nanoseconds (10^-9)
+INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('58243000000000', 8, 5, 150, 100, 75, 28, 15, 'rafjimfer');
+INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('24745000000000', 7, 4, 120, 90, 77, 31, 18, 'serrivroa');
 
-INSERT INTO statistics VALUES (1, '0550', 8, 5, 150, 100, 75, 28, 15);
-INSERT INTO statistics VALUES (2, '48026', 7, 4, 120, 90, 77, 31, 18);
+-- INSERT INTO statistics VALUES (1, '0550', 8, 5, 150, 100, 75, 28, 15);
+-- INSERT INTO statistics VALUES (2, '48026', 7, 4, 120, 90, 77, 31, 18);
 
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');

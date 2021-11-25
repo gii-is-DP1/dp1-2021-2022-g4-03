@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "usersdwarf")
-public class UserDwarf extends BaseEntity{
+public class UserDwarf extends BaseEntity implements Serializable{
 
     @Column(name="username")
     @NotEmpty

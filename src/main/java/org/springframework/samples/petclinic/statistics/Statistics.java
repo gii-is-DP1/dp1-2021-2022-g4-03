@@ -64,12 +64,17 @@ public class Statistics extends BaseEntity{
     @Min(value=0)
     private Integer totalMedal;
 
-    //No olvidar poner (mappedBy = "userDwarf", cascade = CascadeType.ALL) en UserDwarf
-    // @OneToOne(optional = false, cascade = CascadeType.ALL)
-    // @JoinColumns({
-    //     @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
-    // })
-    // private UserDwarf userDwarf;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumns({
+        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    })
+    private UserDwarf userDwarf;
 
+
+    public String getTimeFormatted(){
+        long seconds = timePlayed.getSeconds();
+        String result = String.format("%dh:%02dm:%02ds", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+        return result;
+    }
 }
 

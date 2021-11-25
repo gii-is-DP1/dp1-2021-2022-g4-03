@@ -34,11 +34,9 @@ public class StatisticsController {
     }
 
     @GetMapping(value = "/statistics/player")
-	public String processStatistics(@RequestParam("id") String id) {
-        System.out.println("La id es:"+id);
-		Statistics result = this.statisticsService.findStatisticsByID(Integer.parseInt(id));
-        System.out.println("hola");
-		return "redirect:/statistics/player/" + result.getId();
+	public String processStatistics(@RequestParam("userDwarf") String username) {
+        Statistics result = this.statisticsService.findStatisticsByUsername(username);
+        return "redirect:/statistics/player/" + result.getId();
 
 	}
 
