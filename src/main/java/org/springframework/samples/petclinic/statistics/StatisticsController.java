@@ -34,10 +34,14 @@ public class StatisticsController {
     }
 
     @GetMapping(value = "/statistics/player")
-    public String processStatistics(@RequestParam("userDwarf") String username) {
+    public String processStatistics(@RequestParam("userDwarf") String username, Map<String, Object> model) {
         Statistics result = this.statisticsService.findStatisticsByUsername(username);
-        if (result == null)
-            return "redirect:/statistics";
+        if (result == null) {
+            model.put("statistics", new Statistics());
+            model.put("message", "User statistics not found");
+            return "statistics/findStatistics";
+        }
+
         return "redirect:/statistics/player/" + result.getId();
 
     }
