@@ -1,63 +1,68 @@
-/*
- * Copyright 2002-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package org.springframework.samples.petclinic.user;
+	package org.springframework.samples.petclinic.user;
 
-
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.h2.store.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
+import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Mostly used as a facade for all Petclinic controllers Also a placeholder
- * for @Transactional and @Cacheable annotations
- *
- * @author Michael Isvy
- */
 @Service
 public class AuthoritiesService {
 
 	private AuthoritiesRepository authoritiesRepository;
-	private UserService userService;
+
+	private UserDwarfService userDwarfService;
 
 	@Autowired
-	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService) {
+	public AuthoritiesService(AuthoritiesRepository authoritiesRepository, @Lazy UserDwarfService userDwarfService) {
 		this.authoritiesRepository = authoritiesRepository;
-		this.userService = userService;
+		this.userDwarfService = userDwarfService;
 	}
 
 	@Transactional
 	public void saveAuthorities(Authorities authorities) throws DataAccessException {
 		authoritiesRepository.save(authorities);
 	}
-	
+
+	public Collection<Authorities> findAuthoritiesByUsername(String username) throws DataAccessException {
+		return authoritiesRepository.findByUsername(username);
+	}
+
+	public List<String> getRolesUserByUsername(String username) throws DataAccessException {
+		return findAuthoritiesByUsername(username).stream().map(auth -> auth.getAuthority())
+				.collect(Collectors.toList());
+	}
+
 	@Transactional
 	public void saveAuthorities(String username, String role) throws DataAccessException {
 		Authorities authority = new Authorities();
-		Optional<User> user = userService.findUser(username);
-		if(user.isPresent()) {
-			authority.setUser(user.get());
+		Optional<UserDwarf> userDwarf = userDwarfService.findUserDwarfByUsername2(username);
+		if (userDwarf.isPresent()) {
+			Boolean authCheck = true;
+			authority.setUserDwarf(userDwarf.get());
 			authority.setAuthority(role);
-			//user.get().getAuthorities().add(authority);
-			authoritiesRepository.save(authority);
-		}else
-			throw new DataAccessException("User '"+username+"' not found!") {};
+			Collection<Authorities> authIt = authoritiesRepository.findByUsername(username);
+			for (Authorities auth : authIt) {
+				if (auth.authority.equals(role))
+					authCheck = false;
+				break;
+			}
+			if (authCheck)
+				authoritiesRepository.save(authority);
+		} else
+			throw new DataAccessException("UserDwarf '" + username + "' not found!") {
+			};
 	}
-
 
 }

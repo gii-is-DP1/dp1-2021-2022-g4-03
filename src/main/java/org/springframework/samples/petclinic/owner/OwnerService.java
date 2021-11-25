@@ -63,7 +63,7 @@ public class OwnerService {
 		//creating user
 		userService.saveUser(owner.getUser());
 		//creating authorities
-		authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
+		//authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
 	}		
 
 }
