@@ -12,18 +12,33 @@
     <table class="table table-striped">
         <tr> 
             <th>Username</th>
-            <td><b><c:out value="${userDwarf.username}"/></b></td>
+            <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
         </tr>
         <tr>
             <th>Email</th>
-            <td><c:out value="${userDwarf.email}"/></td>
+            <td><c:out value="${wrapper.userDwarf.email}"/></td>
+        </tr>
+        <tr>
+            <th>Active</th>
+            <td><c:out value="${wrapper.userDwarf.active}"/></td>
+        </tr>
+        <tr>
+            <th>Roles</th>
+            <td><c:out value="${wrapper.roles}"/></td>
         </tr>
     </table>
 
     <spring:url value="{userDwarfId}/edit" var="editUrl">
-        <spring:param name="userDwarfId" value="${userDwarf.id}"/>
+        <spring:param name="userDwarfId" value="${wrapper.userDwarf.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+
+    
+    <spring:url value="{userDwarfId}/delete" var="deleteUrl">
+        <spring:param name="userDwarfId" value="${wrapper.userDwarf.id}"/>
+    </spring:url>
+
+    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
 
     <br/>
     <br/>
