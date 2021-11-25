@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.testStatistics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,5 +61,53 @@ public class testStatisticsService {
         assertThat(s.getId()).isEqualTo(id);
         assertThat(s.getId()).isNotEqualTo(7);
     }
+
+    @Test
+    @Transactional
+    public void shouldSaveStatistics(){
+        Long count1 = statisticsRepository.count();
+
+        Statistics statistics = new Statistics();
+        statistics.setTimePlayed(Duration.ofMinutes(724));
+        statistics.setGamesPlayed(18);
+        statistics.setGamesWon(12);
+        statistics.setTotalIron(67);
+        statistics.setTotalGold(51);
+        statistics.setTotalSteel(34);
+        statistics.setTotalObject(21);
+        statistics.setTotalMedal(4);
+        statistics.setId(3);
+
+        statisticsService.saveStatistics(statistics);
+
+        Long count2 = statisticsRepository.count();
+
+        assertThat(count1+1).isEqualTo(count2);        
+    }
     
+    @Test
+    @Transactional
+    public void shouldDeleteStatistics(){
+
+        Statistics statistics = new Statistics();
+        statistics.setTimePlayed(Duration.ofMinutes(724));
+        statistics.setGamesPlayed(18);
+        statistics.setGamesWon(12);
+        statistics.setTotalIron(67);
+        statistics.setTotalGold(51);
+        statistics.setTotalSteel(34);
+        statistics.setTotalObject(21);
+        statistics.setTotalMedal(4);
+        statistics.setId(3);
+
+        statisticsService.saveStatistics(statistics);
+
+        Long count1 = statisticsRepository.count();
+
+        statisticsService.deleteStatistics(statistics);
+
+        Long count2 = statisticsRepository.count();
+
+        assertThat(count1-1).isEqualTo(count2);        
+    } 
 }
