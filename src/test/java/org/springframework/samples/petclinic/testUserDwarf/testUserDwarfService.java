@@ -33,7 +33,7 @@ public class testUserDwarfService {
     @Test
     public void testCountWithInitialData() {
         int count = userDwarfService.userDwarfCount();
-        assertEquals(count, 2);  //Hay dos usuarios en la base de datos.
+        assertEquals(count, 3);  //Hay dos usuarios en la base de datos.
     }
 
     @Test
@@ -71,13 +71,13 @@ public class testUserDwarfService {
         userDwarf.setEmail("test@test.com");
         userDwarf.setPass("Testtest123");
         userDwarf.setUsername("testSubject");
-        userDwarf.setId(3);
+        userDwarf.setId(4);
 
         List<String> roles = new ArrayList<>();
         roles.add("admin");
         this.userDwarfService.saveUserDwarf(userDwarf, roles);
 
-        assertThat(userDwarf.getId()).isEqualTo(3);
+        assertThat(userDwarf.getId()).isEqualTo(4);
         assertThat(userDwarf.getUsername()).isEqualTo("testSubject");
 
         Collection<UserDwarf> u = this.userDwarfService.findUserDwarfByUsername("testSubject");
@@ -116,7 +116,7 @@ public class testUserDwarfService {
         userDwarf.setEmail("test@test.com");
         userDwarf.setPass("Testtest123");
         userDwarf.setUsername("testSubject");
-        userDwarf.setId(3);
+        userDwarf.setId(4);
         List<String> roles = new ArrayList<>();
         roles.add("admin");
 

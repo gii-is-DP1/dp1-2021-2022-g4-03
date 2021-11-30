@@ -172,7 +172,7 @@ public class UserDwarfController {
 		}else{
 			modelmap.addAttribute("message","User not found");
 		}
-		return view;
+		return "redirect:/usersDwarf/list";
 	}
 
 

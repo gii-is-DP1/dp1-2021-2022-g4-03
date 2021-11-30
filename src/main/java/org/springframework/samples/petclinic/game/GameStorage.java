@@ -3,12 +3,15 @@ package org.springframework.samples.petclinic.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class GameStorage {
     
     private static Map<Integer,Game> games;
     private static GameStorage instance;
-    
-    private GameStorage(){
+
+    private GameStorage() {
         games = new HashMap<>();
     }
 

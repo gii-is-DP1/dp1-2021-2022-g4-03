@@ -50,6 +50,6 @@ public class UserDwarf extends BaseEntity implements Serializable{
     @NotNull
     boolean active;
 
-    @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userDwarf")
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "userDwarf")
 	private Set<Authorities> authorities;
 }
