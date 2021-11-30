@@ -11,17 +11,21 @@
     <table id="AchievementsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Description</th>
-            <th style="width: 200px;">Condition</th>
-            <th style="width: 120px">Last Change</th>
-            <th style="width: 120px">Action</th>
+            <th style="width: 150px;">Condition</th>
+            <th style="width: 200px;">Last Change</th>
+            <th style="width: 120px">Description</th>
+            <th style="width: 120px">Delete</th>
+            <th style="width: 120px">Edit</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${achievements}" var="achievement">
             <tr>
                 <td>
-                    <c:out value="${achievement.condition}"/>
+                    <spring:url value="/achievements/{achievementsId}" var="AchUrl">
+                        <spring:param name = "achievementsId" value = "${achievement.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(AchUrl)}"> <c:out value="${achievement.condition}"/></a>
                 </td>
                 <td>
                     <c:out value="${achievement.lastChange}"/>
@@ -34,6 +38,12 @@
                         <spring:param name = "achievementsId" value = "${achievement.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
+                </td>
+                <td>
+                    <spring:url value="{achievementsId}/edit" var="editUrl">
+                        <spring:param name="achievementsId" value="${achievement.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit</a>
                 </td>
             </tr>
         </c:forEach>
