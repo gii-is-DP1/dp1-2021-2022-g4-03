@@ -39,5 +39,8 @@
                                         <a class="btn btn-default"
                                             href='<spring:url value="/game/1/surrender" htmlEscape="true"/>'>Rendirse</a>
                                     </div>
+                                    <div>
+                                        <a href="/currentuser"></a>
+                                    </div>
                                 </div>
                             </petclinic:layout>
