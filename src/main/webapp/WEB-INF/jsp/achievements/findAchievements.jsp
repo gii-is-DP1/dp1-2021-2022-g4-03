@@ -37,7 +37,10 @@
 
     <br/> 
     <sec:authorize access="hasAuthority('admin')">
-		<a class="btn btn-default" href='<spring:url value="/achievements/new" htmlEscape="true"/>'>Add Achievements</a>
+		<a class="btn btn-default" href='<spring:url value="/achievements/new" htmlEscape="true"/>'>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <span>Add</span>
+        </a>
 	</sec:authorize>
 	
 </petclinic:layout>

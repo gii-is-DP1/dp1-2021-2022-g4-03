@@ -12,7 +12,7 @@
     <table class="table table-striped">
         <tr> 
             <th>Condition</th>
-            <td><b><c:out value="${achievements.condition}"/></b></td>
+            <td><c:out value="${achievements.condition}"/></td>
         </tr>
         <tr>
             <th>Last Change</th>

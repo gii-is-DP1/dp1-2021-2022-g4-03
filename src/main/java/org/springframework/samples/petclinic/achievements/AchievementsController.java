@@ -40,25 +40,7 @@ public class AchievementsController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	@GetMapping(value = "/achievements/new")
-	public String initCreationForm(Map<String, Object> model) {
-		Achievements achievements = new Achievements();
-		model.put("achievements", achievements);
-		return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-	}
-
-    @PostMapping(value = "/achievements/new")
-	public String processCreationForm(@Valid Achievements achievements, BindingResult result) {
-		if (result.hasErrors()) {
-			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-		}
-		else {
-			//creating achievement
-			this.achievementsService.saveAchievement(achievements);
-			
-			return "redirect:/achievements/list";
-		}
-	}
+	
 
     @GetMapping(value="/achievements/{achievementsId}/delete")
 	public String deleteAchievements(@PathVariable("achievementsId") int achievementsId,ModelMap modelMap) {
@@ -116,6 +98,26 @@ public class AchievementsController {
 		return mav;
 	}
 
+	@GetMapping(value = "/achievements/new")
+	public String initCreationForm(Map<String, Object> model) {
+		Achievements achievements = new Achievements();
+		model.put("achievements", achievements);
+		return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+	}
+
+    @PostMapping(value = "/achievements/new")
+	public String processCreationForm(@Valid Achievements achievements, BindingResult result) {
+		if (result.hasErrors()) {
+			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}
+		else {
+			//creating achievement
+			this.achievementsService.saveAchievement(achievements);
+			
+			return "redirect:/achievements/list";
+		}
+	}
+	
     @GetMapping(value = "/achievements/{achievementsId}/edit")
 	public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
 		Achievements achievements = this.achievementsService.findAchievementById(achievementId);
@@ -125,11 +127,15 @@ public class AchievementsController {
 	
 
     @PostMapping(value = "/achievements/{achievementsId}/edit")
-	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result,
-			@PathVariable("achievementsId") int achievementsId) {
-                achievements.setId(achievementsId);
+	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
+		if (result.hasErrors()) {
+			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}else{
+			achievements.setId(achievementsId);
 			this.achievementsService.saveAchievement(achievements);
 			return "redirect:/achievements/{achievementsId}";
+		}
+            
 	}
 
 
