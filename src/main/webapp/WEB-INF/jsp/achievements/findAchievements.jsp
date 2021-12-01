@@ -26,7 +26,10 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Find Achievements</button>
+                <button type="submit"  class="btn btn-default">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <span>Find</span>
+                </a></button>
             </div>
         </div>
 

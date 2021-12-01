@@ -37,13 +37,17 @@
                     <spring:url value="/achievements/{achievementsId}/delete" var="deleteUrl">
                         <spring:param name = "achievementsId" value = "${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
                 </td>
                 <td>
                     <spring:url value="{achievementsId}/edit" var="editUrl">
                         <spring:param name="achievementsId" value="${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit</a>
+                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
         </c:forEach>
