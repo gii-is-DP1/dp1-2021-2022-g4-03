@@ -49,7 +49,7 @@
 				</petclinic:menuItem>
 				<petclinic:menuItem active="${name eq 'vets'}" url="/game/new"
 					title="new game">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
 					<span>Create Game</span>
 				</petclinic:menuItem>
 

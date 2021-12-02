@@ -7,6 +7,11 @@
 
 <petclinic:layout pageName="home">
 
+    <div class="col-sm-offset-2 col-sm-10">
+        <a class="btn btn-default"
+            href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About us</a>
+    </div>
+
     <div class="row-auto" style="display: flex; justify-content: center;">
         <div class="col-md" style="display: flex; justify-content: center;">
             <div class="btn-group-vertical">
