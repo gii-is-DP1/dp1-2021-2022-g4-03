@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class BoardController {
     public String welcome(@PathVariable("gameId") Integer gameId, Map<String, Object> model, HttpServletResponse response) {
         // response.addHeader("Refresh","5");
         model.put("now", new Date());
+        model.put("currentUser", new UserDwarf());
 
         // Crear una partida nueva con el user actual (de momento un user cualquiera)
 
