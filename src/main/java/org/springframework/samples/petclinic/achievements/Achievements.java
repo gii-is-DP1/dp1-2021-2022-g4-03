@@ -34,7 +34,7 @@ public class Achievements extends BaseEntity{
 	@Column(name = "last_change")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	@NotNull
-	public LocalDate lastChange;
+	public LocalDate lastChange = LocalDate.now();
 
 	@Column(name = "condition")
 	@NotEmpty

@@ -40,30 +40,11 @@ public class AchievementsController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	@GetMapping(value = "/achievements/new")
-	public String initCreationForm(Map<String, Object> model) {
-		Achievements achievements = new Achievements();
-		model.put("achievements", achievements);
-		return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-	}
-
-    @PostMapping(value = "/achievements/new")
-	public String processCreationForm(@Valid Achievements achievements, BindingResult result) {
-		if (result.hasErrors()) {
-			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-		}
-		else {
-			//creating achievement
-			this.achievementsService.saveAchievement(achievements);
-			
-			return "redirect:/achievements/list";
-		}
-	}
+	
 
     @GetMapping(value="/achievements/{achievementsId}/delete")
 	public String deleteAchievements(@PathVariable("achievementsId") int achievementsId,ModelMap modelMap) {
 		
-		String view = "achievements/achievementsList";
 		Optional<Achievements> achievements = this.achievementsService.findByIdOptional(achievementsId);
 		if(achievements.isPresent()){
 			achievementsService.delete(achievements.get());
@@ -109,26 +90,53 @@ public class AchievementsController {
 		}
 		
 	}
+	@GetMapping(value = "/achievements/{achievementsId}")
+	public ModelAndView showAchievement(@PathVariable("achievementsId") int achievementsId) {
+		ModelAndView mav = new ModelAndView("achievements/achievementDetails");
+		Achievements achievements = this.achievementsService.findAchievementById(achievementsId);
+		mav.addObject("achievements", achievements);
+		return mav;
+	}
 
-    // @GetMapping(value = "/achievements/{achievementsId}/edit")
-	// public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
-	// 	UserDwarf user = this.userDwarfService.getUserSession();
-	// 	if(this.userDwarfService.userHaveRol(user.getUsername(), "admin")){
-	// 		Achievements achievement = this.achievementsService.findAchievementById(achievementId);
-	// 		model.addAttribute(achievement);
-	// 		return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-	// 	}else {
-	// 		return "redirect:/";
-	// 	}
-	// }
+	@GetMapping(value = "/achievements/new")
+	public String initCreationForm(Map<String, Object> model) {
+		Achievements achievements = new Achievements();
+		model.put("achievements", achievements);
+		return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+	}
 
-    // @PostMapping(value = "/achievements/{achievementsId}/edit")
-	// public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result,
-	// 		@PathVariable("achievementsId") int achievementsId) {
-    //             achievements.setId(achievementsId);
-	// 		this.achievementsService.saveAchievement(achievements);
-	// 		return "redirect:/achievements/{achievementsId}";
-	// }
+    @PostMapping(value = "/achievements/new")
+	public String processCreationForm(@Valid Achievements achievements, BindingResult result) {
+		if (result.hasErrors()) {
+			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}
+		else {
+			//creating achievement
+			this.achievementsService.saveAchievement(achievements);
+			
+			return "redirect:/achievements/list";
+		}
+	}
+	
+    @GetMapping(value = "/achievements/{achievementsId}/edit")
+	public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
+		Achievements achievements = this.achievementsService.findAchievementById(achievementId);
+		model.addAttribute(achievements);
+		return VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}
+	
+
+    @PostMapping(value = "/achievements/{achievementsId}/edit")
+	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
+		if (result.hasErrors()) {
+			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}else{
+			achievements.setId(achievementsId);
+			this.achievementsService.saveAchievement(achievements);
+			return "redirect:/achievements/{achievementsId}";
+		}
+            
+	}
 
 
 
