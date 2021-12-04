@@ -52,8 +52,8 @@ public class GameController {
 	@GetMapping(value = "/game/new")
 	public String createGame() {
 		// Hasta que no tengamos currentUser creamos la partida con el user frabotrom
-		gameService.createGame(userDwarfService.findById(3));
-		return "redirect:/board/1";
+		Game game=gameService.createGame(userDwarfService.findById(3));
+		return "redirect:/board/"+game.getId();
 	}
 
 	@GetMapping(value = "/game/connect/{gameId}")

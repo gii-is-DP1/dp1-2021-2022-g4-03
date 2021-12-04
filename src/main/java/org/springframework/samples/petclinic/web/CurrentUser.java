@@ -18,29 +18,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice
-public class CurrentUserController {
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
-    @Autowired
-    UserDwarfService userDwarfService;
 
-    @ModelAttribute("currentUser")
-    @GetMapping(value = "/**/currentuser")
-    public UserDwarf showCurrentUser(Model model,HttpServletResponse response) {
+public class CurrentUser {
+
+    public static String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (!authentication.getAuthorities().stream().map(auth -> auth.getAuthority())
                     .anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
                 User user= (User) authentication.getPrincipal();
-                UserDwarf currentUser= userDwarfService.findUserDwarfByUsername2(user.getUsername()).get();
-                response.addHeader("Refresh", "5");
-                return currentUser;
+                return user.getUsername();
             } else {
                 System.out.println("User not authenticated");
             }
         }
 
-        return new UserDwarf();
+        return null;
     }
 
 }

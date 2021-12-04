@@ -33,6 +33,15 @@ public class Board extends BaseEntity {
         this.cartasAccionEspecial = new ArrayList<>();
         this.cartasMontaña = new ArrayList<>();
     }
+    public Board(int id) {
+        this.id=id;
+        this.background = "resources/images/boardBackground.png";
+        this.width = 1000;
+        this.height = 700;
+        this.cartas = new ArrayList<>();
+        this.cartasAccionEspecial = new ArrayList<>();
+        this.cartasMontaña = new ArrayList<>();
+    }
 
     @ElementCollection
     List<String> cartas;
