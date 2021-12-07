@@ -34,7 +34,7 @@ public class UserDwarfService {
     }
 
     @Transactional(readOnly = true)
-	public UserDwarf findById(int id) throws DataAccessException {
+	public UserDwarf findUserDwarfByUsername2(int id) throws DataAccessException {
 		return userDwarfRepository.findById(id);
 	}
 
