@@ -47,12 +47,14 @@
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Achievements</span>
 				</petclinic:menuItem>
-				<petclinic:menuItem active="${name eq 'vets'}" url="/game/new"
-					title="new game">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Create Game</span>
-				</petclinic:menuItem>
 
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'profile'}" url="/profile"
+						title="profile">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Profile</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 			
 
 			</ul>

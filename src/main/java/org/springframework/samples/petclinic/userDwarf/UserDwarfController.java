@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
@@ -66,6 +68,8 @@ public class UserDwarfController {
 		return view;
 
 	}
+
+	
 
 	@GetMapping(value = "/usersDwarf/register")
 	public String initCreationFormRegister(Map<String, Object> model) {
@@ -124,6 +128,21 @@ public class UserDwarfController {
 		}
 
 	}
+	@GetMapping(value = "/profile")
+		public String showProfile(){
+			return "redirect:/profile/" + userDwarf.getId();
+		}
+
+	@GetMapping(value ="/profile/{userDwarfId}")
+		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
+			String view = "usersDwarf/userDwarfProfile";
+			Wrapper wrapper = new Wrapper();
+			UserDwarf userDwarf = this.userDwarfService.findById(userDwarfId);
+			wrapper.setUserDwarf(userDwarf);
+			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
+			modelMap.addAttribute("wrapper",wrapper);
+			return view;
+		}
 
 	@GetMapping("/usersDwarf/{userDwarfId}")
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {

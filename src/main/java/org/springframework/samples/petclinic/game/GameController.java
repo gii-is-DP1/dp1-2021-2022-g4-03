@@ -58,13 +58,13 @@ public class GameController {
 		return "redirect:/board/"+game.getId();
 	}
 
-	@GetMapping(value = "/game/connect/{gameId}")
-	public String connectToGame(@PathVariable("gameId") Integer gameId) {
-		// Hasta que no tengamos currentUser conectamos a un user random
-		UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
-		gameService.connectToGame(player, gameId);
-		return "redirect:/board/{gameId}";
-	}
+	// @GetMapping(value = "/game/connect/{gameId}")
+	// public String connectToGame(@PathVariable("gameId") Integer gameId) {
+	// 	// Hasta que no tengamos currentUser conectamos a un user random
+	// 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
+	// 	gameService.connectToGame(player, gameId);
+	// 	return "redirect:/board/{gameId}";
+	// }
 
 	@GetMapping(value = "/game/{gameId}/surrender")
 	public String surrender(@PathVariable("gameId") Integer gameId) {
