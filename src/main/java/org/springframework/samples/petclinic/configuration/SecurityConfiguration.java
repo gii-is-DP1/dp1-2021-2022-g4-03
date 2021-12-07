@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
 				.antMatchers("/users/new").permitAll()
-				.antMatchers("/usersDwarf/userDwarfList").permitAll()
+				.antMatchers("/usersDwarf/userDwarfList").hasAnyAuthority("admin")
 				.antMatchers("/usersDwarf/userDetails").permitAll()
 				.antMatchers("/usersDwarf/**").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/vets/**").authenticated()
 				.antMatchers("/game/**").authenticated()
 				.antMatchers("/statistics/**").permitAll()
+				.antMatchers("/currentuser").permitAll()
 				.antMatchers("/board/**").authenticated()
 				.anyRequest().denyAll()
 				.and()
@@ -58,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido
                 // se sirve desde esta misma página.
-                http.csrf().ignoringAntMatchers("/h2-console/**");
+                http.csrf().ignoringAntMatchers("/h2-console/**","/api/**");
                 http.headers().frameOptions().sameOrigin();
 	}
 

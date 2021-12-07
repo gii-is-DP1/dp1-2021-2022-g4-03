@@ -39,5 +39,21 @@
                                         <a class="btn btn-default"
                                             href='<spring:url value="/game/1/surrender" htmlEscape="true"/>'>Rendirse</a>
                                     </div>
+                                    <div>
+                                        <table class="table table-striped">
+                                            <tr> 
+                                                <th>Username</th>
+                                                <td><b><c:out value="${currentUser.username}"/></b></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td><c:out value="${currentUser.email}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Active</th>
+                                                <td><c:out value="${currentUser.active}"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </petclinic:layout>

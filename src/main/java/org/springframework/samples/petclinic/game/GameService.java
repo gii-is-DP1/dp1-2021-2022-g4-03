@@ -23,7 +23,7 @@ public class GameService {
         Game game = new Game();
         game.setId(1);
         game.setPlayer1(player1);
-        game.setBoard(new Board());
+        game.setBoard(new Board(game.getId()));
         game.setOrder(List.of(1,2,3));
         game.setPhase(Phase.INICIO);
         game.setGameStatus(GameStatus.NEW);
