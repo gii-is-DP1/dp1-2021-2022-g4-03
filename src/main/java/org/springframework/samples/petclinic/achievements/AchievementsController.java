@@ -111,9 +111,7 @@ public class AchievementsController {
 			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}
 		else {
-			//creating achievement
 			this.achievementsService.saveAchievement(achievements);
-			
 			return "redirect:/achievements/list";
 		}
 	}
@@ -127,8 +125,9 @@ public class AchievementsController {
 	
 
     @PostMapping(value = "/achievements/{achievementsId}/edit")
-	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
+	public String processUpdateAchievementForm(@Valid Achievements achievements, ModelMap model, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
 		if (result.hasErrors()) {
+			model.put("achievements", achievements);
 			return AchievementsController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}else{
 			achievements.setId(achievementsId);
