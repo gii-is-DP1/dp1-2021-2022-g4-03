@@ -182,6 +182,12 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+    <!-- String to lambda -->
+    <dependency>
+        <groupId>pl.joegreen</groupId>
+        <artifactId>lambda-from-string</artifactId>
+        <version>1.7</version>
+    </dependency>
 
     <build>
         <plugins>
