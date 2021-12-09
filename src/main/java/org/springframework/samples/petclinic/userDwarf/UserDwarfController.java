@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.achievements.Achievements;
+import org.springframework.samples.petclinic.achievements.AchievementsService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.springframework.samples.petclinic.web.CurrentUser;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +46,9 @@ public class UserDwarfController {
 
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+	@Autowired
+	private AchievementsService achievementsService;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -128,16 +135,15 @@ public class UserDwarfController {
 		}
 
 	}
-	@GetMapping(value = "/profile")
-		public String showProfile(){
-			return "redirect:/profile/" + userDwarf.getId();
-		}
+	
 
-	@GetMapping(value ="/profile/{userDwarfId}")
-		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
+	@GetMapping(value ="/profile")
+		public String UserDwarfProfile( ModelMap modelMap){
 			String view = "usersDwarf/userDwarfProfile";
 			Wrapper wrapper = new Wrapper();
-			UserDwarf userDwarf = this.userDwarfService.findById(userDwarfId);
+			String currentUserUsername= CurrentUser.getCurrentUser();
+			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
+		//	Achievements achievements = this.achievementsService
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);

@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="profile">
-    <h2>Usuarios</h2>
+    <h2>Datos de usuario:</h2>
 
     <table class="table table-striped">
         <tr> 
@@ -24,6 +24,15 @@
         <tr>
             <th>Roles</th>
             <td><c:out value="${wrapper.roles}"/></td>
+        </tr>
+    </table>
+    <h2>Achievements</h2>
+
+
+    <table class="table table-striped">
+        <tr>
+            <th>Description</th>
+            <td><c:out value="${achievements.description}"/></td>
         </tr>
     </table>
 
