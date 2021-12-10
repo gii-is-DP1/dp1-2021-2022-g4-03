@@ -25,23 +25,16 @@ public class UserAchievementsController {
         this.userAchievementsService = userAchievementsService;
     }
 
-    // @InitBinder
-	// public void setAllowedFields(final WebDataBinder dataBinder) {
-	// 	dataBinder.setDisallowedFields("id");
-	// }
+    @InitBinder
+	public void setAllowedFields(final WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
 
-	// @InitBinder("userDwarf")
-	// public void initUserDwarfBinder(final WebDataBinder dataBinder) {
-	// 	dataBinder.setDisallowedFields("id");
-	// }
+	@InitBinder("userDwarf")
+	public void initUserDwarfBinder(final WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
 
-	// @GetMapping(value = "/user/new")
-	// public String initCreationForm(@PathVariable("ownerId") final int ownerId, final ModelMap model) {
-	// 	final Pet pet = new Pet();
-	// 	final Owner owner = this.ownerService.findOwnerById(ownerId);
-	// 	owner.addPet(pet);
-	// 	model.put("pet", pet);
-	// 	return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-	// }
+	
     
 }

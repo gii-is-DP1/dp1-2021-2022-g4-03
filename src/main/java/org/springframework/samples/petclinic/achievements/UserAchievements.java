@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,9 +35,15 @@ public class UserAchievements extends BaseEntity{
 	@JoinColumn(name = "userDwarf_id", referencedColumnName = "id")
 	private UserDwarf userDwarf;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "achievements_id", referencedColumnName = "id")
-    private Set<Achievements> achievements;
+    private Achievements achievements;
+
+    @NotNull
+    @Min(value = 0)
+    @Max(value = 1)
+    @Column(name = "progress")
+    private Double progress;
 
     @PastOrPresent(message = "La fecha no puede ser en el futuro")
 	@Column(name = "obtaining_date")

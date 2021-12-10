@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StatisticsService {
 
@@ -35,7 +37,10 @@ public class StatisticsService {
     public void saveStatistics(Statistics statistics) throws DataAccessException{
         statisticsRepository.save(statistics);
     }
-
+    @Transactional
+    public Optional<Statistics> findStatisticsByUsername2(String username) throws DataAccessException{
+		return statisticsRepository.findByUsername2(username);
+	}
     public void deleteStatistics(Statistics statistics){
         statisticsRepository.delete(statistics);
     }

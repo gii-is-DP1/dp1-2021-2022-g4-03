@@ -18,22 +18,51 @@
             <td><c:out value="${wrapper.userDwarf.email}"/></td>
         </tr>
         <tr>
-            <th>Active</th>
-            <td><c:out value="${wrapper.userDwarf.active}"/></td>
-        </tr>
-        <tr>
             <th>Roles</th>
             <td><c:out value="${wrapper.roles}"/></td>
         </tr>
     </table>
-    <h2>Achievements</h2>
+    <h2>Statistics</h2>
 
 
     <table class="table table-striped">
         <tr>
-            <th>Description</th>
-            <td><c:out value="${achievements.description}"/></td>
+            <th>Time Played:</th>
+            <td><c:out value="${statistic.getTimeFormatted()}"/></td>
         </tr>
+        <tr>
+            <th>Games played:</th>
+            <td><c:out value="${statistic.gamesPlayed}"/></td>
+        </tr>
+        <tr>
+            <th>Games won:</th>
+            <td><c:out value="${statistic.gamesWon}"/></td>
+        </tr>
+        <tr>
+            <th>Total iron:</th>
+            <td><c:out value="${statistic.totalIron}"/></td>
+        </tr>
+        
+        <tr>
+            <th>Total gold:</th>
+            <td><c:out value="${statistic.totalGold}"/></td>
+        </tr>
+        
+        <tr>
+            <th>Total steel:</th>
+            <td><c:out value="${statistic.totalSteel}"/></td>
+        </tr>
+        
+        <tr>
+            <th>Total object:</th>
+            <td><c:out value="${statistic.totalObject}"/></td>
+        </tr>
+        
+        <tr>
+            <th>Total medal:</th>
+            <td><c:out value="${statistic.totalMedal}"/></td>
+        </tr>
+        
     </table>
 
 

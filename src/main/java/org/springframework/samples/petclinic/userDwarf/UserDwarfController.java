@@ -12,9 +12,12 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.achievements.Achievements;
 import org.springframework.samples.petclinic.achievements.AchievementsService;
+import org.springframework.samples.petclinic.statistics.Statistics;
+import org.springframework.samples.petclinic.statistics.StatisticsService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Controller;
@@ -43,6 +46,9 @@ public class UserDwarfController {
 
 	@Autowired
 	private UserDwarfService userDwarfService;
+
+	@Autowired
+	private StatisticsService statisticsService;
 
 	@Autowired
 	private AuthoritiesService authoritiesService;
@@ -143,10 +149,11 @@ public class UserDwarfController {
 			Wrapper wrapper = new Wrapper();
 			String currentUserUsername= CurrentUser.getCurrentUser();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
-		//	Achievements achievements = this.achievementsService
+			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
+			modelMap.addAttribute("statistic",statistic);
 			return view;
 		}
 
