@@ -22,5 +22,8 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
 
     @Query("SELECT DISTINCT statistics FROM Statistics statistics WHERE statistics.userDwarf.username LIKE :username")
 	public Optional<Statistics> findByUsername2(@Param("username") String username);
+
+    @Query("SELECT SUM(GAMES_PLAYED) FROM Statistics")
+    public Long getAllGamesPlayed();
     
 }

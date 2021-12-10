@@ -8,7 +8,7 @@
 <petclinic:layout pageName="profile">
     <h2>Datos de usuario:</h2>
 
-    <table class="table table-striped">
+    <table class="table table-striped" style="width: 50%;">
         <tr> 
             <th>Username</th>
             <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
@@ -25,7 +25,7 @@
     <h2>Statistics</h2>
 
 
-    <table class="table table-striped">
+    <table class="table table-striped" style="width: 70%;">
         <tr>
             <th>Time Played:</th>
             <td><c:out value="${statistic.getTimeFormatted()}"/></td>
@@ -62,7 +62,16 @@
             <th>Total medal:</th>
             <td><c:out value="${statistic.totalMedal}"/></td>
         </tr>
-        
+
+
+    </table>
+
+    <h2>Global</h2>
+    <table class="table table-striped" style="width: 70%;">
+        <tr>
+            <th>Global games played:</th>
+            <td><c:out value="${tGP}"/></td>
+        </tr>
     </table>
 
 

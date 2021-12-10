@@ -53,9 +53,6 @@ public class UserDwarfController {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-	@Autowired
-	private AchievementsService achievementsService;
-
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -150,10 +147,12 @@ public class UserDwarfController {
 			String currentUserUsername= CurrentUser.getCurrentUser();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
+			Long tGP = this.statisticsService.getAllGamesPlayed();
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
 			modelMap.addAttribute("statistic",statistic);
+			modelMap.addAttribute("tGP",tGP);
 			return view;
 		}
 
