@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 import javax.persistence.Entity;
 
@@ -20,6 +20,6 @@ public class Card2 extends BaseEntity{
     private Integer position;
     private String title;
     private String description;
-    private Predicate<Game> effect;
+    private Function<Game,Game> effect;
 
 }
