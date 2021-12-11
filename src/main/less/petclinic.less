@@ -14,10 +14,11 @@
 @icon-font-path:    "../../webjars/bootstrap/fonts/";
 
 @spring-brown:      #db7521;
-@spring-dark-brown: #bd6513;
+@spring-dark-brown: #cf6311;
 @spring-black:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
+@spring-blue: #5b05e6;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
@@ -27,10 +28,10 @@
 @navbar-default-link-color:         @spring-light-grey;
 @navbar-default-link-active-color:  @spring-light-grey;
 @navbar-default-link-hover-color:   @spring-light-grey;
-@navbar-default-link-hover-bg:      @spring-brown;
+@navbar-default-link-hover-bg:      @spring-dark-brown;
 @navbar-default-toggle-icon-bar-bg: @spring-light-grey;
 @navbar-default-toggle-hover-bg:    transparent;
-@navbar-default-link-active-bg:     @spring-brown;
+@navbar-default-link-active-bg:     @spring-dark-brown;
 
 @border-radius-base:             0;
 @border-radius-large:            0;
@@ -48,6 +49,28 @@
 @pagination-active-bg:                    @spring-black;
 @pagination-active-border:                @spring-brown;
 @table-border-color:                      @spring-black;
+
+.bodyBackground{
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+#fondo1 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: #afd0e6;
+  background-image: url("../images/Fondo1.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
 
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
