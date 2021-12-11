@@ -1,24 +1,14 @@
 package org.springframework.samples.petclinic.userDwarf;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.achievements.Achievements;
-import org.springframework.samples.petclinic.achievements.AchievementsService;
 import org.springframework.samples.petclinic.statistics.Statistics;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
-import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,14 +17,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.springframework.samples.petclinic.web.CurrentUser;
+import java.time.Duration;
 
+import org.springframework.samples.petclinic.web.CurrentUser;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -147,12 +137,28 @@ public class UserDwarfController {
 			String currentUserUsername= CurrentUser.getCurrentUser();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
-			Long tGP = this.statisticsService.getAllGamesPlayed();
+			Long tgp = this.statisticsService.getAllGamesPlayed();
+			Long tgw = this.statisticsService.getAllGamesWon();
+			Long ti = this.statisticsService.getAllIron();
+			Long to = this.statisticsService.getAllGold();
+			Long ts = this.statisticsService.getAllSteel();
+			Long tob = this.statisticsService.getAllObject();
+			Long tm = this.statisticsService.getAllMedal();
+			Long timePlayed = this.statisticsService.getAllTimePlayed();
+
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
 			modelMap.addAttribute("statistic",statistic);
-			modelMap.addAttribute("tGP",tGP);
+			modelMap.addAttribute("tgp",tgp);
+			modelMap.addAttribute("tgw",tgw);
+			modelMap.addAttribute("ti",ti);
+			modelMap.addAttribute("to",to);
+			modelMap.addAttribute("ts",ts);
+			modelMap.addAttribute("tob",tob);
+			modelMap.addAttribute("tm",tm);
+			modelMap.addAttribute("timePlayed",timePlayed);
+
 			return view;
 		}
 
