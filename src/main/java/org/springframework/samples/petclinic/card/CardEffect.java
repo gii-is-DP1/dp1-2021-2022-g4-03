@@ -14,15 +14,14 @@ public class CardEffect {
     
     private static Map<Integer,Function<Game,Game>> effects;
     
-    public CardEffect() {
+    protected CardEffect() {
         effects.put(1,x->x);
+        effects.put(2,x->x);
     }
 
     public static Map<Integer,Function<Game,Game>> getEffects() {
         return effects;
     }
-
-
     
     
 
