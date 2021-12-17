@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class StatisticsService {
@@ -80,5 +81,15 @@ public class StatisticsService {
     public Long getAllTimePlayed(){
         return statisticsRepository.getAllTimePlayed()/1000000000   ;
     }
+    @Transactional(readOnly = true)
+    public List<String> getRank(){
+        return statisticsRepository.getRank();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Integer> getRankGW(){
+        return statisticsRepository.getRankGW();
+    }
+
     
 }

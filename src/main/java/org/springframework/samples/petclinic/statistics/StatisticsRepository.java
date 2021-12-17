@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 import java.time.Duration;
 import java.util.Optional;
 
@@ -22,6 +24,8 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
 
     @Query("SELECT DISTINCT statistics FROM Statistics statistics WHERE statistics.userDwarf.username LIKE :username")
 	public Optional<Statistics> findByUsername2(@Param("username") String username);
+
+
 
     //Estadisticas globales
     @Query(value = "SELECT SUM(GAMES_PLAYED) FROM Statistics", nativeQuery = true)
@@ -47,6 +51,12 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
 
     @Query(value = "SELECT SUM(time_played) FROM Statistics", nativeQuery = true)
     public Long getAllTimePlayed();
+
+    @Query(value = "SELECT user_dwarf_id FROM Statistics ORDER BY games_won DESC", nativeQuery = true)
+    public List<String> getRank();
+
+    @Query(value = "SELECT games_won FROM Statistics ORDER BY games_won DESC", nativeQuery = true)
+    public List<Integer> getRankGW();
 
 
     

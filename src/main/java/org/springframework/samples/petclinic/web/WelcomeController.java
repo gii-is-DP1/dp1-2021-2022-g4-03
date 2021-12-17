@@ -69,6 +69,12 @@ public class WelcomeController {
 			Long tm = this.statisticsService.getAllMedal();
 			Long timePlayed = this.statisticsService.getAllTimePlayed();
 			String ttp = String.format("%dh:%02dm:%02ds", timePlayed / 3600, (timePlayed % 3600) / 60, timePlayed % 60);
+			List<String> Urank = this.statisticsService.getRank();
+			List<Integer> GWRank = this.statisticsService.getRankGW();
+
+			String p1 = Urank.get(0); Integer p1wg = GWRank.get(0);
+			String p2 = Urank.get(1); Integer p2wg = GWRank.get(1);
+			String p3 = Urank.get(2); Integer p3wg = GWRank.get(2);
 
 			model.addAttribute("tgp",tgp);
 			model.addAttribute("tgw",tgw);
@@ -78,7 +84,12 @@ public class WelcomeController {
 			model.addAttribute("tob",tob);
 			model.addAttribute("tm",tm);
 			model.addAttribute("ttp",ttp);
-			
+			model.addAttribute("p1",p1);
+			model.addAttribute("p1wg",p1wg);
+			model.addAttribute("p2",p2);
+			model.addAttribute("p2wg",p2wg);
+			model.addAttribute("p3",p3);
+			model.addAttribute("p3wg",p3wg);
 
 	    return "welcome";
 	  }

@@ -33,6 +33,19 @@
         }
     </script>
 
+<h2>Ranking</h2>
+<table class="table table-striped" style="width: 25%;">
+    <tr>
+        <td><c:out value="${p1} - ${p1wg}"/></td>
+    </tr>
+    <tr>
+        <td><c:out value="${p2} - ${p2wg}"/></td>
+    </tr>
+    <tr>
+        <td><c:out value="${p3} - ${p3wg}"/></td>
+    </tr>
+</table>
+
 <h2>Global Statistics</h2>
 <table class="table table-striped" >
     <tr>
