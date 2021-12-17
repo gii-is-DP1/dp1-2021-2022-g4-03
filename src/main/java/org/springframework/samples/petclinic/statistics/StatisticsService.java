@@ -78,7 +78,7 @@ public class StatisticsService {
     }
     @Transactional(readOnly = true)
     public Long getAllTimePlayed(){
-        return statisticsRepository.getAllTimePlayed();
+        return statisticsRepository.getAllTimePlayed()/1000000000   ;
     }
     
 }
