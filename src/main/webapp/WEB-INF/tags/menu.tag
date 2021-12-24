@@ -53,19 +53,32 @@
 					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
 					<span>Create Game</span>
 				</petclinic:menuItem>
-
-			
-
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
+                    <sec:authorize access="!isAuthenticated()">
+					<li>
+						<button type="button" class="btn btn-navbar btn-block"
+							onClick='redirectOnClickRegister()'>
+								<img src="../resources/images/unnamed.png" height ="50" width="50"/>
+							</button>
+					</li>
+                    </sec:authorize>
 				<sec:authorize access="isAuthenticated()">
-					<li><a href="<c:url value="/logout" />">Logout</a></li>
+					<li><a href="<c:url value="/logout" />"><b>LOGOUT</b></a></li>
 				</sec:authorize>
 			</ul>
 		</div>
-
-
-
 	</div>
+
+	<script>
+        function redirectOnClickLogin() {
+            document.location = "/login";
+        }
+    </script>
+    <script>
+        function redirectOnClickRegister() {
+            document.location = "/usersDwarf/register";
+        }
+    </script>
 </nav>

@@ -19,6 +19,7 @@
 @spring-color4:    #838789;
 @spring-color5:    #f1f1f1;
 @spring-color6:    #ccd2d4;
+@spring-color7:    #f0d6b8;
 
 @body-bg:                           @spring-color5;
 @text-color:                        @spring-color1;
@@ -122,6 +123,27 @@ table tbody tr:nth-child(even) {
 .btn-default {
   border-width: 2px;
   border-radius: 8px;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color3;
+    border-color: @spring-color3;
+  }
+}
+
+.btn-navbar {
+  margin-top: 8px;
+  padding: 4px;
+  background: @spring-color7;
+  border-radius: 50% !important;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
