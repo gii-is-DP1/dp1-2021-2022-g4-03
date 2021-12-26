@@ -20,6 +20,7 @@
 @spring-color5:    #f1f1f1;
 @spring-color6:    #ccd2d4;
 @spring-color7:    #f0d6b8;
+@spring-color8:    #afd0e6;
 
 @body-bg:                           @spring-color5;
 @text-color:                        @spring-color1;
@@ -63,7 +64,7 @@
   position: fixed;
   top: 0px;
   left: 0px;
-  background-color: #afd0e6;
+  background-color: @spring-color8;
   background-image: url("../images/Fondo1.jpg");
   background-size: cover;
   background-position: center;
@@ -79,7 +80,7 @@
   position: fixed;
   top: 0px;
   left: 0px;
-  background-color: #afd0e6;
+  background-color: @spring-color8;
   background-image: url("../images/Fondo5.jpg");
   background-size: cover;
   background-position: center;
@@ -155,11 +156,43 @@ table tbody tr:nth-child(even) {
   &:active,
   &.active,
   .open .dropdown-toggle& {
+    background-color: @spring-color8;
+  }
+}
+
+.btn-login {
+  margin-bottom: 6px;
+  margin-top: 6px;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 100px;
+  max-width: 100px;
+  padding: 4px;
+  color: @spring-color5;
+  background: @spring-color1;
+  border-color: @spring-color2;
+  border-width: 2px;
+  border-radius: 8px !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
     background-color: @spring-color3;
     border-color: @spring-color3;
   }
 }
 
+.dropdown-menu{
+  border-radius: 6px;
+  background-color: @spring-color7;
+}
 
 .container .text-muted {
   margin: 20px 0;

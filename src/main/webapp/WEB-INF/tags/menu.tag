@@ -6,6 +6,8 @@
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 <br>
 <nav class="navbar navbar-default" role="navigation">
@@ -56,14 +58,25 @@
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-                    <sec:authorize access="!isAuthenticated()">
+                <sec:authorize access="!isAuthenticated()">
 					<li>
-						<button type="button" class="btn btn-navbar btn-block"
-							onClick='redirectOnClickRegister()'>
+						<div class="dropdown">
+							<button class="btn btn-navbar btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<img src="../resources/images/unnamed.png" height ="50" width="50"/>
 							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item">
+									<button type="button" class="btn btn-login btn-block"
+                            			onClick='redirectOnClickRegister()'>Register</button>
+								</a>
+								<a class="dropdown-item" href="#">
+									<button type="button" class="btn btn-login btn-block"
+                           				 onClick='redirectOnClickLogin()'>Login</button>
+								</a>
+							</div>
+						</div>
 					</li>
-                    </sec:authorize>
+                </sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li><a href="<c:url value="/logout" />"><b>LOGOUT</b></a></li>
 				</sec:authorize>
