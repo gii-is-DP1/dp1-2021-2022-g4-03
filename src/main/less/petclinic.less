@@ -81,6 +81,54 @@
   top: 0px;
   left: 0px;
   background-color: @spring-color8;
+  background-image: url("../images/Fondo2.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo3 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo3.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo4 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo4.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo5 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
   background-image: url("../images/Fondo5.jpg");
   background-size: cover;
   background-position: center;
@@ -173,6 +221,31 @@ table tbody tr:nth-child(even) {
   border-color: @spring-color2;
   border-width: 2px;
   border-radius: 8px !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color3;
+    border-color: @spring-color3;
+  }
+}
+
+.btn-welcome {
+  font-size: 24px;
+  margin-left: 38%;
+  width: 24%;
+  color: @spring-color5;
+  background: @spring-color1;
+  border-color: @spring-color2;
+  border-width: 3px;
+  border-radius: 50px !important;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;

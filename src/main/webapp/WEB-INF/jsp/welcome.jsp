@@ -8,9 +8,9 @@
 <petclinic:layout pageName="home">
 
     <div class="bodyBackground">
-        <div class="col-sm-offset-2 col-sm-10">
-            <a class="btn btn-default"
-                href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About us</a>
+        <div class="col-sm-12">
+            <a class="btn btn-welcome"
+                href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About Us</a>
         </div>
         <div id="fondo1"></div>
     </div>
