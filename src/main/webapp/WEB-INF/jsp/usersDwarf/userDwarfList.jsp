@@ -15,7 +15,8 @@
             <th style="width: 200px;">Email</th>
             <th style="width: 120px">Pass</th>
             <th style="width: 120px">Active</th>
-            <th>Actions</th> 
+            <th style="width: 120px;">Delete</th> 
+            <th style="width: 120px;">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -41,6 +42,12 @@
 
                     <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
                 </td>        
+                <td>
+                    <spring:url value="{userDwarfId}/edit" var="editUrl">
+                        <spring:param name="userDwarfId" value="${userD.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+                </td>
                
             </tr>
         </c:forEach>

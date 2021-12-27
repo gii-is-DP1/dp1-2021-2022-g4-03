@@ -20,4 +20,4 @@ INSERT INTO achievements(id,last_change,condition,description) VALUES (3,'2022-0
 -- Time Played is expressed in nanoseconds (10^-9)
 INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('58243000000000', 8, 5, 150, 100, 75, 28, 15, 'rafjimfer');
 INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('24745000000000', 7, 4, 120, 90, 77, 31, 18, 'serrivroa');
-INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('58243000000000', 42, 10, 150, 100, 75, 28, 15, 'frabotrom');
+INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('58243000000000', 42, 1, 150, 100, 75, 28, 15, 'frabotrom');

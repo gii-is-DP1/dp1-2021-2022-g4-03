@@ -36,18 +36,21 @@
 <h2>Ranking</h2>
 <table class="table table-striped" style="width: 25%;">
     <tr>
-        <td><c:out value="${p1} - ${p1wg}"/></td>
+        <th>Oro:</th>
+        <td><c:out value="${p1} -- ${p1wg} victorias"/></td>
     </tr>
     <tr>
-        <td><c:out value="${p2} - ${p2wg}"/></td>
+        <th>Plata:</th>
+        <td><c:out value="${p2} -- ${p2wg} victorias"/></td>
     </tr>
     <tr>
-        <td><c:out value="${p3} - ${p3wg}"/></td>
+        <th>Bronce:</th>
+        <td><c:out value="${p3} -- ${p3wg} victorias"/></td>
     </tr>
 </table>
 
 <h2>Global Statistics</h2>
-<table class="table table-striped" >
+<table class="table table-striped" style="width: 75%;" >
     <tr>
         <th>Global time played:</th>
         <td><c:out value="${ttp}"/></td>
