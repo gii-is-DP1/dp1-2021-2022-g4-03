@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.board.BoardController;
 import org.springframework.samples.petclinic.board.BoardService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,6 +39,9 @@ public class GameController {
 
     @Autowired
 	private BoardService boardService;
+
+	@Autowired
+	private BoardController boardController;
 
     @InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -64,6 +72,19 @@ public class GameController {
 		UserDwarf player= userDwarfService.findByIdOptional(1).get();
 		gameService.connectToGame(player, gameId);
 		return "redirect:/board/{gameId}";
+	}
+
+	public class test{
+		public String viewName;
+	}
+	
+	@PostMapping(value="/api/game/{gameId}", consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@ResponseBody
+	public String mainLoop(@PathVariable("gameId") Integer gameId, @RequestBody test test){
+
+		System.out.println("***********"+test.viewName);
+
+		return "board/"+gameId;
 	}
 
 	@GetMapping(value = "/game/{gameId}/surrender")

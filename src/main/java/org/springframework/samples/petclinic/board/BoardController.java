@@ -30,7 +30,7 @@ public class BoardController {
     }
 
     @GetMapping(value = "/board/{gameId}")
-    public String welcome(@PathVariable("gameId") Integer gameId, Map<String, Object> model, HttpServletResponse response) {
+    public String welcome(@PathVariable("gameId") Integer gameId, Map<String, Object> model){
         // response.addHeader("Refresh","5");
         model.put("now", new Date());
         String currentUserUsername= CurrentUser.getCurrentUser();
