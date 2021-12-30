@@ -1,5 +1,15 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CardService {
@@ -7,7 +17,7 @@ public class CardService {
     @Autowired
     CardRepository cardRepository;
 
-    public Card2 cardToCard2 (Card card) {
+    private Card2 cardToCard2 (Card card) {
         Card2 res = new Card2();
         res.setCardImage(card.getCardImage());
         res.setCardType(card.getCardType());
@@ -23,24 +33,28 @@ public class CardService {
         cardRepository.delete(card);
     }
     
-    // Card2 findCard2ById<int id>: findById but returns a Card2
+    public Card2 findCard2ById(int id) {
+        return cardToCard2(cardRepository.findById(id).get());
+    }
 
     // List<Card2> findCards2ByType(Card.Type type)
 
-    // List<Card2> findAllCards2: List of cards stored in the DB converted to Card2(effect:predicate)
+    @Transactional
+    public List<Card2> findAllCards2() {
+        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        return stream.map(x->cardToCard2(x))
+            .collect(Collectors.toList());
+    }
 
-    // Card findCardById<int id>
+    public Card findCardById(int id) {
+        return cardRepository.findById(id).get();
+    }
 
     // Iterable<Card> findAll
-
-
-//    @Transactional
-//    public List<Card> getAllCards() {
-//        Stream<Card> str = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-//        return str.map(Card::getEffect)
-//            .forEach(x->cardEffectConstructor(x))
-//            .collect(Collectors.toList());
-//    }
-    
+    @Transactional
+    public List<Card> findAllCards() {
+        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        return stream.collect(Collectors.toList());
+    }
 
 }

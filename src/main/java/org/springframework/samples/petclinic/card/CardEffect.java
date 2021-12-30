@@ -23,6 +23,9 @@ public class CardEffect {
         return effects;
     }
     
+    public static Function<Game,Game> getEffectById(Integer id) {
+        return effects.get(id);
+    }
     
 
 }
