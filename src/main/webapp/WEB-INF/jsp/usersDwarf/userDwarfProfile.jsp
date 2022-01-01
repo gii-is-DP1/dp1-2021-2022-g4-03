@@ -8,20 +8,37 @@
 <petclinic:layout pageName="profile">
     <h2>Datos de usuario:</h2>
 
-    <table class="table table-striped" style="width: 50%;">
-        <tr> 
-            <th>Username</th>
-            <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td><c:out value="${wrapper.userDwarf.email}"/></td>
-        </tr>
-        <tr>
-            <th>Roles</th>
-            <td><c:out value="${wrapper.roles}"/></td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class = "col-md-8">
+            <table class="table table-striped" style="width: 65%;">
+                <tr> 
+                    <th>Username</th>
+                    <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><c:out value="${wrapper.userDwarf.email}"/></td>
+                </tr>
+                <tr>
+                    <th> Password: <input type="checkbox" onclick="myFunction()"> <br><br></th>
+                    <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-1">
+            <spring:url value="/profile/achievements" var="pA">
+                            <spring:param name="pA" value="${wrapper.userDwarf.id}"/>
+                        </spring:url>
+            <a href="${fn:escapeXml(pA)}" class="btn btn-default">Logros</a>
+            
+        </div>
+        <div class="col-md-3">
+            <img src="/resources/images/profilepic.jpg" alt="${wrapper.userDwarf.username}" class="img-responsive img-circle" style="height: 5cm;
+                        width: 168px;">            
+        </div>
+
+    </div>
+
     <h2>Statistics</h2>
 
 
@@ -62,11 +79,25 @@
             <th>Total medal:</th>
             <td><c:out value="${statistic.totalMedal}"/></td>
         </tr>
+        
 
 
     </table>
 
+   
 
+         
+
+    <script>
+        function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+        }
+    </script>
 
     <br/>
     <br/>

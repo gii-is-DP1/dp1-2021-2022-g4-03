@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,23 +32,27 @@ import lombok.Setter;
 @Table(name="user_achievements")
 public class UserAchievements extends BaseEntity{
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "userDwarf_id", referencedColumnName = "id")
-	private UserDwarf userDwarf;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "achievements_id", referencedColumnName = "id")
-    private Achievements achievements;
-
     @NotNull
     @Min(value = 0)
     @Max(value = 1)
     @Column(name = "progress")
-    private Double progress;
+    public Double progress;
 
     @PastOrPresent(message = "La fecha no puede ser en el futuro")
 	@Column(name = "obtaining_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate obtainingDate;
+	public LocalDate obtainingDate;
     
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumns({
+        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    })
+    private UserDwarf userDwarf;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumns({
+        @JoinColumn(name="achievements_id", referencedColumnName = "id", unique = true)
+    })
+    private Achievements achievements;
 }

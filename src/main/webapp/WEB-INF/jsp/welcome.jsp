@@ -33,14 +33,14 @@
         }
     </script>
 
-<h2>Ranking</h2>
+<h2>Top 3 Players</h2>
 <table class="table table-striped" style="width: 25%;">
     <tr>
-        <th>Oro:</th>
+        <th>Gold:</th>
         <td><c:out value="${p1} -- ${p1wg} victorias"/></td>
     </tr>
     <tr>
-        <th>Plata:</th>
+        <th>Silver:</th>
         <td><c:out value="${p2} -- ${p2wg} victorias"/></td>
     </tr>
     <tr>
@@ -48,6 +48,11 @@
         <td><c:out value="${p3} -- ${p3wg} victorias"/></td>
     </tr>
 </table>
+
+
+
+
+
 
 <h2>Global Statistics</h2>
 <table class="table table-striped" style="width: 75%;" >
