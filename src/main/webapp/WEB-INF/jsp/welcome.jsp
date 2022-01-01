@@ -7,21 +7,13 @@
 
 <petclinic:layout pageName="home">
 
-    <div class="row-auto" style="display: flex; justify-content: center;">
-        <div class="col-md" style="display: flex; justify-content: center;">
-            <div class="btn-group-vertical">
-                <sec:authorize access="!isAuthenticated()">
-                    <button type="button" class="btn btn-primary btn-lg btn-block"
-                        onClick='redirectOnClickRegister()'>Register</button>
-                    <button type="button" class="btn btn-primary btn-lg btn-block"
-                        onClick='redirectOnClickLogin()'>Login</button>
-                </sec:authorize>
-            </div>
+    <div class="bodyBackground">
+        <div class="col-sm-12">
+            <a class="btn btn-welcome"
+                href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About Us</a>
         </div>
+        <div id="fondo1"></div>
     </div>
-
-
-
     <script>
         function redirectOnClickLogin() {
             document.location = "/login";
@@ -89,6 +81,5 @@
         <td><c:out value="${tm}"/></td>
     </tr>
 </table>
-
 
 </petclinic:layout>

@@ -4,20 +4,12 @@
 
 <%@ attribute name="pageName" required="true" %>
 <%@ attribute name="customScript" required="false" fragment="true"%>
-<%@attribute name="customHeader" fragment="true" required="false" %>
 
 <!doctype html>
 <html>
-<petclinic:htmlHeader>
-	<jsp:attribute name="customHeader">
-        <jsp:invoke fragment="customHeader"/>
-    </jsp:attribute>
-    <jsp:body>
-    </jsp:body>
-</petclinic:htmlHeader>
+<petclinic:htmlHeader/>
 
 <body>
-<petclinic:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
     <div class="container xd-container">
