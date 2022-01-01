@@ -20,10 +20,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${achievements['new']}">
-                        <button class="btn btn-default" type="submit">Add Achievement</button>
+                        <button class="btn btn-default" type="submit">Add </button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Achievement</button>
+                        <button class="btn btn-default" type="submit">Update </button>
                     </c:otherwise>
                 </c:choose>
             </div>

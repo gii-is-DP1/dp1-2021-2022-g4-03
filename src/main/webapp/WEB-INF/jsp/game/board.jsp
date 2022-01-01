@@ -8,36 +8,70 @@
 
                             <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->
 
+
+
                             <petclinic:layout pageName="board">
+                                <jsp:attribute name="customHeader">
+                                    <script src="/resources/js/board.js"></script>
+                                </jsp:attribute>
+                                <jsp:body>
+                                    <h2>
+                                        <fmt:message key="titulo" />
+                                    </h2>
 
-                                <h2>
-                                    <fmt:message key="titulo" />
-                                </h2>
+                                    <p>
+                                    <h2>
+                                        <c:out value="${now}" />
+                                    </h2>
 
-                                <p>
-                                <h2>
-                                    <c:out value="${now}" />
-                                </h2>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <canvas id="canvas" width="${board.width}" height="${board.height}">
+                                                <img id="source" src="/${board.background}" style="display:none">
+                                                <img id="carta1" src="/resources/images/pets.png" style="display:none">
+                                                <img id="carta2" src="/resources/images/pets.png" style="display:none">
+                                                <img id="carta3" src="/resources/images/pets.png" style="display:none">
+                                                <script>
+                                                    var canvas = document.getElementById("canvas");
+                                                    var ctx = canvas.getContext("2d");
+                                                    var image = document.getElementById('source');
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <canvas id="canvas" width="${board.width}" height="${board.height}">
-                                            <img id="source" src="${board.background}" style="display:none">
-                                            <img id="carta1" src="resources/images/pets.png" style="display:none">
-                                            <img id="carta2" src="resources/images/pets.png" style="display:none">
-                                            <img id="carta3" src="resources/images/pets.png" style="display:none">
-                                            <script>
-                                                var canvas = document.getElementById("canvas");
-                                                var ctx = canvas.getContext("2d");
-                                                var image = document.getElementById('source');
+                                                    ctx.drawImage(image, 0, 0, "${board.width}", "${board.height}");
+                                                </script>
+                                            </canvas>
+                                        </div>
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <a class="btn btn-default"
+                                                href='<spring:url value="/game/1/surrender" htmlEscape="true"/>'>Rendirse</a>
+                                        </div>
+                                        <div>
+                                            <table class="table table-striped">
+                                                <tr>
+                                                    <th>Username</th>
+                                                    <td><b>
+                                                            <c:out value="${currentUser.username}" />
+                                                        </b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Email</th>
+                                                    <td>
+                                                        <c:out value="${currentUser.email}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Active</th>
+                                                    <td>
+                                                        <c:out value="${currentUser.active}" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <form action="/api/game/1" method="post" id="testForm">
+                                            <input type="hidden" value="board" name="viewName">
+                                            <button class="btn btn-primary" type="submit">Test</button>
+                                        </form>
 
-                                                ctx.drawImage(image, 0, 0, "${board.width}", "${board.height}");
-                                            </script>
-                                        </canvas>
                                     </div>
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <a class="btn btn-default"
-                                            href='<spring:url value="/game/1/surrender" htmlEscape="true"/>'>Rendirse</a>
-                                    </div>
-                                </div>
+                                </jsp:body>
+
                             </petclinic:layout>
