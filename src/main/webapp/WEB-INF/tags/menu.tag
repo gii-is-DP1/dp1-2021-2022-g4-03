@@ -60,7 +60,7 @@
 				<sec:authorize access="isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'profile'}" url="/profile"
 						title="profile">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<span>Profile</span>
 					</petclinic:menuItem>
 				</sec:authorize>
