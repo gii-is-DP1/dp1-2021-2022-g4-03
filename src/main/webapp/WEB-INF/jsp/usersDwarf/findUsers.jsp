@@ -10,27 +10,29 @@
 
 <petclinic:layout pageName="usersDwarf">
 
-    <h2>Find Users</h2>
-
+    <div class="bodyBackground">
+        <h2>Find Users</h2>
     
-    <form:form modelAttribute="userDwarf" action="/usersDwarf" method="get" class="form-horizontal"
-               id="search-user-form">
-        <div class="form-group">
-            <div class="control-group" id="username">
-                <label class="col-sm-2 control-label">Username </label>
-                <div class="col-sm-10">
-                    <form:input class="form-control" path="username" size="30" maxlength="80"/>
-                    <span class="help-inline"><form:errors path="*"/></span>
+        
+        <form:form modelAttribute="userDwarf" action="/usersDwarf" method="get" class="form-horizontal"
+                   id="search-user-form">
+            <div class="form-group">
+                <div class="col-sm-1">
+                    <button type="submit" class="btn btn-default">Search</button>
                 </div>
+                <div class="control-group" id="username">
+                    <div class="col-sm-10">
+                        <form:input class="form-control" placeholder="Username" path="username" size="30" maxlength="80"/>
+                        <span class="help-inline"><form:errors path="*"/></span>
+                    </div>
+                </div>
+                
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Find User</button>
-            </div>
-        </div>
+            <div id="fondo2"></div>
+    
+        </form:form>
 
-    </form:form>
+    </div>
 
     <br/> 
     <sec:authorize access="hasAuthority('admin')">

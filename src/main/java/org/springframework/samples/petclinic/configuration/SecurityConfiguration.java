@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/statistics/**").permitAll()
 				.antMatchers("/currentuser").permitAll()
 				.antMatchers("/board/**").authenticated()
+				.antMatchers("/Aboutus").permitAll()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
