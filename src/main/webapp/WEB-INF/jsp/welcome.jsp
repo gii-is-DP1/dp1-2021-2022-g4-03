@@ -51,7 +51,7 @@
     <tr>
         <th>Global time played:</th>
         <td><c:out value="${ttp}"/></td>
-    </tr>
+    </tr>   
     <tr>
         <th>Global games played:</th>
         <td><c:out value="${tgp}"/></td>

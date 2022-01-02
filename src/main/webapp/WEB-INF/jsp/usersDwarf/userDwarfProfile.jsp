@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <th> Password: <input type="checkbox" onclick="myFunction()"> <br><br></th>
-                    <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput"></td>
+                    <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput" readonly></td>
                 </tr>
             </table>
         </div>

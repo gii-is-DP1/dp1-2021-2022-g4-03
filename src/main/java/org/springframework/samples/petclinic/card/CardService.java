@@ -22,7 +22,7 @@ public class CardService {
         res.setId(card.getId());
         res.setPosition(card.getId());
         res.setTitle(card.getTitle());
-        res.setEffect(CardEffect.getEffects().get(card.getEffectId()));
+       // res.setEffect(CardEffect.getEffects().get(card.getEffectId()));
         return res;
     }
 
