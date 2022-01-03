@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <table class="table table-striped">
-                    <caption>Podium</caption>
+                    <caption class="center-caption">Podium</caption>
                     <tr>
                         <th><img src="../resources/images/copa-oro.png" height ="50" width="50"/></th>
                         <td><b><c:out value="${p1}"/></b></td>
@@ -37,7 +37,7 @@
             </div>
             <div class="col-sm-7">
                 <table class="table table-striped">
-                    <caption>Global Statistics</caption>
+                    <caption class="center-caption">Global Statistics</caption>
                     <tr>
                         <th>Global time played:</th>
                         <td><c:out value="${ttp}"/></td>

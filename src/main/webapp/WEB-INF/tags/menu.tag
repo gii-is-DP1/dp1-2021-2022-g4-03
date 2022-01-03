@@ -91,7 +91,7 @@
 					<li>
 						<div class="dropdown">
 							<button class="btn btn-navbar btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img src="../resources/images/unnamed.png" height ="50" width="50"/>
+								<img src="/resources/images/unnamed.png" height ="50" width="50"/>
 							</button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item">
@@ -113,12 +113,12 @@
 						<div class="dropdown">
 							<sec:authorize access="hasAuthority('admin')">
 								<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<img src="../resources/images/admin-img.png" class="img-close">
+									<img src="/resources/images/admin-img.png" class="img-close">
 								</button>
 							</sec:authorize>
 							<sec:authorize access="hasAuthority('player')">
 								<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<img src="../resources/images/profilepic.jpg" class="img-close">
+									<img src="/resources/images/profilepic.jpg" class="img-close">
 								</button>
 							</sec:authorize>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
