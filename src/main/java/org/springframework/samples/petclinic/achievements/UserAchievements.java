@@ -46,7 +46,7 @@ public class UserAchievements extends BaseEntity{
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
-        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+        @JoinColumn(name="userDwarf_id", referencedColumnName = "username")
     })
     private UserDwarf userDwarf;
 
