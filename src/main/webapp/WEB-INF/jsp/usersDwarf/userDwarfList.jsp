@@ -12,15 +12,15 @@
 
         <table id="usersDwarfTable" class="table table-striped">
             <thead>
-           <tr>
-            <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Email</th>
-            <th style="width: 120px">Pass</th>
-            <th style="width: 120px">Active</th>
-            <th style="width: 120px;">Delete</th> 
-            <th style="width: 120px;">Edit</th>
-        </tr>
-        </thead>
+                <tr>
+                    <th style="width: 150px;">Username</th>
+                    <th style="width: 200px;">Email</th>
+                    <th style="width: 120px">Pass</th>
+                    <th style="width: 120px">Active</th>
+                    <th style="width: 120px;">Delete</th> 
+                    <th style="width: 120px;">Edit</th>
+                </tr>
+            </thead>
         <tbody>
         <c:forEach items="${usersDwarf}" var="userD">
             <tr>
