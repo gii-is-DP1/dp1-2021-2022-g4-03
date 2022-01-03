@@ -1,12 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.List;
-import java.util.Map;
-import java.time.Duration;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Person;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,10 +15,8 @@ public class WelcomeController {
 	@Autowired
 	private StatisticsService statisticsService;
 	
-	
 	  @GetMapping({"/","/welcome"})
 	  public String welcome(ModelMap model) {
-		  
 			
 			Long tgp = this.statisticsService.getAllGamesPlayed();
 			Long tgw = this.statisticsService.getAllGamesWon();

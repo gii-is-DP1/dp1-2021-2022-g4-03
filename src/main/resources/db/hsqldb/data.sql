@@ -19,7 +19,9 @@ INSERT INTO achievements(id,last_change,condition,description,pic) VALUES (1,'20
 INSERT INTO achievements(id,last_change,condition,description,pic) VALUES (2,'2022-01-02','totalIron=300','Consigue 300 de hierro','/resources/images/iron.png');
 INSERT INTO achievements(id,last_change,condition,description,pic) VALUES (3,'2022-01-02','gamesPlayed=1','Juega tu primera partida','/resources/images/picaxe.png');
 
+
 -- INSERT INTO cards(cardImage,cardType,position,title,description,effect) VALUES ('resources/cards/Alloy_steel_1_2',EXTRACCION_RECURSOS,2,'Alloy Steel','Guac',1);
+
 
 -- Time Played is expressed in nanoseconds (10^-9)
 INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('58243000000000', 8, 5, 150, 70, 75, 28, 15, 'rafjimfer');

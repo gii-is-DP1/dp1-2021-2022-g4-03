@@ -31,7 +31,7 @@ public class AchievementsServiceTest {
     @Test
     public void testFindAllAchievements(){
         List<Achievements> fAll = (List<Achievements>) achievementsService.findAll();
-        assertThat(fAll.size()).isEqualTo(3);
+        assertThat(fAll.size()).isEqualTo(1);
     }
 
     @ParameterizedTest

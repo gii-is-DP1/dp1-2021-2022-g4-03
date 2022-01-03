@@ -22,4 +22,5 @@ public class Card2 extends BaseEntity{
     private String description;
     //private Function<Game,Game> effect;
 
+
 }
