@@ -37,18 +37,24 @@
                 <td>
                     <c:out value="${userD.active}"/>
                 </td>    
-                <td>
+                <td class="text-center">
                     <spring:url value="/usersDwarf/{userDwarfId}/delete" var="deleteUrl">
                         <spring:param name="userDwarfId" value="${userD.id}"/>
                     </spring:url>
 
-                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        &nbsp;Delete
+                    </a>
                 </td>        
-                <td>
+                <td class="text-center">
                     <spring:url value="{userDwarfId}/edit" var="editUrl">
                         <spring:param name="userDwarfId" value="${userD.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        &nbsp;Edit
+                    </a>
                 </td>
           </tr>
         </c:forEach>
