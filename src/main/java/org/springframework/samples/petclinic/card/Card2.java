@@ -20,6 +20,7 @@ public class Card2 extends BaseEntity{
     private Integer position;
     private String title;
     private String description;
-   // private Function<Game,Game> effect;
+    //private Function<Game,Game> effect;
+
 
 }

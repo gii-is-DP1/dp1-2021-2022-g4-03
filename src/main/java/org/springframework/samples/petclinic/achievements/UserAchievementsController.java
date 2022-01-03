@@ -1,6 +1,11 @@
 package org.springframework.samples.petclinic.achievements;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+
+import javax.persistence.criteria.CriteriaBuilder.Case;
+
+import org.hibernate.validator.internal.util.privilegedactions.GetDeclaredField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.statistics.Statistics;
@@ -46,27 +51,62 @@ public class UserAchievementsController {
 
 		String currentUserUsername= CurrentUser.getCurrentUser();
 		Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
+
+		Class<?> c = statistic.getClass();
+
+		Integer numAchievements = this.achievementsService.achievementsCount();
+
 		UserAchievements user = this.userAchievementsService.findAchievementsById(1);
-		Achievements achievement = this.achievementsService.findAchievementById(1);
-		String condition = achievement.getCondition();
 
-		Integer s = condition.indexOf("=");
-		Double goalValue = Double.parseDouble(condition.substring(s+1));
-		Double gold = Double.valueOf(statistic.getTotalGold());
-		
-		if(gold==goalValue){
-			user.setObtainingDate(LocalDate.now());
-			user.setProgress(1.);
-		}else if(gold==0){
-			user.setProgress(0.);
-		}else{
-			Double c = (gold/goalValue)*100;
-			user.setProgress(c);
+
+		for(int i=1; i<= numAchievements;i++){
+			
+			Achievements achievement = this.achievementsService.findAchievementById(i);
+			String pic = achievement.getPic();
+			String condition = achievement.getCondition();
+			String dp = achievement.getDescription();
+
+			Integer s = condition.indexOf("=");
+
+			String atributeValue = condition.substring(0,s);
+			Double goalValue = Double.parseDouble(condition.substring(s+1));
+
+			Field f=null;
+			try {
+				f = c.getDeclaredField(atributeValue);
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			}
+
+			Double material=0.;
+			try {
+				material = Double.valueOf((Integer)f.get(statistic));
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			if(material==goalValue || material>goalValue){
+				user.setObtainingDate(LocalDate.now());
+				user.setProgress(1.);
+			
+			}else if(material==0){
+				user.setProgress(0.);
+			}else{
+				Double v = (material/goalValue);
+				user.setProgress(v);
+			}
+			
+			String progress = String.format("%.0f", user.getProgress()*100) + "%"; 
+
+			modelMap.addAttribute("progress"+i ,progress);	
+			modelMap.addAttribute("pic"+i ,pic);	
+			modelMap.addAttribute("dp"+i,dp);	
+
 		}
-		String progress = String.format("%.0f", user.getProgress()) + "%"; 
-		
-		modelMap.addAttribute("progress",progress);
-
 		return view;
 	}
     
