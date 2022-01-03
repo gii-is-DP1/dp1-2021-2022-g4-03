@@ -55,16 +55,7 @@
 					title="new game">
 					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
 					<span>Create Game</span>
-				</petclinic:menuItem>
-
-				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'profile'}" url="/profile"
-						title="profile">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span>Profile</span>
-					</petclinic:menuItem>
-				</sec:authorize>
-			
+				</petclinic:menuItem>			
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -77,18 +68,29 @@
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item">
 									<button type="button" class="btn btn-login btn-block"
-                            			onClick='redirectOnClickRegister()'>Register</button>
+                            			onClick='redirectOnClickRegister()'>Register
+									</button>
 								</a>
 								<a class="dropdown-item" href="#">
 									<button type="button" class="btn btn-login btn-block"
-                           				 onClick='redirectOnClickLogin()'>Login</button>
+                           				 onClick='redirectOnClickLogin()'>Login
+									</button>
 								</a>
 							</div>
 						</div>
 					</li>
                 </sec:authorize>
 				<sec:authorize access="isAuthenticated()">
-					<li><a href="<c:url value="/logout" />"><b>LOGOUT</b></a></li>
+					<li>
+						<button type="button" class="btn btn-profile btn-block"
+							onClick='redirectOnClickProfile()'><img src="../resources/images/profilepic.jpg" class="img-responsive img-circle" style="height: 56px; width: 56px;"/>
+						</button>
+					</li>
+					<li>
+						<button type="button" class="btn btn-close btn-block"
+                            onClick='redirectOnClickLogout()'><img src="../resources/images/close-x.png" height ="16" width="16"/>
+						</button>
+					</li>
 				</sec:authorize>
 			</ul>
 		</div>
@@ -102,6 +104,16 @@
     <script>
         function redirectOnClickRegister() {
             document.location = "/usersDwarf/register";
+        }
+    </script>
+	<script>
+        function redirectOnClickLogout() {
+            document.location = "/logout";
+        }
+    </script>
+	<script>
+        function redirectOnClickProfile() {
+            document.location = "/profile";
         }
     </script>
 </nav>
