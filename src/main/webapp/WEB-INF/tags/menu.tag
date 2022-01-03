@@ -31,31 +31,59 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
-					title="find users">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find users</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('admin')">
+					<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
+						title="users">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Users</span>
+					</petclinic:menuItem>
+                </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'statistics'}" url="/statistics"
-					title="statistics">
-					<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
-					<span>Statistics</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('admin')">
+					<petclinic:menuItem active="${name eq 'statistics'}" url="/statistics"
+						title="statistics">
+						<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+						<span>Statistics</span>
+					</petclinic:menuItem>	
+                </sec:authorize>
 
-			
+				<sec:authorize access="hasAuthority('admin')">
+					<petclinic:menuItem active="${name eq 'achievements'}" url="/achievements/findAchievements"
+						title="achievements">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Achievements</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'achievements'}" url="/achievements/findAchievements"
-					title="achievements">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Achievements</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('player')">
+					<petclinic:menuItem active="${name eq 'games'}" url="/game/new"
+						title="new game">
+						<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
+						<span>Create Game</span>
+					</petclinic:menuItem>
+                </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/game/new"
-					title="new game">
-					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
-					<span>Create Game</span>
-				</petclinic:menuItem>			
+				<sec:authorize access="hasAuthority('player')">
+					<petclinic:menuItem active="${name eq 'profile'}" url="/profile"
+						title="profile">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Profile</span>
+					</petclinic:menuItem>
+                </sec:authorize>
+
+				<sec:authorize access="!isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'register'}" url="/usersDwarf/register"
+						title="register">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						<span>Register</span>
+					</petclinic:menuItem>
+                </sec:authorize>
+
+				<petclinic:menuItem active="${name eq 'information'}" url="/information"
+					title="information">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+					<span>Information</span>
+				</petclinic:menuItem>		
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -83,15 +111,17 @@
 				<sec:authorize access="isAuthenticated()">
 					<li>
 						<div class="dropdown">
-							<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img src="../resources/images/profilepic.jpg" class="img-close">
-							</button>
+							<sec:authorize access="hasAuthority('admin')">
+								<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<img src="../resources/images/admin-img.png" class="img-close">
+								</button>
+							</sec:authorize>
+							<sec:authorize access="hasAuthority('player')">
+								<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<img src="../resources/images/profilepic.jpg" class="img-close">
+								</button>
+							</sec:authorize>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item">
-									<button type="button" class="btn btn-login btn-block"
-                            			onClick='redirectOnClickProfile()'>Profile
-									</button>
-								</a>
 								<a class="dropdown-item" href="#">
 									<button type="button" class="btn btn-login btn-block"
                            				 onClick='redirectOnClickLogout()'>Logout
