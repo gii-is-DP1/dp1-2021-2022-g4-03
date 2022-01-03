@@ -7,7 +7,10 @@
     <spring:url value="/resources/images/errorDwarf.jpg" var="petsImage"/>
     <img src="${petsImage}"/>
 
-    <h2>Ha habido un error. Cuenta con mi hacha...</h2>
+    <div>
+        <br>
+        <h2>Ha habido un error. Cuenta con mi hacha...</h2>
+    </div>
 
     <p>${exception.message}</p>
 

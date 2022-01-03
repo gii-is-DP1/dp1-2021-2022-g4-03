@@ -221,17 +221,28 @@ caption{
 
 .btn-close {
   margin-top: 8px;
-  padding: 1px;
-  background: transparent;
+  padding: 3px;
+  background: @spring-color7;
+  border-radius: 50% !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color8;
+  }
 }
 
-.btn-profile {
-  margin-top: 8px;
-  padding: 0px;
-  background: transparent;
-  border-width: 2px;
-  border-radius: 50% !important;
-  border-color: @spring-color7;
+.img-close {
+  border-radius: 50%;
+  height: 52px;
+  width: 52px;
 }
 
 .btn-login {

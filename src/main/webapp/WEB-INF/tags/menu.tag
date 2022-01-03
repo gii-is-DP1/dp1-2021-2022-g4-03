@@ -82,14 +82,23 @@
                 </sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li>
-						<button type="button" class="btn btn-profile btn-block"
-							onClick='redirectOnClickProfile()'><img src="../resources/images/profilepic.jpg" class="img-responsive img-circle" style="height: 56px; width: 56px;"/>
-						</button>
-					</li>
-					<li>
-						<button type="button" class="btn btn-close btn-block"
-                            onClick='redirectOnClickLogout()'><img src="../resources/images/close-x.png" height ="16" width="16"/>
-						</button>
+						<div class="dropdown">
+							<button class="btn btn-close btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="../resources/images/profilepic.jpg" class="img-close">
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item">
+									<button type="button" class="btn btn-login btn-block"
+                            			onClick='redirectOnClickProfile()'>Profile
+									</button>
+								</a>
+								<a class="dropdown-item" href="#">
+									<button type="button" class="btn btn-login btn-block"
+                           				 onClick='redirectOnClickLogout()'>Logout
+									</button>
+								</a>
+							</div>
+						</div>
 					</li>
 				</sec:authorize>
 			</ul>
