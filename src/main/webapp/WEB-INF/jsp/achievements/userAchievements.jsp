@@ -40,5 +40,5 @@
         </table>
     </div>
 
-    <div id="fondo6"></div>
+    <div id="fondo7"></div>
 </petclinic:layout>
