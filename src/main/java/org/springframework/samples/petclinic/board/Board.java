@@ -31,7 +31,6 @@ public class Board extends BaseEntity {
         this.height = 700;
         this.cartas = new ArrayList<>();
         this.cartasAccionEspecial = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
     }
     public Board(int id) {
         this.id=id;
@@ -40,16 +39,14 @@ public class Board extends BaseEntity {
         this.height = 700;
         this.cartas = new ArrayList<>();
         this.cartasAccionEspecial = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
     }
 
+    //Esta es la montaña de cartas normales, enemigos-forja-mina
     @ElementCollection
     List<String> cartas;
+
+    //Montaña de cartas de acción especial
     @ElementCollection
     List<String> cartasAccionEspecial;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "board", fetch = FetchType.EAGER)
-    @ElementCollection
-    List<CartasMontaña> cartasMontaña;
 
 }
