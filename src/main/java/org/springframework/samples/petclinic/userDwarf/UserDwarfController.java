@@ -47,12 +47,6 @@ public class UserDwarfController {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-	@Autowired
-	private AchievementsService achievementsService;
-
-	@Autowired
-	private UserAchievementsService userAchievementsService; 
-
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
