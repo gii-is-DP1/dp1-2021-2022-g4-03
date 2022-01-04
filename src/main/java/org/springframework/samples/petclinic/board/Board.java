@@ -26,7 +26,7 @@ public class Board extends BaseEntity {
     int height;
 
     public Board() {
-        this.background = "resources/images/boardBackground.png";
+        this.background = "/resources/images/boardBackground.png";
         this.width = 1000;
         this.height = 700;
         this.cartas = new ArrayList<>();

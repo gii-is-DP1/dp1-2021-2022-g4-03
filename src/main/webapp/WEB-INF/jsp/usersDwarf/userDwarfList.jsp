@@ -6,16 +6,19 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="usersDwarf">
-    <h2>Usuarios</h2>
+    <div class="bodyBackground">
 
-    <table id="usersDwarfTable" class="table table-striped">
-        <thead>
-        <tr>
+        <h2>Usuarios</h2>
+
+        <table id="usersDwarfTable" class="table table-striped">
+            <thead>
+           <tr>
             <th style="width: 150px;">Username</th>
             <th style="width: 200px;">Email</th>
             <th style="width: 120px">Pass</th>
             <th style="width: 120px">Active</th>
-            <th>Actions</th> 
+            <th style="width: 120px;">Delete</th> 
+            <th style="width: 120px;">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -41,9 +44,17 @@
 
                     <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
                 </td>        
-               
-            </tr>
+                <td>
+                    <spring:url value="{userDwarfId}/edit" var="editUrl">
+                        <spring:param name="userDwarfId" value="${userD.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+                </td>
+          </tr>
         </c:forEach>
         </tbody>
-    </table>
+        </table>
+        <div id="fondo2"></div>
+    </div>
+    
 </petclinic:layout>

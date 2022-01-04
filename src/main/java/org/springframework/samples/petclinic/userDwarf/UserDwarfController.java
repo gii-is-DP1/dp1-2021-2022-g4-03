@@ -1,17 +1,19 @@
 package org.springframework.samples.petclinic.userDwarf;
 
-import java.lang.StackWalker.Option;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.user.Authorities;
+import org.springframework.samples.petclinic.achievements.Achievements;
+import org.springframework.samples.petclinic.achievements.AchievementsService;
+import org.springframework.samples.petclinic.achievements.UserAchievements;
+import org.springframework.samples.petclinic.achievements.UserAchievementsService;
+import org.springframework.samples.petclinic.statistics.Statistics;
+import org.springframework.samples.petclinic.statistics.StatisticsService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +22,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import org.springframework.samples.petclinic.web.CurrentUser;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +42,16 @@ public class UserDwarfController {
 	private UserDwarfService userDwarfService;
 
 	@Autowired
+	private StatisticsService statisticsService;
+
+	@Autowired
 	private AuthoritiesService authoritiesService;
+
+	@Autowired
+	private AchievementsService achievementsService;
+
+	@Autowired
+	private UserAchievementsService userAchievementsService; 
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -66,6 +78,8 @@ public class UserDwarfController {
 		return view;
 
 	}
+
+	
 
 	@GetMapping(value = "/usersDwarf/register")
 	public String initCreationFormRegister(Map<String, Object> model) {
@@ -124,6 +138,26 @@ public class UserDwarfController {
 		}
 
 	}
+	
+
+	@GetMapping(value ="/profile")
+		public String UserDwarfProfile( ModelMap modelMap){
+			String view = "usersDwarf/userDwarfProfile";
+			Wrapper wrapper = new Wrapper();
+			String currentUserUsername= CurrentUser.getCurrentUser();
+			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
+			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
+			
+			wrapper.setUserDwarf(userDwarf);
+			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
+			modelMap.addAttribute("wrapper",wrapper);
+			modelMap.addAttribute("statistic",statistic);
+	
+			return view;
+		}
+
+
+	
 
 	@GetMapping("/usersDwarf/{userDwarfId}")
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {

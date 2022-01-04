@@ -15,9 +15,9 @@ import lombok.Setter;
 @Table(name="cards")
 public class Card extends BaseEntity{
     
-    @Column(name="cardImage")
+    @Column(name="card_image")
     private String cardImage;
-    @Column(name="cardType")
+    @Column(name="card_type")
     private CardType cardType;
     @Column(name="position")
     private Integer position;
@@ -26,6 +26,6 @@ public class Card extends BaseEntity{
     @Column(name="description")
     private String description;
     @Column(name="effect")
-    private String effect;
+    private Integer effectId;
 
 }

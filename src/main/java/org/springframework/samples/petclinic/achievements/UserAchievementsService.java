@@ -25,4 +25,6 @@ public class UserAchievementsService {
 		return this.userAchievementsRepository.findById(id);
 	}
     
+	
+
 }

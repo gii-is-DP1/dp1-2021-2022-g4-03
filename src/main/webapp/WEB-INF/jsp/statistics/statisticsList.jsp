@@ -21,10 +21,7 @@
             <th>Games Won</th>
             <td><c:out value="${statistics.gamesWon}"/></td>
         </tr>
-        <tr>
-            <th></th>
-            <td></td>
-        </tr>
+        
         <tr>
             <th>Total Iron</th>
             <td><c:out value="${statistics.totalIron}"/></td>

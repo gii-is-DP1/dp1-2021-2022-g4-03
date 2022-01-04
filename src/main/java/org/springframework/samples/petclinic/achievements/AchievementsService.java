@@ -4,7 +4,6 @@ package org.springframework.samples.petclinic.achievements;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +20,11 @@ public class AchievementsService {
 		this.achievementsRepository = AchievementsRepository;
 
 	}
+
+	@Transactional
+    public int achievementsCount(){
+        return (int) achievementsRepository.count();
+    }
 
     @Transactional
 	public void delete(final Achievements Achievements) throws DataAccessException {

@@ -6,22 +6,15 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <petclinic:layout pageName="home">
-
-    <div class="row-auto" style="display: flex; justify-content: center;">
-        <div class="col-md" style="display: flex; justify-content: center;">
-            <div class="btn-group-vertical">
-                <sec:authorize access="!isAuthenticated()">
-                    <button type="button" class="btn btn-primary btn-lg btn-block"
-                        onClick='redirectOnClickRegister()'>Register</button>
-                    <button type="button" class="btn btn-primary btn-lg btn-block"
-                        onClick='redirectOnClickLogin()'>Login</button>
-                </sec:authorize>
+    <div class="row">
+        <div class="bodyBackground">
+            <div class="col-sm-12">
+                <a class="btn btn-welcome"
+                    href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About Us</a>
             </div>
+            <div id="fondo1"></div>
         </div>
     </div>
-
-
-
     <script>
         function redirectOnClickLogin() {
             document.location = "/login";
@@ -32,4 +25,81 @@
             document.location = "/usersDwarf/register";
         }
     </script>
+
+    <br><br>
+
+    <div class="col-md-8">
+
+        <div class="row">
+        <h2>Top 3 Players</h2>
+            <table class="table table-striped" style="width: 75%;">
+                <tr>
+                    <th style="color: rgb(190, 163, 7);">Gold:</th>
+                    <td style="color: rgb(190, 163, 7);"><c:out value="${p1}"/></td>
+                    <td style="color: rgb(190, 163, 7);"><c:out value="${p1wg}"/></td>
+                </tr>
+                <tr>
+                    <th>Silver:</th>    
+                    <td><c:out value="${p2}"/></td>
+                    <td><c:out value="${p2wg}"/></td>
+                </tr>
+                <tr>
+                    <th>Bronce:</th>
+                    <td><c:out value="${p3}"/></td>
+                    <td><c:out value="${p3wg}"/></td>
+                </tr>
+            </table>
+        </div>  
+        <div class="row">
+            <h2>Global Statistics</h2>
+            <table class="table table-striped" style="width: 75%;" >
+                <tr>
+                    <th>Global time played:</th>
+                    <td><c:out value="${ttp}"/></td>
+                </tr>
+                <tr>
+                    <th>Global games played:</th>
+                    <td><c:out value="${tgp}"/></td>            
+                </tr>
+                <tr>
+                    <th>Global games won:</th>
+                    <td><c:out value="${tgw}"/></td>
+                </tr>
+                <tr>
+                    <th>Global iron mined:</th>
+                    <td><c:out value="${ti}"/></td>
+                </tr>
+                <tr>
+                    <th>Global gold mined:</th>
+                    <td><c:out value="${to}"/></td>
+                </tr>
+                <tr>
+                    <th>Global steel forged:</th>
+                    <td><c:out value="${ts}"/></td>
+                </tr>
+                <tr>
+                    <th>Global objects acquired:</th>
+                    <td><c:out value="${tob}"/></td>
+                </tr>
+                <tr>
+                    <th>Global medal acquired:</th>
+                    <td><c:out value="${tm}"/></td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+<br><br><br>
+
+    <div class="col-md-4">
+        
+        <div class="row">
+            <iframe width="430" height="260" src="https://www.youtube.com/embed/EVpoFB6eA3I?start=11&version=3&loop=1&playlist=EVpoFB6eA3I&mute=1" title="YouTube video player" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+       
+    </div>
+
 </petclinic:layout>

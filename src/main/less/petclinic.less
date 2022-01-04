@@ -13,58 +13,165 @@
  */
 @icon-font-path:    "../../webjars/bootstrap/fonts/";
 
-@spring-green:      #6db33f;
-@spring-dark-green: #5fa134;
-@spring-brown:      #34302D;
-@spring-grey:       #838789;
-@spring-light-grey: #f1f1f1;
+@spring-color1:    #db7521;
+@spring-color2:    #cf6311;
+@spring-color3:    #34302D;
+@spring-color4:    #838789;
+@spring-color5:    #f1f1f1;
+@spring-color6:    #ccd2d4;
+@spring-color7:    #f0d6b8;
+@spring-color8:    #afd0e6;
 
-@body-bg:                           @spring-light-grey;
-@text-color:                        @spring-brown;
-@link-color:                        @spring-dark-green;
-@link-hover-color:                  @spring-dark-green;
+@body-bg:                           @spring-color5;
+@text-color:                        @spring-color1;
+@link-color:                        @spring-color2;
+@link-hover-color:                  @spring-color2;
 
-@navbar-default-link-color:         @spring-light-grey;
-@navbar-default-link-active-color:  @spring-light-grey;
-@navbar-default-link-hover-color:   @spring-light-grey;
-@navbar-default-link-hover-bg:      @spring-green;
-@navbar-default-toggle-icon-bar-bg: @spring-light-grey;
+@navbar-default-link-color:         @spring-color5;
+@navbar-default-link-active-color:  @spring-color5;
+@navbar-default-link-hover-color:   @spring-color5;
+@navbar-default-link-hover-bg:      @spring-color2;
+@navbar-default-toggle-icon-bar-bg: @spring-color5;
 @navbar-default-toggle-hover-bg:    transparent;
-@navbar-default-link-active-bg:     @spring-green;
+@navbar-default-link-active-bg:     @spring-color2;
 
 @border-radius-base:             0;
 @border-radius-large:            0;
 @border-radius-small:            0;
 
-@btn-default-color:              @spring-light-grey;
-@btn-default-bg:                 @spring-brown;
-@btn-default-border:             @spring-green;
+@btn-default-color:              @spring-color5;
+@btn-default-bg:                 @spring-color1;
+@btn-default-border:             @spring-color2;
 
-@nav-tabs-active-link-hover-color:        @spring-light-grey;
-@nav-tabs-active-link-hover-bg:           @spring-brown;
-@nav-tabs-active-link-hover-border-color: @spring-brown;
-@nav-tabs-border-color:                   @spring-brown;
+@nav-tabs-active-link-hover-color:        @spring-color5;
+@nav-tabs-active-link-hover-bg:           @spring-color3;
+@nav-tabs-active-link-hover-border-color: @spring-color3;
+@nav-tabs-border-color:                   @spring-color3;
 
-@pagination-active-bg:                    @spring-brown;
-@pagination-active-border:                @spring-green;
-@table-border-color:                      @spring-brown;
+@pagination-active-bg:                    @spring-color3;
+@pagination-active-border:                @spring-color1;
+@table-border-color:                      @spring-color3;
+
+.bodyBackground{
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+#fondo1 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo1.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo2 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo2.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo3 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo3.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo4 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo4.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo5 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo5.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+h2{
+  color: @spring-color2;
+}
+
+label{
+  color: @spring-color2;
+}
 
 .table > thead > tr > th {
-  background-color: lighten(@spring-brown, 3%);
-  color: @spring-light-grey;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background-color: lighten(@spring-color1, 3%);
+  color: @spring-color5;
 }
 
 .table-filter {
-  background-color: @spring-brown;
+  background-color: @spring-color3;
   padding: 9px 12px;
 }
 
+table tbody tr:nth-child(odd) {
+	background: @spring-color5 !important;
+}
+table tbody tr:nth-child(even) {
+	background: @spring-color6;
+}
+
 .nav > li > a {
-  color: @spring-grey;
+  color: @spring-color4;
 }
 
 .btn-default {
   border-width: 2px;
+  border-radius: 8px;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
@@ -76,11 +183,89 @@
   &:active,
   &.active,
   .open .dropdown-toggle& {
-    background-color: @spring-brown;
-    border-color: @spring-brown;
+    background-color: @spring-color3;
+    border-color: @spring-color3;
   }
 }
 
+.btn-navbar {
+  margin-top: 8px;
+  padding: 4px;
+  background: @spring-color7;
+  border-radius: 50% !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color8;
+  }
+}
+
+.btn-login {
+  margin-bottom: 6px;
+  margin-top: 6px;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 100px;
+  max-width: 100px;
+  padding: 4px;
+  color: @spring-color5;
+  background: @spring-color1;
+  border-color: @spring-color2;
+  border-width: 2px;
+  border-radius: 8px !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color3;
+    border-color: @spring-color3;
+  }
+}
+
+.btn-welcome {
+  font-size: 24px;
+  margin-left: 38%;
+  width: 24%;
+  color: @spring-color5;
+  background: @spring-color1;
+  border-color: @spring-color2;
+  border-width: 3px;
+  border-radius: 50px !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color3;
+    border-color: @spring-color3;
+  }
+}
+
+.dropdown-menu{
+  border-radius: 6px;
+  background-color: @spring-color7;
+}
 
 .container .text-muted {
   margin: 20px 0;
@@ -125,8 +310,8 @@ h1 {
 }
 
 .splash {
-  background: @spring-green;
-  color: @spring-brown;
+  background: @spring-color1;
+  color: @spring-color3;
   display: none;
 }
 
@@ -196,12 +381,12 @@ table td.action-column {
 }
 
 .container-details-table th {
-  background-color: lighten(@spring-brown, 3%);
-  color: @spring-light-grey;
+  background-color: lighten(@spring-color3, 3%);
+  color: @spring-color5;
 }
 
 .status-help-content-table td {
-  color: @spring-brown;
+  color: @spring-color3;
 }
 
 .alert-success {
@@ -231,7 +416,7 @@ table td.action-column {
 }
 
 hr {
-  border-top: 1px dotted @spring-brown;
+  border-top: 1px dotted @spring-color3;
 }
 
 @import "typography.less";
