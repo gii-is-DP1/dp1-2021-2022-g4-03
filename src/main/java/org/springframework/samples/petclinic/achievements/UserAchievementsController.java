@@ -3,23 +3,15 @@ package org.springframework.samples.petclinic.achievements;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 
-import javax.persistence.criteria.CriteriaBuilder.Case;
-
-import org.hibernate.validator.internal.util.privilegedactions.GetDeclaredField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.statistics.Statistics;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
-import org.springframework.samples.petclinic.user.AuthoritiesService;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class UserAchievementsController {

@@ -1,10 +1,7 @@
 package org.springframework.samples.petclinic.statistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

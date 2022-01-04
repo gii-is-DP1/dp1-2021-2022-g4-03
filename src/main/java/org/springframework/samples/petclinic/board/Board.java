@@ -3,11 +3,8 @@ package org.springframework.samples.petclinic.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.model.BaseEntity;

@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.achievements;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;

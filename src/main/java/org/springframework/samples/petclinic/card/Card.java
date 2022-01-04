@@ -26,6 +26,6 @@ public class Card extends BaseEntity{
     @Column(name="description")
     private String description;
     @Column(name="effect")
-    private Integer effectId;
+    private String effect;
 
 }

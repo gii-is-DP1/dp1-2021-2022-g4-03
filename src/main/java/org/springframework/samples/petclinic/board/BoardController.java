@@ -3,11 +3,8 @@ package org.springframework.samples.petclinic.board;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;

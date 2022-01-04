@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.userDwarf;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,9 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.achievements.Achievements;
 import org.springframework.samples.petclinic.achievements.AchievementsService;
-import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.statistics.Statistics;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
@@ -79,8 +76,6 @@ public class UserDwarfController {
 
 	}
 
-	
-
 	@GetMapping(value = "/usersDwarf/register")
 	public String initCreationFormRegister(Map<String, Object> model) {
 		UserDwarf userDwarf = new UserDwarf();
@@ -139,7 +134,6 @@ public class UserDwarfController {
 
 	}
 	
-
 	@GetMapping(value ="/profile")
 		public String UserDwarfProfile( ModelMap modelMap){
 			String view = "usersDwarf/userDwarfProfile";
@@ -155,9 +149,6 @@ public class UserDwarfController {
 	
 			return view;
 		}
-
-
-	
 
 	@GetMapping("/usersDwarf/{userDwarfId}")
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {
