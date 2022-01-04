@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import lombok.Getter;
@@ -26,6 +27,12 @@ public class Game extends BaseEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
+        @JoinColumn(name="userId0", referencedColumnName = "username")
+    })
+    private UserDwarf player0;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumns({
         @JoinColumn(name="userId1", referencedColumnName = "username")
     })
     private UserDwarf player1;
@@ -36,11 +43,25 @@ public class Game extends BaseEntity{
     })
     private UserDwarf player2;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumns({
-        @JoinColumn(name="userId3", referencedColumnName = "username")
+        @JoinColumn(name="playerStateId0", referencedColumnName = "id")
     })
-    private UserDwarf player3;
+    private PlayerState playerState_0;
+
+    @OneToOne
+    @JoinColumns({
+        @JoinColumn(name="playerStateId1", referencedColumnName = "id")
+    })
+    private PlayerState playerState_1;
+
+    @OneToOne
+    @JoinColumns({
+        @JoinColumn(name="playerStateId2", referencedColumnName = "id")
+    })
+    private PlayerState playerState_2;
+
+
 
     @ElementCollection
     @Size(min=3,max=3)

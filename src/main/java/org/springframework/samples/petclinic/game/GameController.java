@@ -1,11 +1,7 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,79 +25,108 @@ import lombok.Setter;
 
 @Controller
 public class GameController {
-    
-	@Autowired
-	private GameService gameService;
 
     @Autowired
-	private UserDwarfService userDwarfService;
+    private GameService gameService;
 
     @Autowired
-	private BoardService boardService;
+    private UserDwarfService userDwarfService;
 
-	@Autowired
-	private BoardController boardController;
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private BoardController boardController;
 
     @InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        dataBinder.setDisallowedFields("id");
+    }
 
     @Getter
-	@Setter
-	@EqualsAndHashCode
-	public class Wrapper {
+    @Setter
+    @EqualsAndHashCode
+    public class Wrapper {
 
-		// UserDwarf userDwarf;
+        // UserDwarf userDwarf;
 
-		// List<String> roles = new ArrayList<>();
-	}
+        // List<String> roles = new ArrayList<>();
+    }
 
-	@GetMapping(value = "/game/new")
-	public String createGame() {
-		// Hasta que no tengamos currentUser creamos la partida con el user frabotrom
-		UserDwarf player= userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
-		Game game=gameService.createGame(player);
-		return "redirect:/board/"+game.getId();
-	}
-
-
-	// @GetMapping(value = "/game/connect/{gameId}")
-	// public String connectToGame(@PathVariable("gameId") Integer gameId) {
-	// 	// Hasta que no tengamos currentUser conectamos a un user random
-	// 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
-	// 	gameService.connectToGame(player, gameId);
-	// 	return "redirect:/board/{gameId}";
-	// }
+    @GetMapping(value = "/game/new")
+    public String createGame() {
+        // Hasta que no tengamos currentUser creamos la partida con el user frabotrom
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
+        Game game = gameService.createGame(player);
+        return "redirect:/board/" + game.getId();
+    }
 
 
-	public class test{
-		public String viewName;
-	}
-	
-	@PostMapping(value="/api/game/{gameId}", consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	@ResponseBody
-	public String mainLoop(@PathVariable("gameId") Integer gameId, @RequestBody test test){
+    // @GetMapping(value = "/game/connect/{gameId}")
+    // public String connectToGame(@PathVariable("gameId") Integer gameId) {
+    // 	// Hasta que no tengamos currentUser conectamos a un user random
+    // 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
+    // 	gameService.connectToGame(player, gameId);
+    // 	return "redirect:/board/{gameId}";
+    // }
 
-		System.out.println("***********"+test.viewName);
+    @PostMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseBody
+    public String mainLoop(@PathVariable("gameId") Integer gameId, @RequestBody BoardData data) {
+        GameStorage gameStorage = GameStorage.getInstance();
+        Game currentGame = gameStorage.getGame(gameId);
 
-		return "board/"+gameId;
-	}
+        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS)
+            switch (currentGame.getPhase()) {
+                case INICIO:
+                    if (currentGame.getGameStatus() == GameStatus.NEW) {
+                        GameLogic.initPlayerStates(currentGame);
+                        GameLogic.initBoard(data, currentGame);
+                        currentGame.setGameStatus(GameStatus.IN_PROGRESS);
+                        currentGame.setPhase(Phase.ASIGNACION);
+                    }
 
-	@GetMapping(value = "/game/{gameId}/surrender")
-	public String surrender(@PathVariable("gameId") Integer gameId) {
-		UserDwarf player= userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
-		gameService.surrender(gameId, player);
-		return "redirect:/";
-	}
+                case ASIGNACION:
 
-	@GetMapping(value = "/game/check")
-	public void checkGames() {
-		Map<Integer, Game> games = GameStorage.getInstance().getGames();
-		// List<String> gameIds = new ArrayList<>();
-		// for (Game game : games.values()) gameIds.add(game.getId().toString());
-		// System.out.println(gameIds);
-		System.out.println(games);
-	}
+
+                    break;
+
+                case ESPECIAL:
+                    break;
+
+                case AYUDA:
+                    break;
+
+                case DEFENSA:
+                    break;
+
+                case MINA:
+                    break;
+
+                case FORJA:
+                    break;
+
+                case FIN:
+                    break;
+            }
+
+        return "board/" + gameId;
+    }
+
+    @GetMapping(value = "/game/{gameId}/surrender")
+    public String surrender(@PathVariable("gameId") Integer gameId) {
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
+        gameService.surrender(gameId, player);
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/game/check")
+    public void checkGames() {
+        Map<Integer, Game> games = GameStorage.getInstance().getGames();
+        // List<String> gameIds = new ArrayList<>();
+        // for (Game game : games.values()) gameIds.add(game.getId().toString());
+        // System.out.println(gameIds);
+        System.out.println(games);
+    }
 
 }
