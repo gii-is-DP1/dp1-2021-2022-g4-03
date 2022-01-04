@@ -4,14 +4,17 @@
 
 <petclinic:layout pageName="error">
 
-    <spring:url value="/resources/images/errorDwarf.jpg" var="petsImage"/>
-    <img src="${petsImage}"/>
-
-    <div>
-        <br>
-        <h2>Ha habido un error. Cuenta con mi hacha...</h2>
+    <div class="bodyBackground">
+    
+        <div>
+            <br>
+            <h2>Ha habido un error. Cuenta con mi hacha...</h2>
+        </div>
+    
+        <p>${exception.message}</p>
+        <div id="fondo4"></div>
     </div>
 
-    <p>${exception.message}</p>
+    
 
 </petclinic:layout>
