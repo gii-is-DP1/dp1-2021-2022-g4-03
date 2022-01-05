@@ -31,3 +31,7 @@ INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (1,0.5,'2022-01-30','rafjimfer',1);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (2,0.15,'2022-01-30','rafjimfer',2);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (3,0.35,'2022-01-30','rafjimfer',3);
+
+INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (4,0.15,'2022-01-30','serrivroa',1);
+INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (5,0.85,'2022-01-30','serrivroa',2);
+INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (6,0.34,'2022-01-30','serrivroa',3);
