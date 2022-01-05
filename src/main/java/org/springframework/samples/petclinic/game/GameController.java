@@ -35,16 +35,6 @@ public class GameController {
         dataBinder.setDisallowedFields("id");
     }
 
-    @Getter
-    @Setter
-    @EqualsAndHashCode
-    public class Wrapper {
-
-        // UserDwarf userDwarf;
-
-        // List<String> roles = new ArrayList<>();
-    }
-
     @GetMapping(value = "/game/new")
     public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
@@ -72,7 +62,7 @@ public class GameController {
         GameStorage gameStorage = GameStorage.getInstance();
         Game currentGame = gameStorage.getGame(gameId);
 
-        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS)
+        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (currentGame.getPhase()) {
                 case INICIO:
                     if (currentGame.getGameStatus() == GameStatus.NEW) {
@@ -87,13 +77,9 @@ public class GameController {
                     return currentGame;
 
                 case ASIGNACION:
-                    Integer index = 0;
-                    while (index < (2 * currentGame.getNumberOfPlayers())) {
-                        GameLogic.playerTurn(currentGame, data);
-                    }
+                    GameLogic.playerTurn(currentGame, data);
 
-
-                    break;
+                    return currentGame;
 
                 case ESPECIAL:
                     break;
@@ -108,15 +94,18 @@ public class GameController {
                     break;
 
                 case FORJA:
-                    break;
+                    return currentGame;
 
                 case FIN:
+                    return currentGame;
+
+                default:
                     break;
             }
-
+        }
+        
         return currentGame;
     }
-
     @GetMapping(value = "/game/{gameId}/surrender")
     public String surrender(@PathVariable("gameId") Integer gameId) {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();

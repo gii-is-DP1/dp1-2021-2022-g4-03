@@ -41,6 +41,7 @@ public class GameLogic {
         board.setCartasAccionEspecial_0(specialIdList.subList(6,9));
 
         //Draw the nine initial cards and put them in the mine slots
+        //TODO: Initial cards are predefined, add attribute to cards
         List<Integer> mine= board.getCartas();
         Integer index = 0;
         Integer cardId = -1;
