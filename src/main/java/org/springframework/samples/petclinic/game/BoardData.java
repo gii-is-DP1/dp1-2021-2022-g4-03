@@ -11,10 +11,6 @@ import org.springframework.samples.petclinic.playerState.PlayerState;
 @Getter
 @Setter
 public class BoardData{
-
     public String currentUser;
     public Integer playerAction;
-    public PlayerState playerState_0;
-    public PlayerState playerState_1;
-    public PlayerState playerState_2;
 }

@@ -8,9 +8,11 @@ import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CardService {
-    
+
     @Autowired
     CardRepository cardRepository;
 
@@ -28,4 +30,15 @@ public class CardService {
         return stream.collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<Card> findAllSpecialCards(){
+        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        return stream.filter(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<Card> findAllNormalCards(){
+        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+    }
 }

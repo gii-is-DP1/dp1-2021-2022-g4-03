@@ -1,27 +1,22 @@
 package org.springframework.samples.petclinic.game;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.board.BoardController;
-import org.springframework.samples.petclinic.board.BoardService;
+import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 @Controller
 public class GameController {
@@ -33,10 +28,7 @@ public class GameController {
     private UserDwarfService userDwarfService;
 
     @Autowired
-    private BoardService boardService;
-
-    @Autowired
-    private BoardController boardController;
+    private CardService cardService;
 
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
@@ -54,10 +46,11 @@ public class GameController {
     }
 
     @GetMapping(value = "/game/new")
-    public String createGame() {
-        // Hasta que no tengamos currentUser creamos la partida con el user frabotrom
+    public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
         Game game = gameService.createGame(player);
+        //Unable to test this without cards, nullPointerException
+        game= mainLoop(game.getId(), null, null);
         return "redirect:/board/" + game.getId();
     }
 
@@ -70,9 +63,12 @@ public class GameController {
     // 	return "redirect:/board/{gameId}";
     // }
 
-    @PostMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseBody
-    public String mainLoop(@PathVariable("gameId") Integer gameId, @RequestBody BoardData data) {
+    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Game mainLoop(@PathVariable("gameId") Integer gameId,
+                                       @RequestBody(required = false) BoardData data, ModelMap model)
+        throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+
         GameStorage gameStorage = GameStorage.getInstance();
         Game currentGame = gameStorage.getGame(gameId);
 
@@ -81,12 +77,20 @@ public class GameController {
                 case INICIO:
                     if (currentGame.getGameStatus() == GameStatus.NEW) {
                         GameLogic.initPlayerStates(currentGame);
-                        GameLogic.initBoard(data, currentGame);
+                        //TODO: Can't test this without cards, nullPointerException
+                        /*GameLogic.initBoard(currentGame, cardService.findAllSpecialCards(),
+                            cardService.findAllNormalCards());*/
                         currentGame.setGameStatus(GameStatus.IN_PROGRESS);
                         currentGame.setPhase(Phase.ASIGNACION);
                     }
 
+                    return currentGame;
+
                 case ASIGNACION:
+                    Integer index = 0;
+                    while (index < (2 * currentGame.getNumberOfPlayers())) {
+                        GameLogic.playerTurn(currentGame, data);
+                    }
 
 
                     break;
@@ -110,7 +114,7 @@ public class GameController {
                     break;
             }
 
-        return "board/" + gameId;
+        return currentGame;
     }
 
     @GetMapping(value = "/game/{gameId}/surrender")
