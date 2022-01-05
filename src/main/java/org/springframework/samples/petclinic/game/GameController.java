@@ -1,8 +1,5 @@
 package org.springframework.samples.petclinic.game;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.card.Card;
@@ -103,7 +100,7 @@ public class GameController {
                     break;
             }
         }
-        
+
         return currentGame;
     }
     @GetMapping(value = "/game/{gameId}/surrender")

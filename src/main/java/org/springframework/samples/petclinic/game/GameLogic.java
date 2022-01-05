@@ -1,8 +1,11 @@
 package org.springframework.samples.petclinic.game;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.playerState.PlayerState;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,7 +13,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class GameLogic {
+
+    @Autowired
+    private static CardService cardService;
 
     public static void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
         IllegalAccessException {
