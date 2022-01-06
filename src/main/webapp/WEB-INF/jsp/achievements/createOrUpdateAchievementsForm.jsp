@@ -16,6 +16,7 @@
         <form:form modelAttribute="achievements" class="form-horizontal" id="add-achievement-form">
             <div class="panel form-square">  
                 <div class="form-group has-feedback">
+                    <input type="hidden" name="pic" value=${achievements.pic} >
                     <petclinic:inputField label="Condition" name="condition"/>
                     <petclinic:inputField label="Description" name="description"/>
                     <petclinic:inputField label="Last Change" name="lastChange"/>

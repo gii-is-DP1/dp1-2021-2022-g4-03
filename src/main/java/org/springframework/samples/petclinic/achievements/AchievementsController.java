@@ -123,7 +123,7 @@ public class AchievementsController {
     @GetMapping(value = "/achievements/{achievementsId}/edit")
 	public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
 		Achievements achievements = this.achievementsService.findAchievementById(achievementId);
-		model.addAttribute(achievements);
+		model.addAttribute("achievements",achievements);
 		return VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}
 
