@@ -7,7 +7,7 @@ INSERT INTO authorities(id,username, authority) VALUES (1, 'rafjimfer', 'admin')
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'SergioRivas1','ss@gmail.com', TRUE);
 INSERT INTO authorities(id,username, authority) VALUES (2, 'serrivroa', 'admin');
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('frabotrom', 'Franbotrom1','fran@gmail.com', TRUE);
-INSERT INTO authorities(id,username, authority) VALUES (3, 'frabotrom', 'admin');
+INSERT INTO authorities(id,username, authority) VALUES (3, 'frabotrom', 'player');
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('admin1', '4dm1n','admin1@gmail.com', TRUE);
 INSERT INTO authorities(id,username, authority) VALUES (4, 'admin1', 'admin');
 

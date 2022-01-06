@@ -15,14 +15,6 @@
                     <th>Username</th>
                     <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
                 </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><c:out value="${wrapper.userDwarf.email}"/></td>
-                </tr>
-                <tr>
-                    <th> Password: <input type="checkbox" onclick="myFunction()"> <br><br></th>
-                    <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput" readonly></td>
-                </tr>
             </table>
         </div>
         <div class="col-md-1">

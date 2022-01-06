@@ -8,11 +8,11 @@
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 
-<petclinic:layout pageName="players">
+<petclinic:layout pageName="usersDwarf">
 
     
     <div class="bodyBackground">
-        <h2>Find Users</h2>
+        <h2>Find Players</h2>
     
         
         <form:form modelAttribute="userDwarf" action="/usersDwarf/player" method="get" class="form-horizontal"
@@ -36,8 +36,5 @@
     </div>
 
     <br/> 
-    <sec:authorize access="hasAuthority('admin')">
-		<a class="btn btn-default" href='<spring:url value="/usersDwarf/new" htmlEscape="true"/>'>Add User</a>
-	</sec:authorize>
 	
 </petclinic:layout>
