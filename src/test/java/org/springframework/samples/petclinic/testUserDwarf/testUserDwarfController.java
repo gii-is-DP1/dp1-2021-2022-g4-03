@@ -1,9 +1,17 @@
 package org.springframework.samples.petclinic.testUserDwarf;
 
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -20,13 +28,19 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfController;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.context.annotation.FilterType;
 
 
-@WebMvcTest(controllers = UserDwarfController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-    excludeAutoConfiguration = SecurityConfiguration.class)
+@ExtendWith(SpringExtension.class)
+
+@ContextConfiguration(classes=UserDwarfController.class)
+
+@WebMvcTest(value=UserDwarfController.class, excludeFilters = @ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE,classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
 public class testUserDwarfController {
     private static final Integer TEST_USERDWARF_ID = 1;
@@ -37,7 +51,7 @@ public class testUserDwarfController {
     @MockBean
 	private UserDwarfService userDwarfService;
 
-    @MockBean
+    @Autowired
 	private UserDwarfController userDwarfController;
 
 	@MockBean
@@ -65,6 +79,12 @@ public class testUserDwarfController {
     }
 
     
+    @WithMockUser(value="spring")
+    @Test
+    void userDwarfDetailsTest() throws Exception{
+        mockMvc.perform(get("/userDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists("userDwarf"))
+            .andExpect(view().name("userDwarf/usersDwarfList"));
+    }
 
 
 }
