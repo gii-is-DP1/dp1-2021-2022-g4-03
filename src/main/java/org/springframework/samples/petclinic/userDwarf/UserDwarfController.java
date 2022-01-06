@@ -7,9 +7,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.achievements.AchievementsService;
+import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.statistics.Statistics;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
@@ -48,6 +50,9 @@ public class UserDwarfController {
 
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private UserAchievementsService userAchievementsService;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -219,6 +224,11 @@ public class UserDwarfController {
 		} else {
 			@Valid
 			UserDwarf userDwarf = wrapper.userDwarf;
+            authoritiesService.getRolesUserByUsername(userDwarf.getUsername()).stream().forEach(role->{
+                if(!wrapper.getRoles().contains(role)) authoritiesService.deleteAuthorities(userDwarf.getUsername(),
+                    role);
+            });
+
 			userDwarf.setId(userDwarfId);
 			this.userDwarfService.saveUserDwarf(userDwarf, wrapper.roles);
 			return "redirect:/usersDwarf/{userDwarfId}";
@@ -230,6 +240,12 @@ public class UserDwarfController {
 		String view = "usersDwarf/userDwarfList";
 		Optional<UserDwarf> userDwarf  = this.userDwarfService.findByIdOptional(userDwarfId);
 		if(userDwarf.isPresent()){
+            String username= userDwarf.get().getUsername();
+            for (UserAchievements uA:userAchievementsService.findUserAchievementsByUsername(username) ) {
+                userAchievementsService.delete(uA);
+            }
+
+            statisticsService.deleteStatistics(statisticsService.findStatisticsByUsername(username));
 			userDwarfService.deleteUserDwarf(userDwarf.get());
 			modelmap.addAttribute("message","User successfully deleted");
 		}else{

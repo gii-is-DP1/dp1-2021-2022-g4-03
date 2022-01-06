@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class UserAchievementsController {
@@ -32,7 +33,6 @@ public class UserAchievementsController {
 
     @Autowired
     private CurrentUser currentUser;
-
 
     @InitBinder
 	public void setAllowedFields(final WebDataBinder dataBinder) {
@@ -55,7 +55,7 @@ public class UserAchievementsController {
 
 		Integer numAchievements = this.achievementsService.achievementsCount();
 
-		UserAchievements user = this.userAchievementsService.findAchievementsById(1);
+		UserAchievements user = this.userAchievementsService.findUserAchievementsById(1);
 
 
 		for(int i=1; i<= numAchievements;i++){
@@ -120,7 +120,7 @@ public class UserAchievementsController {
 
 		Integer numAchievements = this.achievementsService.achievementsCount();
 
-		UserAchievements user = this.userAchievementsService.findAchievementsById(1);
+		UserAchievements user = this.userAchievementsService.findUserAchievementsById(1);
 
 
 		for(int i=1; i<= numAchievements;i++){

@@ -1,9 +1,10 @@
 package org.springframework.samples.petclinic.achievements;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+
+
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
@@ -39,7 +40,7 @@ public class Achievements extends BaseEntity{
 	@Column(name = "pic")
 	public String pic;
 
-
-	
+    @OneToMany(cascade= CascadeType.REMOVE)
+	private List<UserAchievements> userAchievements;
 
 }

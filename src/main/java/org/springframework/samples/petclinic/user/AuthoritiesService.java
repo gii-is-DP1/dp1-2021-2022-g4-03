@@ -40,6 +40,27 @@ public class AuthoritiesService {
 				.collect(Collectors.toList());
 	}
 
+    @Transactional
+    public void deleteAuthorities(String username, String role){
+        Authorities authority = new Authorities();
+        Optional<UserDwarf> userDwarf = userDwarfService.findUserDwarfByUsername2(username);
+        if (userDwarf.isPresent()) {
+            Boolean authCheck = false;
+            authority.setUserDwarf(userDwarf.get());
+            authority.setAuthority(role);
+            Collection<Authorities> authIt = authoritiesRepository.findByUsername(username);
+            for (Authorities auth : authIt) {
+                if (auth.authority.equals(role))
+                    authCheck = true;
+                break;
+            }
+            if (authCheck)
+                authoritiesRepository.delete(authority);
+        } else
+            throw new DataAccessException("UserDwarf '" + username + "' not found!") {
+            };
+    }
+
 	@Transactional
 	public void saveAuthorities(String username, String role) throws DataAccessException {
 		Authorities authority = new Authorities();

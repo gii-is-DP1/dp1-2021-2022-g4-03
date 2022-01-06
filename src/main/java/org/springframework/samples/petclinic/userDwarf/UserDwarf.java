@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.userDwarf;
 import java.io.Serializable;
 import java.util.Set;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class UserDwarf extends BaseEntity implements Serializable{
     @Column(name="username")
     @NotEmpty
     @Size(min = 4, max = 20)
-    private String username;
+    public String username;
 
     @Column(name="pass")
     @NotEmpty
@@ -64,4 +65,5 @@ public class UserDwarf extends BaseEntity implements Serializable{
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

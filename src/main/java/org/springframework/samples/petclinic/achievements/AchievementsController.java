@@ -22,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AchievementsController {
-    
+    @Autowired
+    private UserAchievementsService userAchievementsService;
+
     private static final String VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementsForm";
 
     private final AchievementsService achievementsService;
@@ -37,13 +39,16 @@ public class AchievementsController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	
+
 
     @GetMapping(value="/achievements/{achievementsId}/delete")
 	public String deleteAchievements(@PathVariable("achievementsId") int achievementsId,ModelMap modelMap) {
-		
+
 		Optional<Achievements> achievements = this.achievementsService.findByIdOptional(achievementsId);
 		if(achievements.isPresent()){
+            for(UserAchievements uA:userAchievementsService.findByAchievementId(achievementsId)){
+                userAchievementsService.delete(uA);
+            }
 			achievementsService.delete(achievements.get());
 			modelMap.addAttribute("message", "Logro borrado correctamente");
 		}else{
@@ -77,7 +82,7 @@ public class AchievementsController {
 		}
 		Collection<Achievements> results = this.achievementsService.findAchievementsByCondition(condition);
 		System.out.println(results.size() + "+++++++++++++++++++++++++++++++++++++++");
-		
+
 		if (results.isEmpty()) {
 			return "redirect:/achievements/list";
 		}
@@ -85,7 +90,7 @@ public class AchievementsController {
 			Achievements ach = results.iterator().next();
 			return "redirect:/achievements/" + ach.getId();
 		}
-		
+
 	}
 	@GetMapping(value = "/achievements/{achievementsId}")
 	public ModelAndView showAchievement(@PathVariable("achievementsId") int achievementsId) {
@@ -110,18 +115,18 @@ public class AchievementsController {
 		else {
 			//creating achievement
 			this.achievementsService.saveAchievement(achievements);
-			
+
 			return "redirect:/achievements/list";
 		}
 	}
-	
+
     @GetMapping(value = "/achievements/{achievementsId}/edit")
 	public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
 		Achievements achievements = this.achievementsService.findAchievementById(achievementId);
 		model.addAttribute(achievements);
 		return VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}
-	
+
 
     @PostMapping(value = "/achievements/{achievementsId}/edit")
 	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
@@ -132,11 +137,11 @@ public class AchievementsController {
 			this.achievementsService.saveAchievement(achievements);
 			return "redirect:/achievements/{achievementsId}";
 		}
-            
+
 	}
 
 
 
 
-    
+
 }

@@ -47,8 +47,10 @@ public class UserDwarfService {
         userDwarfRepository.save(userDwarf);
 
         // Saving authorities
-        roles.stream().forEach(role->authoritiesService.saveAuthorities(userDwarf.getUsername(), role));
-
+        roles.stream().forEach(role->{
+            if(!authoritiesService.getRolesUserByUsername(userDwarf.getUsername()).contains(role))
+                authoritiesService.saveAuthorities(userDwarf.getUsername(), role);
+        });
 	}
 
     @Transactional(readOnly = true)

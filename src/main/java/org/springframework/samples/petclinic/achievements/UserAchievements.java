@@ -2,13 +2,7 @@ package org.springframework.samples.petclinic.achievements;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -37,15 +31,15 @@ public class UserAchievements extends BaseEntity{
 	@Column(name = "obtaining_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	public LocalDate obtainingDate;
-    
-    
-    @OneToOne(cascade = CascadeType.ALL)
+
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name="userDwarf_id", referencedColumnName = "username")
     })
     private UserDwarf userDwarf;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name="achievements_id", referencedColumnName = "id")
     })
