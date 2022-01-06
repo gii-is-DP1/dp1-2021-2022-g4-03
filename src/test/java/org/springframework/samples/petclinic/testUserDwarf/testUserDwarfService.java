@@ -22,7 +22,7 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class testUserDwarfService {
-    
+
     @Autowired
     protected UserDwarfService userDwarfService;
 
@@ -46,7 +46,7 @@ public class testUserDwarfService {
     @ParameterizedTest
     @CsvSource({"rafjimfer, 1", "serrivroa, 2"})
     public void shouldFindUserDwarfWithCorrectId(String username, int id){
-        UserDwarf uD = this.userDwarfService.findUserDwarfByUsername2(id);
+        UserDwarf uD = this.userDwarfService.findUserDwarfById(id);
         assertThat(uD.getUsername()).isEqualTo(username);
         assertThat(uD.getUsername()).isNotEqualTo("rafa");
     }
@@ -81,7 +81,7 @@ public class testUserDwarfService {
 
         Collection<UserDwarf> u = this.userDwarfService.findUserDwarfByUsername("testSubject");
         assertThat(u.size()).isEqualTo(found+1);
-        
+
     }
 
     @ParameterizedTest
@@ -123,7 +123,7 @@ public class testUserDwarfService {
         assertThat(userDwarfService.findByIdOptional(3).isPresent());
 
         userDwarfService.deleteUserDwarf(userDwarfService.findByIdOptional(3).get());
-		
+
         assertThat(userDwarfService.findByIdOptional(3).isEmpty());
 	}
 

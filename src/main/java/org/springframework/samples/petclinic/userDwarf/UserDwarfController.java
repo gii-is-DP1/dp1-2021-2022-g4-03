@@ -35,6 +35,9 @@ public class UserDwarfController {
 
 	private static final String VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM = "usersDwarf/createOrUpdateUserDwarfForm";
 
+    @Autowired
+    private CurrentUser currentUser;
+
 	@Autowired
 	private UserDwarfService userDwarfService;
 
@@ -48,7 +51,7 @@ public class UserDwarfController {
 	private AchievementsService achievementsService;
 
 	@Autowired
-	private UserAchievementsService userAchievementsService; 
+	private UserAchievementsService userAchievementsService;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -133,20 +136,20 @@ public class UserDwarfController {
 		}
 
 	}
-	
+
 	@GetMapping(value ="/profile")
 		public String UserDwarfProfile( ModelMap modelMap){
 			String view = "usersDwarf/userDwarfProfile";
 			Wrapper wrapper = new Wrapper();
-			String currentUserUsername= CurrentUser.getCurrentUser();
+			String currentUserUsername= currentUser.getCurrentUser();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
-			
+
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
 			modelMap.addAttribute("statistic",statistic);
-	
+
 			return view;
 		}
 
@@ -154,7 +157,7 @@ public class UserDwarfController {
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {
 		ModelAndView mav = new ModelAndView("usersDwarf/userDetails");
 		Wrapper wrapper = new Wrapper();
-		UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+		UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 		wrapper.setUserDwarf(userDwarf);
 		wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 		mav.addObject("wrapper", wrapper);
@@ -163,7 +166,7 @@ public class UserDwarfController {
 
 	@GetMapping(value = "/usersDwarf/{userDwarfId}/edit")
 	public String initUpdateUserDwarfForm(@PathVariable("userDwarfId") int userDwarfId, Model model) {
-		UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+		UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 		List<String> roles = authoritiesService.getRolesUserByUsername(userDwarf.getUsername());
 		Wrapper wrapper = new Wrapper();
 		wrapper.setRoles(roles);

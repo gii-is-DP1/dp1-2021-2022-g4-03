@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
+import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ public class UserDwarfService {
 
     @Autowired
     private UserDwarfRepository userDwarfRepository;
-    
+
     @Transactional
     public int userDwarfCount(){
         return (int) userDwarfRepository.count();
@@ -31,7 +32,7 @@ public class UserDwarfService {
     }
 
     @Transactional(readOnly = true)
-	public UserDwarf findUserDwarfByUsername2(int id) throws DataAccessException {
+	public UserDwarf findUserDwarfById(int id) throws DataAccessException {
 		return userDwarfRepository.findById(id);
 	}
 
@@ -44,10 +45,10 @@ public class UserDwarfService {
 	public void saveUserDwarf(UserDwarf userDwarf, List<String> roles) throws DataAccessException {
         // Saving user to repository
         userDwarfRepository.save(userDwarf);
-        
+
         // Saving authorities
         roles.stream().forEach(role->authoritiesService.saveAuthorities(userDwarf.getUsername(), role));
-        
+
 	}
 
     @Transactional(readOnly = true)

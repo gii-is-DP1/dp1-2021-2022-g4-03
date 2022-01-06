@@ -24,7 +24,10 @@ public class UserAchievementsController {
 	private AchievementsService achievementsService;
 
 	@Autowired
-	private UserAchievementsService userAchievementsService; 
+	private UserAchievementsService userAchievementsService;
+
+    @Autowired
+    private CurrentUser currentUser;
 
 
     @InitBinder
@@ -41,7 +44,7 @@ public class UserAchievementsController {
 	public String userDwarfAchievementsProfile(ModelMap modelMap){
 		String view = "achievements/achievementsProfile";
 
-		String currentUserUsername= CurrentUser.getCurrentUser();
+		String currentUserUsername= currentUser.getCurrentUser();
 		Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
 
 		Class<?> c = statistic.getClass();
@@ -52,7 +55,7 @@ public class UserAchievementsController {
 
 
 		for(int i=1; i<= numAchievements;i++){
-			
+
 			Achievements achievement = this.achievementsService.findAchievementById(i);
 			String pic = achievement.getPic();
 			String condition = achievement.getCondition();
@@ -80,26 +83,26 @@ public class UserAchievementsController {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			
+
 			if(material==goalValue || material>goalValue){
 				user.setObtainingDate(LocalDate.now());
 				user.setProgress(1.);
-			
+
 			}else if(material==0){
 				user.setProgress(0.);
 			}else{
 				Double v = (material/goalValue);
 				user.setProgress(v);
 			}
-			
-			String progress = String.format("%.0f", user.getProgress()*100) + "%"; 
 
-			modelMap.addAttribute("progress"+i ,progress);	
-			modelMap.addAttribute("pic"+i ,pic);	
-			modelMap.addAttribute("dp"+i,dp);	
+			String progress = String.format("%.0f", user.getProgress()*100) + "%";
+
+			modelMap.addAttribute("progress"+i ,progress);
+			modelMap.addAttribute("pic"+i ,pic);
+			modelMap.addAttribute("dp"+i,dp);
 
 		}
 		return view;
 	}
-    
+
 }

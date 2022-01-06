@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class BoardController {
 
     @Autowired
+    private CurrentUser currentUser;
+
+    @Autowired
     private final BoardService boardService;
     private final UserDwarfService userDwarfService;
 
@@ -32,7 +35,7 @@ public class BoardController {
     public String welcome(@PathVariable("gameId") Integer gameId, Map<String, Object> model){
         // response.addHeader("Refresh","5");
         model.put("now", new Date());
-        String currentUserUsername= CurrentUser.getCurrentUser();
+        String currentUserUsername= currentUser.getCurrentUser();
         model.put("currentUser", userDwarfService.findUserDwarfByUsername2(currentUserUsername).get());
         Game game= gameStorage.getGame(gameId);
         model.put("game", game);

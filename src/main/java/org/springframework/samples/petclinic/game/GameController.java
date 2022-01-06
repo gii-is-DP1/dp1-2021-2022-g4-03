@@ -19,6 +19,9 @@ import java.util.Map;
 public class GameController {
 
     @Autowired
+    private CurrentUser currentUser;
+
+    @Autowired
     private GameService gameService;
 
     @Autowired
@@ -34,7 +37,7 @@ public class GameController {
 
     @GetMapping(value = "/game/new")
     public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
         Game game = gameService.createGame(player);
         //Unable to test this without cards, nullPointerException
         game= mainLoop(game.getId(), null, null);
@@ -105,7 +108,7 @@ public class GameController {
     }
     @GetMapping(value = "/game/{gameId}/surrender")
     public String surrender(@PathVariable("gameId") Integer gameId) {
-        UserDwarf player = userDwarfService.findUserDwarfByUsername2(CurrentUser.getCurrentUser()).get();
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
         gameService.surrender(gameId, player);
         return "redirect:/";
     }

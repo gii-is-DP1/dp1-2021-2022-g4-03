@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.samples.petclinic.validatorFunction;
 import org.springframework.samples.petclinic.game.Game;
@@ -20,8 +21,8 @@ import org.springframework.samples.petclinic.game.Phase;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 
 public class testGame {
-    
-    UserDwarfService userDwarfService;
+    @Autowired
+    private UserDwarfService userDwarfService;
 
     @Test
     public void shouldNotValidateWhenParametersAreEmpty() {
@@ -31,14 +32,14 @@ public class testGame {
         game.setOrder(List.of());
         game.setPhase(null);
         game.setGameStatus(null);
-    
+
         Validator validator = validatorFunction.createValidator();
-        Set<ConstraintViolation<Game>> constraintViolations = 
+        Set<ConstraintViolation<Game>> constraintViolations =
         validator.validate(game);
-    
+
         assertThat(constraintViolations.size()).isEqualTo(3);
 
-        assertAll("constrainViolations", 
+        assertAll("constrainViolations",
             () -> {
                 List<String> violationsList = constraintViolations.stream()
                         .filter(c -> c.getPropertyPath().toString().equals("order")).map(v -> v.getMessage())
@@ -70,14 +71,13 @@ public class testGame {
         game.setOrder(List.of(1,2,3));
         game.setPhase(Phase.INICIO);
         game.setGameStatus(GameStatus.NEW);
-        //game.setPlayer1(userDwarfService.findById(1));
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<Game>> constraintViolations =
     validator.validate(game);
 
     assertThat(constraintViolations.size()).isEqualTo(0);
-    
+
     }
 
 }

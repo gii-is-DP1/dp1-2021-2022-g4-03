@@ -206,10 +206,10 @@ public class testPlayerState {
     playerState.setObject(1);
     playerState.setMedal(1);
     playerState.setActive(true);
-    playerState.setWorker1(10);
-    playerState.setWorker2(10);
-    playerState.setWorker3(10);
-    playerState.setWorker4(10);
+    playerState.setWorker1(13);
+    playerState.setWorker2(13);
+    playerState.setWorker3(13);
+    playerState.setWorker4(13);
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<PlayerState>> constraintViolations =
@@ -222,25 +222,25 @@ public class testPlayerState {
         List<String> violationsList = constraintViolations.stream()
                 .filter(c -> c.getPropertyPath().toString().equals("worker1")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
-        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 9");
+        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 12");
     },
     () -> {
         List<String> violationsList = constraintViolations.stream()
                 .filter(c -> c.getPropertyPath().toString().equals("worker2")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
-        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 9");
+        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 12");
     },
     () -> {
         List<String> violationsList = constraintViolations.stream()
                 .filter(c -> c.getPropertyPath().toString().equals("worker3")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
-        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 9");
+        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 12");
     },
     () -> {
         List<String> violationsList = constraintViolations.stream()
                 .filter(c -> c.getPropertyPath().toString().equals("worker4")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
-        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 9");
+        assertThat(violationsList).containsExactlyInAnyOrder("must be less than or equal to 12");
     }
     );
 
