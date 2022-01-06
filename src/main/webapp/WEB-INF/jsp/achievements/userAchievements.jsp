@@ -6,33 +6,39 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="userAchievements">
-    <h2>Perosnal Achievements</h2>
 
-    <table id="UserAchievementsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 150px;">Description</th>
-            <th style="width: 120px">Progress</th>
-            <th style="width: 200px;">Obtaining Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${selections}" var="achievements">
+    <div class="bodyBackground">
+    
+        <h2>Perosnal Achievements</h2>
+    
+        <table id="UserAchievementsTable" class="table table-striped">
+            <thead>
             <tr>
-                <td>
-                    <spring:url value="/achievements/{achievementsId}" var="achievementsUrl">
-                        <spring:param name="achievementsId" value="${achievements.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(achievementsUrl)}"><c:out value="${userAchievements.achievements.description}"/></a>
-                </td>
-                <td>
-                    <c:out value="${achievements.condition}"/>
-                </td>
-                <td>
-                    <c:out value="${userAchievements.obtainingDate}"/>
-                </td>        
+                <th style="width: 150px;">Description</th>
+                <th style="width: 120px">Progress</th>
+                <th style="width: 200px;">Obtaining Date</th>
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <c:forEach items="${selections}" var="achievements">
+                <tr>
+                    <td>
+                        <spring:url value="/achievements/{achievementsId}" var="achievementsUrl">
+                            <spring:param name="achievementsId" value="${achievements.id}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(achievementsUrl)}"><c:out value="${userAchievements.achievements.description}"/></a>
+                    </td>
+                    <td>
+                        <c:out value="${achievements.condition}"/>
+                    </td>
+                    <td>
+                        <c:out value="${userAchievements.obtainingDate}"/>
+                    </td>        
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="fondo7"></div>
 </petclinic:layout>

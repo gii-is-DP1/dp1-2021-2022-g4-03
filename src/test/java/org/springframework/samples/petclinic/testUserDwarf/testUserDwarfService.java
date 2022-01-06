@@ -32,7 +32,7 @@ public class testUserDwarfService {
     @Test
     public void testCountWithInitialData() {
         int count = userDwarfService.userDwarfCount();
-        assertEquals(count, 3);  //Hay dos usuarios en la base de datos.
+        assertEquals(count, 4);  //Hay dos usuarios en la base de datos.
     }
 
     @Test
@@ -70,13 +70,13 @@ public class testUserDwarfService {
         userDwarf.setEmail("test@test.com");
         userDwarf.setPass("Testtest123");
         userDwarf.setUsername("testSubject");
-        userDwarf.setId(4);
+        userDwarf.setId(5);
 
         List<String> roles = new ArrayList<>();
         roles.add("admin");
         this.userDwarfService.saveUserDwarf(userDwarf, roles);
 
-        assertThat(userDwarf.getId()).isEqualTo(4);
+        assertThat(userDwarf.getId()).isEqualTo(5);
         assertThat(userDwarf.getUsername()).isEqualTo("testSubject");
 
         Collection<UserDwarf> u = this.userDwarfService.findUserDwarfByUsername("testSubject");
@@ -103,7 +103,7 @@ public class testUserDwarfService {
         Optional<UserDwarf> uDS = this.userDwarfService.findUserDwarfByUsername2(username);
         assertThat(uDS.get().getUsername()).isEqualTo("rafjimfer");
         assertThat(uDS.get().getId()).isEqualTo(1);
-        assertThat(uDS.get().getPass()).isEqualTo("rafa");
+        assertThat(uDS.get().getPass()).isEqualTo("RafaAngel1");
     }
 
     @Test
@@ -115,16 +115,16 @@ public class testUserDwarfService {
         userDwarf.setEmail("test@test.com");
         userDwarf.setPass("Testtest123");
         userDwarf.setUsername("testSubject");
-        userDwarf.setId(4);
+        userDwarf.setId(6);
         List<String> roles = new ArrayList<>();
         roles.add("admin");
 
         userDwarfService.saveUserDwarf(userDwarf, roles);
-        assertThat(userDwarfService.findByIdOptional(3).isPresent());
+        assertThat(userDwarfService.findByIdOptional(6).isPresent());
 
-        userDwarfService.deleteUserDwarf(userDwarfService.findByIdOptional(3).get());
+        userDwarfService.deleteUserDwarf(userDwarfService.findByIdOptional(6).get());
 
-        assertThat(userDwarfService.findByIdOptional(3).isEmpty());
+        assertThat(userDwarfService.findByIdOptional(6).isEmpty());
 	}
 
 

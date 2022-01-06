@@ -20,8 +20,8 @@
         <div class="col-md-8">
             <tr>
                 <th><h2 style="font-size: larger;">${dp1}</h2></th>
-                <td><div class="w3-light-grey">
-                        <div class="w3-container w3-green w3-center" style="width:50%">${progress1}</div>
+                <td><div class="w3-light-grey" style="width: 50%;">
+                        <div class="w3-container w3-green w3-center">${progress1}</div>
                     </div><br>
                 </td>
             </tr>
@@ -37,8 +37,8 @@
         <div class="col-md-8">
             <tr>
                 <th><h2 style="font-size: larger;">${dp2}</h2></th>
-                <td><div class="w3-light-grey">
-                        <div class="w3-container w3-green w3-center" style="width:50%">${progress2}</div>
+                <td><div class="w3-light-grey" style="width: 50%;">
+                        <div class="w3-container w3-green w3-center" >${progress2}</div>
                     </div><br>
                 </td>
             </tr>
@@ -53,13 +53,30 @@
         <div class="col-md-8">
             <tr>
                 <th><h2 style="font-size: larger;">${dp3}</h2></th>
-                <td><div class="w3-light-grey">
-                        <div class="w3-container w3-green w3-center" style="width:50%">${progress3}</div>
+                <td><div class="w3-light-grey" style="width: 50%;">
+                        <div class="w3-container w3-green w3-center">${progress3}</div>
                     </div><br>
                 </td>
             </tr>
         </div>
     </div>          
-    </table>
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="${pic4}" alt="iron" class="img-responsive img-circle" style="height: 3cm;
+                        width: 115px;">
+        </div>
+        <div class="col-md-8">
+            <tr>
+                <th><h2 style="font-size: larger;">${dp4}</h2></th>
+                <td><div class="w3-light-grey" style="width: 50%;">
+                        <div class="w3-container w3-green w3-center">${progress4}</div>
+                    </div><br>
+                </td>
+            </tr>
+        </div>
+    </div>
+
+    <div id="fondo7"></div>
 </petclinic:layout>
 
