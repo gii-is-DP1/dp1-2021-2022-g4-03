@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.statistics.StatisticsService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfController;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
@@ -41,6 +42,8 @@ public class testUserDwarfController {
     private UserDwarfService userDwarfService;
     @MockBean
     private AuthoritiesService authoritiesService;
+    @MockBean
+    private StatisticsService statisticsService;
 
     private UserDwarf paco;
 
@@ -60,11 +63,12 @@ public class testUserDwarfController {
         given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(paco);
     }
 
-    
+
     @WithMockUser(value="spring")
     @Test
     void userDwarfDetailsTest() throws Exception{
-        mockMcv.perform(get("/usersDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists("userDwarf"))
+        mockMcv.perform(get("/usersDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists(
+            "usersDwarf"))
             .andExpect(view().name("/usersDwarf/userDwarfList"));
     }
 
