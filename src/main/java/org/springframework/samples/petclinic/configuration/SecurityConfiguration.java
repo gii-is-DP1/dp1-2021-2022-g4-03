@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/usersDwarf/register").permitAll()
 				.antMatchers("/usersDwarf/**").hasAnyAuthority("admin")
 				.antMatchers("/achievements/**").hasAnyAuthority("admin")
+				.antMatchers("/ud/**").hasAnyAuthority("player")
 				.antMatchers("/profile/**").authenticated()
 				.antMatchers("/game/**").authenticated()
 				.antMatchers("/statistics/**").authenticated()

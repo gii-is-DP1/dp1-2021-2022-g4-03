@@ -34,7 +34,7 @@ public class AchievementsServiceTest {
     @Test
     public void testFindAllAchievements(){
         List<Achievements> fAll = (List<Achievements>) achievementsService.findAll();
-        assertThat(fAll.size()).isEqualTo(3);
+        assertThat(fAll.size()).isEqualTo(4);
     }
 
     @ParameterizedTest
@@ -95,16 +95,16 @@ public class AchievementsServiceTest {
         achievement.setCondition("gamesPlayed=10");
         achievement.setDescription("holi uwu");
         achievement.setLastChange(LocalDate.of(2023, 06, 15));
-        achievement.setId(4);
+        achievement.setId(8);
         achievement.setPic("/resources/images/picaxe.png");
 
 
         achievementsService.saveAchievement(achievement);
-        assertThat(achievementsService.findByIdOptional(5).isPresent());
+        assertThat(achievementsService.findByIdOptional(8).isPresent());
 
         achievementsService.delete(achievementsService.findAchievementById(5));
 
-        assertThat(achievementsService.findByIdOptional(5).isEmpty());
+        assertThat(achievementsService.findByIdOptional(8).isEmpty());
 	}
 
 }

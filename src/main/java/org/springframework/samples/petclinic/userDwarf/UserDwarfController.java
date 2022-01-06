@@ -134,13 +134,13 @@ public class UserDwarfController {
 
 	}
 
-	@GetMapping(value = "/usersDwarf/searchPlayers")
+	@GetMapping(value = "/ud/searchPlayers")
 	public String initFindFormPlayer(Map<String, Object> model) {
 		model.put("userDwarf", new UserDwarf());
 		return "usersDwarf/findPlayers";
 	}
 
-	@GetMapping(value = "/usersDwarf/player")
+	@GetMapping(value = "/ud/player")
 	public String processFindFormPlayer(@RequestParam("username") String username) {
 
 		if (username == null) {
