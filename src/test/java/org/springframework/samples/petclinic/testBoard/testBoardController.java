@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.board.BoardController;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardController;
 import org.springframework.samples.petclinic.card.CardService;
+import org.springframework.samples.petclinic.card.CardType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,8 +34,13 @@ public class testBoardController {
 
     @BeforeEach
     void setup(){
-        mockCard= new Card();
-        mockCard.setCardImage("");
+        mockCard = new Card();
+        mockCard.setCardImage("resources/cards/Alloy Steel 1-1.png");
+        mockCard.setCardType(CardType.EXTRACCION_RECURSOS);
+        mockCard.setDescription("Return 3 iron to the supply then take 2 steel.");
+        mockCard.setEffect("-3i,+2s");
+        mockCard.setPosition(0);
+        mockCard.setTitle("Alloy Steel");
         given(this.cardService.findCardById(TEST_CARD_ID)).willReturn(mockCard);
     }
 

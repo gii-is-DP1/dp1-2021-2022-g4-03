@@ -16,11 +16,11 @@ import lombok.Setter;
 @Table(name="cards")
 public class Card extends BaseEntity{
     
-    @Column(name="card_image")
+    @Column(name="cardImage")
     @NotNull
     private String cardImage;
 
-    @Column(name="card_type")
+    @Column(name="cardType")
     @NotNull
     private CardType cardType;
 
