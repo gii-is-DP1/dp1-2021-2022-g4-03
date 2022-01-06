@@ -48,29 +48,28 @@ public class testStatisticsController {
 
     @Autowired
     private MockMvc mockMcv;
-    @Autowired
-    private UserDwarf paco;
-    @Autowired
-    private Statistics pacoStatistics;
     @MockBean
     private UserDwarfService userDwarfService;
     @MockBean
     private StatisticsService statisticsService;
     @MockBean
-    private AuthoritiesService authoritiesService; 
+    private AuthoritiesService authoritiesService;
+
+    private UserDwarf paco;
+    private Statistics pacoStatistics;
 
     @BeforeEach
     void setup(){
 
-        UserDwarf paco = new UserDwarf();
+        paco = new UserDwarf();
         paco.setActive(true);
         paco.setEmail("email@gmail.com");
         paco.setId(TEST_UD_ID);
         paco.setPass("Passpass123");
-        paco.setUsername("paco");         
+        paco.setUsername("paco");
         given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(paco);
-       
-        Statistics pacoStatistics = new Statistics();
+
+        pacoStatistics = new Statistics();
         pacoStatistics.setGamesPlayed(2);
         pacoStatistics.setGamesWon(1);
         pacoStatistics.setId(TEST_STATISTICS_ID);
@@ -100,46 +99,48 @@ public class testStatisticsController {
 
         given(this.statisticsService.findStatisticsByUsername(paco.getUsername())).willReturn(pacoStatistics);
 
-        mockMcv.perform(get("/statistics/player").param("username", "paco")).andExpect(status().is3xxRedirection())
+        mockMcv.perform(get("/statistics/player").param("userDwarf", "paco")).andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/statistics/player/" + TEST_STATISTICS_ID));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void testProcessStatisticEmpty() throws Exception{
-        given(this.statisticsService.findStatisticsByUsername("")).willReturn(pacoStatistics, new Statistics());
+        given(this.statisticsService.findStatisticsByUsername("")).willReturn(null);
 
-        mockMcv.perform(get("/statistics/player")).andExpect(status().isOk()).andExpect(view().name("statistics/findStatistics"));
+        mockMcv.perform(get("/statistics/player").param("userDwarf", "")).andExpect(status().is2xxSuccessful()).andExpect(view().name("statistics" +
+            "/findStatistics"));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void testShowStatistics() throws Exception{
 
+        given(this.statisticsService.findStatisticsByID(TEST_STATISTICS_ID)).willReturn(pacoStatistics);
 
         mockMcv.perform(get("/statistics/player/{statisticId}", TEST_STATISTICS_ID)).andExpect(status().isOk())
-        .andExpect(model().attribute("statistics", hasProperty("timePlayed", is(eq(pacoStatistics.getTimePlayed())))))
-        .andExpect(model().attribute("statistics", hasProperty("gamesPlayed", is(eq(2)))))
-        .andExpect(model().attribute("statistics", hasProperty("gamesWon", is(eq(1)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalIron", is(eq(56)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalGold", is(eq(25)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalSteel", is(eq(6)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalObject", is(eq(15)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalMedal", is(eq(4)))))
+        .andExpect(model().attribute("statistics", hasProperty("timePlayed", is(pacoStatistics.getTimePlayed()))))
+        .andExpect(model().attribute("statistics", hasProperty("gamesPlayed", is(2))))
+        .andExpect(model().attribute("statistics", hasProperty("gamesWon", is(1))))
+        .andExpect(model().attribute("statistics", hasProperty("totalIron", is(56))))
+        .andExpect(model().attribute("statistics", hasProperty("totalGold", is(25))))
+        .andExpect(model().attribute("statistics", hasProperty("totalSteel", is(15))))
+        .andExpect(model().attribute("statistics", hasProperty("totalObject", is(6))))
+        .andExpect(model().attribute("statistics", hasProperty("totalMedal", is(4))))
         .andExpect(view().name("/statistics/statisticsList"));
 
     }
 
-    
-
-
-    
 
 
 
 
-    
 
 
-    
+
+
+
+
+
+
 }
