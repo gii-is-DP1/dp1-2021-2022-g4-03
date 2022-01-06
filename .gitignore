@@ -63,3 +63,4 @@ _site/
 .metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
 .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
 .vscode/settings.json
+.jpb/persistence-units.xml

@@ -16,12 +16,12 @@ public class CardService {
 
     private Card2 cardToCard2 (Card card) {
         Card2 res = new Card2();
-        res.setCardImage(card.getCardImage());
-        res.setCardType(card.getCardType());
-        res.setDescription(card.getDescription());
-        res.setId(card.getId());
-        res.setPosition(card.getId());
-        res.setTitle(card.getTitle());
+        //res.setCardImage(card.getCardImage());
+        //res.setCardType(card.getCardType());
+        //res.setDescription(card.getDescription());
+        //res.setId(card.getId());
+        //res.setPosition(card.getId());
+        //res.setTitle(card.getTitle());
        // res.setEffect(CardEffect.getEffects().get(card.getEffectId()));
         return res;
     }

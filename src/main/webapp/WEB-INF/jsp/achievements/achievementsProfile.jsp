@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <h2>Logros conseguidos:</h2><br><br>
 
-    
+
     <div class="row">
     
         <div class="col-md-2">
@@ -60,10 +60,11 @@
             </tr>
         </div>
     </div>          
+
     <div class="row">
         <div class="col-md-2">
             <img src="${pic4}" alt="iron" class="img-responsive img-circle" style="height: 3cm;
-                        width: 115px;">            
+                        width: 115px;">
         </div>
         <div class="col-md-8">
             <tr>
@@ -75,6 +76,7 @@
             </tr>
         </div>
     </div>
-    
+
+    <div id="fondo7"></div>
 </petclinic:layout>
 

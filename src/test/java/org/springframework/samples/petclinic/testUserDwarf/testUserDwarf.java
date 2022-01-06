@@ -50,7 +50,7 @@ public class testUserDwarf {
         List<String> violationsList = constraintViolations.stream()
                 .filter(c -> c.getPropertyPath().toString().equals("pass")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
-        assertThat(violationsList).containsExactlyInAnyOrder("must not be empty", "must contain 8 characters, one uppercase and numbers");
+        assertThat(violationsList).containsExactlyInAnyOrder("must not be empty", "Debe contener 8 caractéres, uno mínimo en mayúsculas y otro en número");
     }
     );
     

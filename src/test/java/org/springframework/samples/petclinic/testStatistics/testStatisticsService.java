@@ -35,7 +35,7 @@ public class testStatisticsService {
     @Test
     public void testCountWithInitialData() {
         Long count = statisticsRepository.count();
-        assertEquals(count, 2);  //Hay dos estadísticas en la base de datos.
+        assertEquals(count, 3); 
     }
 
     @Test
@@ -76,7 +76,7 @@ public class testStatisticsService {
         statistics.setTotalSteel(34);
         statistics.setTotalObject(21);
         statistics.setTotalMedal(4);
-        statistics.setId(3);
+        statistics.setId(4);
 
         statisticsService.saveStatistics(statistics);
 

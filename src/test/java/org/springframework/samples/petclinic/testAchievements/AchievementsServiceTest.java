@@ -34,11 +34,11 @@ public class AchievementsServiceTest {
     @Test
     public void testFindAllAchievements(){
         List<Achievements> fAll = (List<Achievements>) achievementsService.findAll();
-        assertThat(fAll.size()).isEqualTo(1);
+        assertThat(fAll.size()).isEqualTo(3);
     }
 
     @ParameterizedTest
-    @CsvSource({"total_gold=100, 1", "total_iron=300, 2"})
+    @CsvSource({"totalGold=100, 1", "totalIron=300, 2"})
     public void shouldFindAchievementsWithCorrectId(String x, int id){
         Achievements uD = this.achievementsService.findAchievementById(id);
         assertThat(uD.getCondition()).isEqualTo(x);
@@ -46,7 +46,7 @@ public class AchievementsServiceTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"total_gold=100, 1", "total_iron=300, 2"})
+    @CsvSource({"totalGold=100, 1", "totalIron=300, 2"})
     public void shouldFindAchievementsWithCorrectId_Optional(String x, int id){
         Optional<Achievements> optAchievements = this.achievementsService.findByIdOptional(id);
         assertThat(optAchievements.get().getCondition()).isEqualTo(x);
@@ -54,7 +54,7 @@ public class AchievementsServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"total_games=1","total_iron=300"})
+    @ValueSource(strings = {"gamesPlayed=1","totalIron=300"})
     public void ShouldFindAchievementByCondition(String condition){
 
         Collection<Achievements> uDS = this.achievementsService.findAchievementsByCondition(condition);
@@ -68,22 +68,23 @@ public class AchievementsServiceTest {
     @Test
     @Transactional
     public void ShouldSaveAchievements(){
-        Collection<Achievements> achievements = this.achievementsService.findAchievementsByCondition("total_games=10");
+        Collection<Achievements> achievements = this.achievementsService.findAchievementsByCondition("gamesPlayed=10");
         int found = achievements.size();
 
         Achievements achievement = new Achievements();
-        achievement.setCondition("total_games=10");
+        achievement.setCondition("gamesPlayed=10");
         achievement.setDescription("holi uwu");
         achievement.setLastChange(LocalDate.of(2023, 06, 15));
         achievement.setId(4);
+        achievement.setPic("Juega tu primera partida','/resources/images/picaxe.png");
 
         this.achievementsService.saveAchievement(achievement);
         assertThat(achievement.getId()).isEqualTo(4);
-        assertThat(achievement.getCondition()).isEqualTo("total_games=10");
+        assertThat(achievement.getCondition()).isEqualTo("gamesPlayed=10");
 
-        Collection<Achievements> u = this.achievementsService.findAchievementsByCondition("total_games=10");
+        Collection<Achievements> u = this.achievementsService.findAchievementsByCondition("gamesPlayed=10");
         assertThat(u.size()).isEqualTo(found+1);
-        
+
     }
 
     @Test
@@ -91,19 +92,19 @@ public class AchievementsServiceTest {
     public void shouldDeleteAchievements() {
 
         Achievements achievement = new Achievements();
-        achievement.setCondition("total_games=10");
+        achievement.setCondition("gamesPlayed=10");
         achievement.setDescription("holi uwu");
         achievement.setLastChange(LocalDate.of(2023, 06, 15));
         achievement.setId(4);
-
+        achievement.setPic("/resources/images/picaxe.png");
 
 
         achievementsService.saveAchievement(achievement);
-        assertThat(achievementsService.findByIdOptional(3).isPresent());
+        assertThat(achievementsService.findByIdOptional(5).isPresent());
 
-        achievementsService.delete(achievementsService.findByIdOptional(3).get());
-		
-        assertThat(achievementsService.findByIdOptional(3).isEmpty());
+        achievementsService.delete(achievementsService.findAchievementById(5));
+
+        assertThat(achievementsService.findByIdOptional(5).isEmpty());
 	}
-    
+
 }
