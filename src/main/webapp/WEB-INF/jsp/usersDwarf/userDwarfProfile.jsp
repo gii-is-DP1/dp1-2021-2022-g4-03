@@ -6,87 +6,88 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="profile">
-    <h2>Datos de usuario:</h2>
 
-    <div class="row">
-        <div class = "col-md-8">
-            <table class="table table-striped" style="width: 65%;">
-                <tr> 
-                    <th>Username</th>
-                    <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><c:out value="${wrapper.userDwarf.email}"/></td>
-                </tr>
-                <tr>
-                    <th> Password: <input type="checkbox" onclick="myFunction()"> <br><br></th>
-                    <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput" readonly></td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-md-1">
-            <spring:url value="/profile/achievements" var="pA">
-                            <spring:param name="pA" value="${wrapper.userDwarf.id}"/>
-                        </spring:url>
-            <a href="${fn:escapeXml(pA)}" class="btn btn-default">Logros</a>
+    <div class="bodyBackground">
+
+        <div class="row">
             
+            <div class="col-md-3">
+                <img src="/resources/images/profilepic.jpg" alt="${wrapper.userDwarf.username}" class="img-circle img-profile" style="height: 180px; width: 180px;">            
+            </div>
+            <div class = "col-md-6">
+                <table class="table table-striped" style="width: 80%;">
+                    <caption>Datos de usuario:</caption>
+                    <tr> 
+                        <th>Username</th>
+                        <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td><c:out value="${wrapper.userDwarf.email}"/></td>
+                    </tr>
+                    <tr>
+                        <th> Password: <input type="checkbox" onclick="myFunction()"> <br><br></th>
+                        <td><input type="password" value="${wrapper.userDwarf.pass}" id="myInput" readonly></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-2">
+                <spring:url value="/profile/achievements" var="pA">
+                                <spring:param name="pA" value="${wrapper.userDwarf.id}"/>
+                            </spring:url>
+                <a href="${fn:escapeXml(pA)}" class="btn btn-default btn-profile-lg">Logros</a>
+                
+            </div>
+
         </div>
-        <div class="col-md-3">
-            <img src="/resources/images/profilepic.jpg" alt="${wrapper.userDwarf.username}" class="img-responsive img-circle" style="height: 5cm;
-                        width: 168px;">            
-        </div>
+
+        <br>
+        <br>
+        <table class="table table-striped" >
+            <caption>Your Statistics</caption>
+            <tr>
+                <th>Time Played:</th>
+                <td><c:out value="${statistic.getTimeFormatted()}"/></td>
+            </tr>
+            <tr>
+                <th>Games played:</th>
+                <td><c:out value="${statistic.gamesPlayed}"/></td>
+            </tr>
+            <tr>
+                <th>Games won:</th>
+                <td><c:out value="${statistic.gamesWon}"/></td>
+            </tr>
+            <tr>
+                <th>Total iron:</th>
+                <td><c:out value="${statistic.totalIron}"/></td>
+            </tr>
+            
+            <tr>
+                <th>Total gold:</th>
+                <td><c:out value="${statistic.totalGold}"/></td>
+            </tr>
+            
+            <tr>
+                <th>Total steel:</th>
+                <td><c:out value="${statistic.totalSteel}"/></td>
+            </tr>
+            
+            <tr>
+                <th>Total object:</th>
+                <td><c:out value="${statistic.totalObject}"/></td>
+            </tr>
+            
+            <tr>
+                <th>Total medal:</th>
+                <td><c:out value="${statistic.totalMedal}"/></td>
+            </tr>
+            
+
+
+        </table>
+        <div id="fondo7"></div>
 
     </div>
-
-    <h2>Statistics</h2>
-
-
-    <table class="table table-striped" >
-        <tr>
-            <th>Time Played:</th>
-            <td><c:out value="${statistic.getTimeFormatted()}"/></td>
-        </tr>
-        <tr>
-            <th>Games played:</th>
-            <td><c:out value="${statistic.gamesPlayed}"/></td>
-        </tr>
-        <tr>
-            <th>Games won:</th>
-            <td><c:out value="${statistic.gamesWon}"/></td>
-        </tr>
-        <tr>
-            <th>Total iron:</th>
-            <td><c:out value="${statistic.totalIron}"/></td>
-        </tr>
-        
-        <tr>
-            <th>Total gold:</th>
-            <td><c:out value="${statistic.totalGold}"/></td>
-        </tr>
-        
-        <tr>
-            <th>Total steel:</th>
-            <td><c:out value="${statistic.totalSteel}"/></td>
-        </tr>
-        
-        <tr>
-            <th>Total object:</th>
-            <td><c:out value="${statistic.totalObject}"/></td>
-        </tr>
-        
-        <tr>
-            <th>Total medal:</th>
-            <td><c:out value="${statistic.totalMedal}"/></td>
-        </tr>
-        
-
-
-    </table>
-
-   
-
-         
 
     <script>
         function myFunction() {

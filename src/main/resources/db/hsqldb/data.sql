@@ -3,12 +3,12 @@ INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('rafjimfer', 'RafaAngel1','rafa@gmail.com', TRUE);
-INSERT INTO authorities(id,username, authority) VALUES (1, 'rafjimfer', 'admin');
+INSERT INTO authorities(id,username, authority) VALUES (1, 'rafjimfer', 'player');
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('serrivroa', 'SergioRivas1','ss@gmail.com', TRUE);
-INSERT INTO authorities(id,username, authority) VALUES (2, 'serrivroa', 'admin');
+INSERT INTO authorities(id,username, authority) VALUES (2, 'serrivroa', 'player');
 INSERT INTO usersdwarf(username, pass,email, active) VALUES ('frabotrom', 'Franbotrom1','fran@gmail.com', TRUE);
 INSERT INTO authorities(id,username, authority) VALUES (3, 'frabotrom', 'player');
-INSERT INTO usersdwarf(username, pass,email, active) VALUES ('admin1', '4dm1n','admin1@gmail.com', TRUE);
+INSERT INTO usersdwarf(username, pass,email, active) VALUES ('admin1', 'Adm1nAdm1n','admin1@gmail.com', TRUE);
 INSERT INTO authorities(id,username, authority) VALUES (4, 'admin1', 'admin');
 
 -- Inserting test game and board --
@@ -28,6 +28,7 @@ INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_
 INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('24745000000000', 7, 4, 120, 90, 77, 31, 18, 'serrivroa');
 INSERT INTO statistics (time_played, games_played, games_won, total_iron, total_gold, total_steel, total_object, total_medal, user_dwarf_id) VALUES ('3600000000000', 1, 1, 150, 50, 3, 4, 6, 'frabotrom');
 
+
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (1,0.5,'2022-01-01','rafjimfer',1);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (2,0.15,'2022-01-01','rafjimfer',2);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (3,0.35,'2022-01-01','rafjimfer',3);
@@ -42,3 +43,5 @@ INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievem
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (10,0.15,'2022-01-01','frabotrom',2);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (11,0.15,'2022-01-01','frabotrom',3);
 INSERT INTO user_achievements(id,progress, obtaining_date,user_dwarf_id,achievements_id) VALUES (12,0.35,'2022-01-01','frabotrom',4);
+
+

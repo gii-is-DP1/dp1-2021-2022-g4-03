@@ -58,6 +58,7 @@
   height: 100%;
 }
 
+
 #fondo1 {
   width: 102%;
   height: 103%;
@@ -113,7 +114,7 @@
   top: 0px;
   left: 0px;
   background-color: @spring-color8;
-  background-image: url("../images/Fondo4.png");
+  background-image: url("../images/errorDwarf.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0.85;
@@ -138,12 +139,49 @@
   margin:-1%;
 }
 
+#fondo6 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo6.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
+#fondo7 {
+  width: 102%;
+  height: 103%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: @spring-color8;
+  background-image: url("../images/Fondo7.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.85;
+  filter: blur(3px);
+  z-index: -1;
+  margin:-1%;
+}
+
 h2{
   color: @spring-color2;
 }
 
 label{
   color: @spring-color2;
+}
+
+.form-horizontal .control-label {
+  text-align: left !important;
+  font-size: 16px !important;
 }
 
 .table > thead > tr > th {
@@ -167,6 +205,55 @@ table tbody tr:nth-child(even) {
 
 .nav > li > a {
   color: @spring-color4;
+}
+
+caption{
+  font-size: 18px;
+  padding-left: 8px;
+  background-color: @spring-color1;
+  color: @spring-color5;
+  padding-bottom: 8px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-family: 'montserratregular';
+}
+
+.center-caption{
+  text-align: center;
+  padding-left: 0px !important;
+}
+
+.text-square{
+  padding: 0px;
+  background-color: @spring-color7;
+  color: @spring-color3;
+  border-radius: 12px;
+}
+
+.form-square{
+  padding-top: 20px;
+  padding-bottom: 4px;
+  margin-bottom: 0px;
+  background-color: @spring-color7;
+  color: @spring-color3;
+  border-radius: 12px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.form-square2{
+  padding-top: 20px;
+  padding-bottom: 4px;
+  margin-bottom: 0px;
+  background-color: @spring-color7;
+  color: @spring-color3;
+  border-radius: 12px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.img-profile{
+  border: 4px solid @spring-color2 !important;
+  border-radius: 50%;
 }
 
 .btn-default {
@@ -208,6 +295,32 @@ table tbody tr:nth-child(even) {
   }
 }
 
+.btn-close {
+  margin-top: 8px;
+  padding: 3px;
+  background: @spring-color7;
+  border-radius: 50% !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color8;
+  }
+}
+
+.img-close {
+  border-radius: 50%;
+  height: 52px;
+  width: 52px;
+}
+
 .btn-login {
   margin-bottom: 6px;
   margin-top: 6px;
@@ -241,6 +354,30 @@ table tbody tr:nth-child(even) {
   font-size: 24px;
   margin-left: 38%;
   width: 24%;
+  color: @spring-color5;
+  background: @spring-color1;
+  border-color: @spring-color2;
+  border-width: 3px;
+  border-radius: 50px !important;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-color3;
+    border-color: @spring-color3;
+  }
+}
+
+.btn-profile-lg {
+  font-size: 24px;
+  width: 100%;
   color: @spring-color5;
   background: @spring-color1;
   border-color: @spring-color2;

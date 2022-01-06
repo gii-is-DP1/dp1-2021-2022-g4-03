@@ -38,12 +38,12 @@ public class UserDwarf extends BaseEntity implements Serializable{
 
     @Column(name="pass")
     @NotEmpty
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z[0-9]]{8,}$" , message = "must contain 8 characters, one uppercase and numbers")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z[0-9]]{8,}$" , message = "Debe contener 8 caractéres, uno mínimo en mayúsculas y otro en número")
     private String pass;
 
     @Column(name="email")
     @NotEmpty
-    @Email
+    @Email(message = "Tiene que seguir el formato email")
     private String email;
 
     @Column(name="active")

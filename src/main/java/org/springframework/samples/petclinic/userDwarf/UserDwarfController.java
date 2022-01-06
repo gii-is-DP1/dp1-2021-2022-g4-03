@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.userDwarf;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,12 +47,6 @@ public class UserDwarfController {
 
 	@Autowired
 	private AuthoritiesService authoritiesService;
-
-	@Autowired
-	private AchievementsService achievementsService;
-
-	@Autowired
-	private UserAchievementsService userAchievementsService; 
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -247,6 +242,13 @@ public class UserDwarfController {
 			modelmap.addAttribute("message","User not found");
 		}
 		return "redirect:/usersDwarf/list";
+	}
+
+	@GetMapping(value = "/information")
+	public String Information(Map<String, Object> model) {
+		Wrapper wrapper = new Wrapper();
+		model.put("wrapper", wrapper);
+		return "aboutUs";
 	}
 
 

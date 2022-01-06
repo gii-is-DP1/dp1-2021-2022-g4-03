@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.testStatistics;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -16,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.assertj.core.util.Lists;
 
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,6 +27,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.statistics.StatisticsController;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
+import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
@@ -33,9 +36,7 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.FilterType;
 
 @WebMvcTest(controllers = StatisticsController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
@@ -47,27 +48,28 @@ public class testStatisticsController {
 
     @Autowired
     private MockMvc mockMcv;
-    private UserDwarf paco;
-    private Statistics pacoStatistics;
     @MockBean
     private UserDwarfService userDwarfService;
     @MockBean
     private StatisticsService statisticsService;
     @MockBean
-    private AuthoritiesService authoritiesService; 
+    private AuthoritiesService authoritiesService;
+
+    private UserDwarf paco;
+    private Statistics pacoStatistics;
 
     @BeforeEach
     void setup(){
 
-        UserDwarf paco = new UserDwarf();
+        paco = new UserDwarf();
         paco.setActive(true);
         paco.setEmail("email@gmail.com");
         paco.setId(TEST_UD_ID);
         paco.setPass("Passpass123");
-        paco.setUsername("Paco");
+        paco.setUsername("paco");
         given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(paco);
-       
-        Statistics pacoStatistics = new Statistics();
+
+        pacoStatistics = new Statistics();
         pacoStatistics.setGamesPlayed(2);
         pacoStatistics.setGamesWon(1);
         pacoStatistics.setId(TEST_STATISTICS_ID);
@@ -83,10 +85,11 @@ public class testStatisticsController {
 
 
     }
+
     @WithMockUser(value = "spring")
     @Test
     void testInitStatistics() throws Exception{
-        mockMcv.perform(get("/statistics")).andExpect(status().isOk()).andExpect(model().attributeExists("userDwarf"))
+        mockMcv.perform(get("/statistics")).andExpect(status().isOk()).andExpect(model().attributeExists("statistics"))
         .andExpect(view().name("statistics/findStatistics"));
     }
 
@@ -94,48 +97,50 @@ public class testStatisticsController {
     @Test
     void testProcessStatisticByUsername() throws Exception{
 
-        given(this.userDwarfService.findUserDwarfByUsername(paco.getUsername())).willReturn(Lists.newArrayList(paco));
+        given(this.statisticsService.findStatisticsByUsername(paco.getUsername())).willReturn(pacoStatistics);
 
-        mockMcv.perform(get("/statistics/player").param("username", "rafjimfer")).andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/statistics/player/" + TEST_UD_ID));
+        mockMcv.perform(get("/statistics/player").param("userDwarf", "paco")).andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/statistics/player/" + TEST_STATISTICS_ID));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void testProcessStatisticEmpty() throws Exception{
-        given(this.userDwarfService.findUserDwarfByUsername("")).willReturn(Lists.newArrayList(paco, new UserDwarf()));
+        given(this.statisticsService.findStatisticsByUsername("")).willReturn(null);
 
-        mockMcv.perform(get("/statistics/player")).andExpect(status().isOk()).andExpect(view().name("statistics/findStatistics"));
+        mockMcv.perform(get("/statistics/player").param("userDwarf", "")).andExpect(status().is2xxSuccessful()).andExpect(view().name("statistics" +
+            "/findStatistics"));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void testShowStatistics() throws Exception{
 
+        given(this.statisticsService.findStatisticsByID(TEST_STATISTICS_ID)).willReturn(pacoStatistics);
 
         mockMcv.perform(get("/statistics/player/{statisticId}", TEST_STATISTICS_ID)).andExpect(status().isOk())
-        .andExpect(model().attribute("statistics", hasProperty("timePlayed", is(eq(pacoStatistics.getTimePlayed())))))
-        .andExpect(model().attribute("statistics", hasProperty("gamesPlayed", is(eq(2)))))
-        .andExpect(model().attribute("statistics", hasProperty("gamesWon", is(eq(1)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalIron", is(eq(56)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalGold", is(eq(25)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalSteel", is(eq(6)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalObject", is(eq(15)))))
-        .andExpect(model().attribute("statistics", hasProperty("totalMedal", is(eq(4)))))
+        .andExpect(model().attribute("statistics", hasProperty("timePlayed", is(pacoStatistics.getTimePlayed()))))
+        .andExpect(model().attribute("statistics", hasProperty("gamesPlayed", is(2))))
+        .andExpect(model().attribute("statistics", hasProperty("gamesWon", is(1))))
+        .andExpect(model().attribute("statistics", hasProperty("totalIron", is(56))))
+        .andExpect(model().attribute("statistics", hasProperty("totalGold", is(25))))
+        .andExpect(model().attribute("statistics", hasProperty("totalSteel", is(15))))
+        .andExpect(model().attribute("statistics", hasProperty("totalObject", is(6))))
+        .andExpect(model().attribute("statistics", hasProperty("totalMedal", is(4))))
         .andExpect(view().name("/statistics/statisticsList"));
 
     }
 
-    
-
-
-    
 
 
 
 
-    
 
 
-    
+
+
+
+
+
+
 }
