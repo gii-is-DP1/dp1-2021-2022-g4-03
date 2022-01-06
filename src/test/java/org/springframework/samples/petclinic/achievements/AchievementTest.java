@@ -26,12 +26,13 @@ public void shouldNotValidateWhenParametersAreEmpty(){
     achievements.setDescription("");
     achievements.setCondition("");
     achievements.setLastChange(null);
+    achievements.setPic("");
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<Achievements>> constraintViolations =
     validator.validate(achievements);
 
-    assertThat(constraintViolations.size()).isEqualTo(5);
+    assertThat(constraintViolations.size()).isEqualTo(6);
 
     assertAll("constrainViolations", 
     () -> {
@@ -39,6 +40,12 @@ public void shouldNotValidateWhenParametersAreEmpty(){
                 .filter(c -> c.getPropertyPath().toString().equals("description")).map(v -> v.getMessage())
                 .collect(Collectors.toList());
         assertThat(violationsList).containsExactlyInAnyOrder("must not be empty", "size must be between 3 and 50");
+    },
+    () -> {
+        List<String> violationsList = constraintViolations.stream()
+                .filter(c -> c.getPropertyPath().toString().equals("pic")).map(v -> v.getMessage())
+                .collect(Collectors.toList());
+        assertThat(violationsList).containsExactlyInAnyOrder("must not be empty");
     },
     () -> {
         List<String> violationsList = constraintViolations.stream()
@@ -64,6 +71,7 @@ public void shouldNotValidateWhenParametersAreEmpty(){
     achievements.setDescription("roubwrnbeqw");
     achievements.setCondition("barpihwp");
     achievements.setLastChange(LocalDate.of(2022, 04, 05));
+    achievements.setPic("/resources/images/picaxe.png");
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<Achievements>> constraintViolations =

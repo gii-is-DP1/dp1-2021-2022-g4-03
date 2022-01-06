@@ -12,9 +12,8 @@
     <div class="col-md-8">
 
         <div class="row">
-        <h2>Top 3 Players</h2>
-             <table class="table table-striped">
-                    <caption class="center-caption">Podium</caption>
+        <h2>Podium</h2>
+             <table class="table table-striped" style="width: 75%;">
                     <tr>
                         <th><img src="../resources/images/copa-oro.png" height ="50" width="50"/></th>
                         <td><b><c:out value="${p1}"/></b></td>
