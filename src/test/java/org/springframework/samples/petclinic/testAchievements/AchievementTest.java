@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.achievements;
+package org.springframework.samples.petclinic.testAchievements;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -14,6 +14,7 @@ import javax.validation.Validator;
 import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.samples.petclinic.validatorFunction;
+import org.springframework.samples.petclinic.achievements.Achievements;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 public class AchievementTest {
     

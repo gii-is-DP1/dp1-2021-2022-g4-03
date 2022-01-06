@@ -133,7 +133,47 @@ public class UserDwarfController {
 		}
 
 	}
+
+	@GetMapping(value = "/usersDwarf/searchPlayers")
+	public String initFindFormPlayer(Map<String, Object> model) {
+		model.put("userDwarf", new UserDwarf());
+		return "usersDwarf/findPlayers";
+	}
+
+	@GetMapping(value = "/usersDwarf/player")
+	public String processFindFormPlayer(@RequestParam("username") String username) {
+
+		if (username == null) {
+			username = ("");
+		}
+		Collection<UserDwarf> results = this.userDwarfService.findUserDwarfByUsername(username);
+		System.out.println(results.size());
+		if (results.isEmpty()) {
+			return "redirect:/usersDwarf/list";
+		} else {
+			UserDwarf userDwarf = results.iterator().next();
+			return "redirect:/profile/" + userDwarf.getId();
+		}
+
+	}
+
+	@GetMapping(value ="/profile/{userDwarfId}")
+		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
+			String view = "usersDwarf/playerProfile";
+			Wrapper wrapper = new Wrapper();
+			UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
+			Statistics statistic = this.statisticsService.findStatisticsByUsername2(userDwarf.getUsername()).get();
+			
+			wrapper.setUserDwarf(userDwarf);
+			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
+			modelMap.addAttribute("wrapper",wrapper);
+			modelMap.addAttribute("statistic",statistic);
+			modelMap.addAttribute("userDwarfId",userDwarfId);
 	
+			return view;
+		}
+
+
 
 	@GetMapping(value ="/profile")
 		public String UserDwarfProfile( ModelMap modelMap){

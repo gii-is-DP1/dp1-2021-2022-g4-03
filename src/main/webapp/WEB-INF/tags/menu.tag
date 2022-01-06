@@ -31,6 +31,17 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
+					title="find users">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Find users</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'players'}" url="/usersDwarf/searchPlayers"
+					title="find players">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Find players</span>
+				</petclinic:menuItem>
 				<sec:authorize access="hasAuthority('admin')">
 					<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
 						title="users">
@@ -44,7 +55,7 @@
 						title="statistics">
 						<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
 						<span>Statistics</span>
-					</petclinic:menuItem>	
+					</petclinic:menuItem>
                 </sec:authorize>
 
 				<sec:authorize access="hasAuthority('admin')">
@@ -83,7 +94,7 @@
 					title="information">
 					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 					<span>Information</span>
-				</petclinic:menuItem>		
+				</petclinic:menuItem>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
