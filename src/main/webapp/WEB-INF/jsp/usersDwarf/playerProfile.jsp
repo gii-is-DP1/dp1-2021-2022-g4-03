@@ -26,7 +26,7 @@
             </table>
         </div>
         <div class="col-md-1">
-            <spring:url value="/profile/playerAchievements" var="pA">
+            <spring:url value="/profile/playerAchievements/${userDwarfId}" var="pA">
                             <spring:param name="pA" value="${wrapper.userDwarf.id}"/>
                         </spring:url>
             <a href="${fn:escapeXml(pA)}" class="btn btn-default">Logros</a>
