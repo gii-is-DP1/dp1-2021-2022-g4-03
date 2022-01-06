@@ -37,7 +37,7 @@ public class testUserDwarfController {
     private static final int TEST_USERDWARF_ID = 1;
 
     @Autowired
-    private MockMvc mockMcv;
+    private MockMvc mockMvc;
     @MockBean
     private UserDwarfService userDwarfService;
     @MockBean
@@ -66,11 +66,19 @@ public class testUserDwarfController {
 
     @WithMockUser(value="spring")
     @Test
-    void userDwarfDetailsTest() throws Exception{
-        mockMcv.perform(get("/usersDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists(
+    void UserDwarfListTest() throws Exception{
+        mockMvc.perform(get("/usersDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists(
             "usersDwarf"))
             .andExpect(view().name("/usersDwarf/userDwarfList"));
     }
+
+    @WithMockUser(value="spring")
+    @Test
+    void InitCreationFormRegisterTest() throws Exception {
+		mockMvc.perform(get("/usersDwarf/register")).andExpect(status().isOk()).andExpect(model().attributeExists("wrapper"))
+                .andExpect(model().attributeExists("registerCheck"))
+				.andExpect(view().name("usersDwarf/createOrUpdateUserDwarfForm"));
+	}
 
 
 }
