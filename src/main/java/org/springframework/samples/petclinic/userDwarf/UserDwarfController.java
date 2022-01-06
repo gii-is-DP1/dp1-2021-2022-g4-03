@@ -134,13 +134,15 @@ public class UserDwarfController {
 
 	}
 
-	@GetMapping(value = "/usersDwarf/searchPlayers")
+	//Player
+	@GetMapping(value = "/userDwarf/searchPlayers")
 	public String initFindFormPlayer(Map<String, Object> model) {
 		model.put("userDwarf", new UserDwarf());
-		return "usersDwarf/findPlayers";
+		return "userDwarf/findPlayers";
 	}
 
-	@GetMapping(value = "/usersDwarf/player")
+	//Player
+	@GetMapping(value = "/userDwarf/player")
 	public String processFindFormPlayer(@RequestParam("username") String username) {
 
 		if (username == null) {
@@ -157,9 +159,10 @@ public class UserDwarfController {
 
 	}
 
+	//Player
 	@GetMapping(value ="/profile/{userDwarfId}")
 		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
-			String view = "usersDwarf/playerProfile";
+			String view = "userDwarf/playerProfile";
 			Wrapper wrapper = new Wrapper();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(userDwarf.getUsername()).get();
