@@ -7,8 +7,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AchievementsController {
-    
+    @Autowired
+    private UserAchievementsService userAchievementsService;
+
     private static final String VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementsForm";
 
     private final AchievementsService achievementsService;
@@ -40,13 +39,16 @@ public class AchievementsController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	
+
 
     @GetMapping(value="/achievements/{achievementsId}/delete")
 	public String deleteAchievements(@PathVariable("achievementsId") int achievementsId,ModelMap modelMap) {
-		
+
 		Optional<Achievements> achievements = this.achievementsService.findByIdOptional(achievementsId);
 		if(achievements.isPresent()){
+            for(UserAchievements uA:userAchievementsService.findByAchievementId(achievementsId)){
+                userAchievementsService.delete(uA);
+            }
 			achievementsService.delete(achievements.get());
 			modelMap.addAttribute("message", "Logro borrado correctamente");
 		}else{
@@ -80,7 +82,7 @@ public class AchievementsController {
 		}
 		Collection<Achievements> results = this.achievementsService.findAchievementsByCondition(condition);
 		System.out.println(results.size() + "+++++++++++++++++++++++++++++++++++++++");
-		
+
 		if (results.isEmpty()) {
 			return "redirect:/achievements/list";
 		}
@@ -88,7 +90,7 @@ public class AchievementsController {
 			Achievements ach = results.iterator().next();
 			return "redirect:/achievements/" + ach.getId();
 		}
-		
+
 	}
 	@GetMapping(value = "/achievements/{achievementsId}")
 	public ModelAndView showAchievement(@PathVariable("achievementsId") int achievementsId) {
@@ -113,18 +115,18 @@ public class AchievementsController {
 		else {
 			//creating achievement
 			this.achievementsService.saveAchievement(achievements);
-			
+
 			return "redirect:/achievements/list";
 		}
 	}
-	
+
     @GetMapping(value = "/achievements/{achievementsId}/edit")
 	public String initUpdateAchievementForm(@PathVariable("achievementsId") int achievementId, Model model) {
 		Achievements achievements = this.achievementsService.findAchievementById(achievementId);
-		model.addAttribute(achievements);
+		model.addAttribute("achievements",achievements);
 		return VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}
-	
+
 
     @PostMapping(value = "/achievements/{achievementsId}/edit")
 	public String processUpdateAchievementForm(@Valid Achievements achievements, BindingResult result, @PathVariable("achievementsId") int achievementsId) {
@@ -135,11 +137,11 @@ public class AchievementsController {
 			this.achievementsService.saveAchievement(achievements);
 			return "redirect:/achievements/{achievementsId}";
 		}
-            
+
 	}
 
 
 
 
-    
+
 }

@@ -31,13 +31,7 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
-					title="find users">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find users</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'players'}" url="/usersDwarf/searchPlayers"
+				<petclinic:menuItem active="${name eq 'players'}" url="/userDwarf/searchPlayers"
 					title="find players">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find players</span>

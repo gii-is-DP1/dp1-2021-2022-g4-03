@@ -1,18 +1,8 @@
 package org.springframework.samples.petclinic.achievements;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -20,7 +10,6 @@ import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import lombok.Getter;
@@ -43,16 +32,15 @@ public class UserAchievements extends BaseEntity{
 	@Column(name = "obtaining_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	public LocalDate obtainingDate;
-    
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name="userDwarf_id", referencedColumnName = "username")
     })
     private UserDwarf userDwarf;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name="achievements_id", referencedColumnName = "id")
     })

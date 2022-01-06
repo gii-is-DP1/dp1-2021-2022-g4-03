@@ -12,8 +12,8 @@
         <div class = "col-md-8">
             <table class="table table-striped" style="width: 65%;">
                 <tr> 
-                    <th>Username</th>
-                    <td><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
+                    <th style="background-color: rgb(221, 221, 221);">Username</th>
+                    <td style="background-color: rgb(221, 221, 221);"><b><c:out value="${wrapper.userDwarf.username}"/></b></td>
                 </tr>
             </table>
         </div>

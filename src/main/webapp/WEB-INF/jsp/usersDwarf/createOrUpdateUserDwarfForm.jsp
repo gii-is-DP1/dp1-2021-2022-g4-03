@@ -30,13 +30,16 @@
                                 <label class="col-sm-offset-1 col-sm-2 control-label">Role:</label>
                                 <div class="col-sm-offset-1 col-sm-10">
                                     <label class="checkbox-inline">
-                                        <form:checkbox path="roles" name="roles" value="player" /> Player
+                                        <form:checkbox path="roles" name="roles" value="player" id="roles_player"/>
+                                        Player
                                     </label>
                                     <label class="checkbox-inline">
-                                        <form:checkbox path="roles" name="roles" value="moderator" /> Moderator
+                                        <form:checkbox path="roles" name="roles" value="moderator" id="roles_moderator"
+                                        />
+                                        Moderator
                                     </label>
                                     <label class="checkbox-inline">
-                                        <form:checkbox path="roles" name="roles" value="admin" /> Admin
+                                        <form:checkbox path="roles" name="roles" value="admin" id="roles_admin"/> Admin
                                     </label>
                                 </div>
                             </div>
@@ -51,7 +54,8 @@
                                 <button class="btn btn-default" type="submit">Add</button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn btn-default" type="submit">Update</button>
+                                <button class="btn btn-default" type="submit" onclick="roles()">Update</button>
+                                
                             </c:otherwise>
                         </c:choose>
                     </div>

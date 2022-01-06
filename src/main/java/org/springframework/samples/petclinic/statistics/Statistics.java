@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "statistics")
 public class Statistics extends BaseEntity{
-    
+
     @Column(name="time_played")
     @NotNull
     public Duration timePlayed;
@@ -65,10 +65,8 @@ public class Statistics extends BaseEntity{
     public Integer totalMedal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumns({
-        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
-    })
-    private UserDwarf userDwarf;
+    @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    public UserDwarf userDwarf;
 
 
     public String getTimeFormatted(){

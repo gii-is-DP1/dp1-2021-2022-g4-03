@@ -15,6 +15,10 @@ public class BoardService {
 		return boardRepository.findById(id);
 	}
 
+	public Board findById2(Integer id) {
+		return boardRepository.findById(id).orElse(null);
+	}
+
 	public static Board createBoard() {
 		Board board = new Board();
 		return board;

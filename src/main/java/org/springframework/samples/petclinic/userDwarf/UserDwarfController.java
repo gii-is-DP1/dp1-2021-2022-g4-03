@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.achievements.Achievements;
 import org.springframework.samples.petclinic.achievements.AchievementsService;
 import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
@@ -39,6 +39,9 @@ public class UserDwarfController {
 
 	private static final String VIEWS_USERDWARF_CREATE_OR_UPDATE_FORM = "usersDwarf/createOrUpdateUserDwarfForm";
 
+    @Autowired
+    private CurrentUser currentUser;
+
 	@Autowired
 	private UserDwarfService userDwarfService;
 
@@ -47,6 +50,9 @@ public class UserDwarfController {
 
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private UserAchievementsService userAchievementsService;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -73,8 +79,6 @@ public class UserDwarfController {
 		return view;
 
 	}
-
-	
 
 	@GetMapping(value = "/usersDwarf/register")
 	public String initCreationFormRegister(Map<String, Object> model) {
@@ -134,12 +138,14 @@ public class UserDwarfController {
 
 	}
 
+
 	//Player
 	@GetMapping(value = "/userDwarf/searchPlayers")
 	public String initFindFormPlayer(Map<String, Object> model) {
 		model.put("userDwarf", new UserDwarf());
 		return "userDwarf/findPlayers";
 	}
+
 
 	//Player
 	@GetMapping(value = "/userDwarf/player")
@@ -166,36 +172,31 @@ public class UserDwarfController {
 			Wrapper wrapper = new Wrapper();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(userDwarf.getUsername()).get();
-			
+
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
 			modelMap.addAttribute("statistic",statistic);
 			modelMap.addAttribute("userDwarfId",userDwarfId);
-	
+
 			return view;
 		}
-
-
 
 	@GetMapping(value ="/profile")
 		public String UserDwarfProfile( ModelMap modelMap){
 			String view = "usersDwarf/userDwarfProfile";
 			Wrapper wrapper = new Wrapper();
-			String currentUserUsername= CurrentUser.getCurrentUser();
+			String currentUserUsername= currentUser.getCurrentUser();
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
-			
+
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);
 			modelMap.addAttribute("statistic",statistic);
-	
+
 			return view;
 		}
-
-
-	
 
 	@GetMapping("/usersDwarf/{userDwarfId}")
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {
@@ -228,6 +229,11 @@ public class UserDwarfController {
 		} else {
 			@Valid
 			UserDwarf userDwarf = wrapper.userDwarf;
+            authoritiesService.getRolesUserByUsername(userDwarf.getUsername()).stream().forEach(role->{
+                if(!wrapper.getRoles().contains(role)) authoritiesService.deleteAuthorities(userDwarf.getUsername(),
+                    role);
+            });
+
 			userDwarf.setId(userDwarfId);
 			this.userDwarfService.saveUserDwarf(userDwarf, wrapper.roles);
 			return "redirect:/usersDwarf/{userDwarfId}";
@@ -239,6 +245,12 @@ public class UserDwarfController {
 		String view = "usersDwarf/userDwarfList";
 		Optional<UserDwarf> userDwarf  = this.userDwarfService.findByIdOptional(userDwarfId);
 		if(userDwarf.isPresent()){
+            String username= userDwarf.get().getUsername();
+            for (UserAchievements uA:userAchievementsService.findUserAchievementsByUsername(username) ) {
+                userAchievementsService.delete(uA);
+            }
+
+            statisticsService.deleteStatistics(statisticsService.findStatisticsByUsername(username));
 			userDwarfService.deleteUserDwarf(userDwarf.get());
 			modelmap.addAttribute("message","User successfully deleted");
 		}else{

@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 @Service
 public class UserAchievementsService {
 
@@ -33,6 +36,7 @@ public class UserAchievementsService {
 		return this.userAchievementsRepository.findById(id);
 	}
 
+
 	@Transactional(readOnly = true)
 	public Optional<UserAchievements> findUserAchievementsById2(int id) throws DataAccessException{
 		return userAchievementsRepository.findUserAchievementsById2(id);
@@ -47,5 +51,17 @@ public class UserAchievementsService {
 	public Collection<UserAchievements> findByUser(String user) throws DataAccessException {
 		return userAchievementsRepository.findByUser(user);
 	}
+
+
+    public List<UserAchievements> findUserAchievementsByUsername(String username){
+        return this.userAchievementsRepository.findUserAchievementsByUsername(username);
+    }
+
+    public List<UserAchievements> findByAchievementId(Integer id){
+        return this.userAchievementsRepository.findUserAchievementsByAchievementId(id);
+    }
+
+
+
 
 }

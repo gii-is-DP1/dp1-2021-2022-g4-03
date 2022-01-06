@@ -1,14 +1,10 @@
 	package org.springframework.samples.petclinic.user;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.h2.store.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
@@ -43,6 +39,27 @@ public class AuthoritiesService {
 		return findAuthoritiesByUsername(username).stream().map(auth -> auth.getAuthority())
 				.collect(Collectors.toList());
 	}
+
+    @Transactional
+    public void deleteAuthorities(String username, String role){
+        Authorities authority = new Authorities();
+        Optional<UserDwarf> userDwarf = userDwarfService.findUserDwarfByUsername2(username);
+        if (userDwarf.isPresent()) {
+            Boolean authCheck = false;
+            authority.setUserDwarf(userDwarf.get());
+            authority.setAuthority(role);
+            Collection<Authorities> authIt = authoritiesRepository.findByUsername(username);
+            for (Authorities auth : authIt) {
+                if (auth.authority.equals(role))
+                    authCheck = true;
+                break;
+            }
+            if (authCheck)
+                authoritiesRepository.delete(authority);
+        } else
+            throw new DataAccessException("UserDwarf '" + username + "' not found!") {
+            };
+    }
 
 	@Transactional
 	public void saveAuthorities(String username, String role) throws DataAccessException {
