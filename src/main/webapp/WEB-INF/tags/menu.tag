@@ -31,7 +31,7 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'players'}" url="/ud/searchPlayers"
+				<petclinic:menuItem active="${name eq 'players'}" url="/userDwarf/searchPlayers"
 					title="find players">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find players</span>
