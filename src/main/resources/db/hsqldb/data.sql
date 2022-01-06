@@ -115,3 +115,4 @@ INSERT INTO cards(cardimage,cardtype,position,title,description,effect) VALUES (
 INSERT INTO cards(cardimage,cardtype,position,title,description,effect) VALUES ('resources/cards/Iron Seam 2-2.png','EXTRACCION_RECURSOS',4,'Iron Seam','Take 3 iron from the supply.','+3i');
 INSERT INTO cards(cardimage,cardtype,position,title,description,effect) VALUES ('resources/cards/Iron Seam 2-3.png','EXTRACCION_RECURSOS',5,'Iron Seam','Take 3 iron from the supply.','+3i');
 INSERT INTO cards(cardimage,cardtype,position,title,description,effect) VALUES ('resources/cards/Iron Seam 3-2.png','EXTRACCION_RECURSOS',7,'Iron Seam','Take 3 iron from the supply.','+3i');
+

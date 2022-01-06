@@ -138,12 +138,16 @@ public class UserDwarfController {
 
 	}
 
+
+	//Player
 	@GetMapping(value = "/userDwarf/searchPlayers")
 	public String initFindFormPlayer(Map<String, Object> model) {
 		model.put("userDwarf", new UserDwarf());
 		return "userDwarf/findPlayers";
 	}
 
+
+	//Player
 	@GetMapping(value = "/userDwarf/player")
 	public String processFindFormPlayer(@RequestParam("username") String username) {
 
@@ -161,6 +165,7 @@ public class UserDwarfController {
 
 	}
 
+	//Player
 	@GetMapping(value ="/profile/{userDwarfId}")
 		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
 			String view = "userDwarf/playerProfile";
