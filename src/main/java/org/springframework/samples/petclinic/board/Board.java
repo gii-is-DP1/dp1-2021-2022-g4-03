@@ -3,11 +3,8 @@ package org.springframework.samples.petclinic.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -21,32 +18,50 @@ import lombok.Setter;
 @Table(name = "board")
 public class Board extends BaseEntity {
 
-    String background;
-    int width;
-    int height;
+    private String background;
+    //TODO: Cambiar width y height a variables adaptables a pantalla.
+    private int width;
+    private int height;
 
     public Board() {
         this.background = "/resources/images/boardBackground.png";
         this.width = 1000;
         this.height = 700;
         this.cartas = new ArrayList<>();
-        this.cartasAccionEspecial = new ArrayList<>();
+        this.cartasMontaña = new ArrayList<>();
+        this.cartasAccionEspecial_0= new ArrayList<>();
+        this.cartasAccionEspecial_1= new ArrayList<>();
+        this.cartasAccionEspecial_2= new ArrayList<>();
     }
+
     public Board(int id) {
-        this.id=id;
+        this.id = id;
         this.background = "resources/images/boardBackground.png";
         this.width = 1000;
         this.height = 700;
         this.cartas = new ArrayList<>();
-        this.cartasAccionEspecial = new ArrayList<>();
+        this.cartasMontaña = new ArrayList<>();
+        this.cartasAccionEspecial_0= new ArrayList<>();
+        this.cartasAccionEspecial_1= new ArrayList<>();
+        this.cartasAccionEspecial_2= new ArrayList<>();
     }
 
-    //Esta es la montaña de cartas normales, enemigos-forja-mina
+    //Mina, array cartas 0-8
     @ElementCollection
-    List<String> cartas;
+    List<Integer> cartas;
 
-    //Montaña de cartas de acción especial
+    //Montones de cartas especiales, array cartas 9-11
     @ElementCollection
-    List<String> cartasAccionEspecial;
+    List<Integer> cartasAccionEspecial_0;
+
+    @ElementCollection
+    List<Integer> cartasAccionEspecial_1;
+
+    @ElementCollection
+    List<Integer> cartasAccionEspecial_2;
+
+    //Mazo, cartas sin asignar
+    @ElementCollection
+    List<Integer> cartasMontaña;
 
 }

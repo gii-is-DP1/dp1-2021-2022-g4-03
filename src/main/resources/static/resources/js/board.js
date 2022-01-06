@@ -2,16 +2,35 @@
 
 function main(){
     let form = document.getElementById("testForm");
+    let startButton=document.getElementById("startButton");
 
+    startButton.addEventListener("click", startGame);
     form.addEventListener("submit", handleClick, false);
 
     window.addEventListener("load", loadBackground, false);
 
 }
-
-function handleClick(event) {
-    event.preventDefault();
+ function startGame(event) {
     console.log("Works");
+    let test="/api/game/"+gameId;
+    let game = fetch(test, {
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        credentials: 'include'
+    })
+        .then(response => response.json());
+
+    console.log(game);
+
+}
+
+async function handleClick(event) {
+    event.preventDefault();
+    //console.log("Works");
+    let game = await fetch(event.action,)
+        .then(response => response.json());
 
 }
 
