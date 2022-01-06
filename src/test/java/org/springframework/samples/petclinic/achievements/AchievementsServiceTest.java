@@ -81,7 +81,7 @@ public class AchievementsServiceTest {
 
         Collection<Achievements> u = this.achievementsService.findAchievementsByCondition("gamesPlayed=10");
         assertThat(u.size()).isEqualTo(found+1);
-        
+
     }
 
     @Test
@@ -97,11 +97,11 @@ public class AchievementsServiceTest {
 
 
         achievementsService.saveAchievement(achievement);
-        assertThat(achievementsService.findByIdOptional(4).isPresent());
+        assertThat(achievementsService.findByIdOptional(5).isPresent());
 
-        achievementsService.delete(achievementsService.findAchievementById(4));
-		
-        assertThat(achievementsService.findByIdOptional(4).isEmpty());
+        achievementsService.delete(achievementsService.findAchievementById(5));
+
+        assertThat(achievementsService.findByIdOptional(5).isEmpty());
 	}
-    
+
 }
