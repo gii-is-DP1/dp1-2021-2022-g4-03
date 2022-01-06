@@ -6,49 +6,31 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <petclinic:layout pageName="home">
-    <div class="row">
-        <div class="bodyBackground">
-            <div class="col-sm-12">
-                <a class="btn btn-welcome"
-                    href='<spring:url value="/Aboutus" htmlEscape="true"/>'>About Us</a>
-            </div>
-            <div id="fondo1"></div>
-        </div>
-    </div>
-    <script>
-        function redirectOnClickLogin() {
-            document.location = "/login";
-        }
-    </script>
-    <script>
-        function redirectOnClickRegister() {
-            document.location = "/usersDwarf/register";
-        }
-    </script>
 
-    <br><br>
+<div class="bodyBackground">
 
     <div class="col-md-8">
 
         <div class="row">
         <h2>Top 3 Players</h2>
-            <table class="table table-striped" style="width: 75%;">
-                <tr>
-                    <th style="color: rgb(190, 163, 7);">Gold:</th>
-                    <td style="color: rgb(190, 163, 7);"><c:out value="${p1}"/></td>
-                    <td style="color: rgb(190, 163, 7);"><c:out value="${p1wg}"/></td>
-                </tr>
-                <tr>
-                    <th>Silver:</th>    
-                    <td><c:out value="${p2}"/></td>
-                    <td><c:out value="${p2wg}"/></td>
-                </tr>
-                <tr>
-                    <th>Bronce:</th>
-                    <td><c:out value="${p3}"/></td>
-                    <td><c:out value="${p3wg}"/></td>
-                </tr>
-            </table>
+             <table class="table table-striped">
+                    <caption class="center-caption">Podium</caption>
+                    <tr>
+                        <th><img src="../resources/images/copa-oro.png" height ="50" width="50"/></th>
+                        <td><b><c:out value="${p1}"/></b></td>
+                        <td><c:out value="${p1wg} victorias"/></td>
+                    </tr>
+                    <tr>
+                        <th><img src="../resources/images/copa-plata.png" height ="50" width="50"/></th>
+                        <td><b><c:out value="${p2}"/></b></td>
+                        <td><c:out value="${p2wg} victorias"/></td>
+                    </tr>
+                    <tr>
+                        <th><img src="../resources/images/copa-bronce.png" height ="50" width="50"/></th>
+                        <td><b><c:out value="${p3}"/></b></td>
+                        <td><c:out value="${p3wg} victorias"/></td>
+                    </tr>
+                </table>
         </div>  
         <div class="row">
             <h2>Global Statistics</h2>
@@ -101,5 +83,6 @@
         </div>
        
     </div>
-
+  <div id="fondo1"></div>
+  </div>
 </petclinic:layout>

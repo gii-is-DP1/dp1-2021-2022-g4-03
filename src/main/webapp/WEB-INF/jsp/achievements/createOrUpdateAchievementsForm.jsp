@@ -7,26 +7,35 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="achievements">
-    <h2>
-        <c:if test="${achievements['new']}">New </c:if> Achievement
-    </h2>
-    <form:form modelAttribute="achievements" class="form-horizontal" id="add-achievement-form">
-        <div class="form-group has-feedback">
-            <petclinic:inputField label="Condition" name="condition"/>
-            <petclinic:inputField label="Description" name="description"/>
-            <petclinic:inputField label="Last Change" name="lastChange"/>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${achievements['new']}">
-                        <button class="btn btn-default" type="submit">Add </button>
-                    </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update </button>
-                    </c:otherwise>
-                </c:choose>
+
+    <div class="bodyBackground">
+    
+        <h2>
+            <c:if test="${achievements['new']}">New </c:if> Achievement
+        </h2>
+        <form:form modelAttribute="achievements" class="form-horizontal" id="add-achievement-form">
+            <div class="panel form-square">  
+                <div class="form-group has-feedback">
+                    <petclinic:inputField label="Condition" name="condition"/>
+                    <petclinic:inputField label="Description" name="description"/>
+                    <petclinic:inputField label="Last Change" name="lastChange"/>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-sm-12 text-center">
+                        <c:choose>
+                            <c:when test="${achievements['new']}">
+                                <button class="btn btn-default" type="submit">Add</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-default" type="submit">Update</button>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
             </div>
-        </div>
-    </form:form>
+        </form:form>
+    </div>
+
+    <div id="fondo6"></div>
 </petclinic:layout>

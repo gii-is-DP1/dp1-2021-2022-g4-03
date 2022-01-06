@@ -38,7 +38,7 @@ public class StatisticsController {
         Statistics result = this.statisticsService.findStatisticsByUsername(username);
         if (result == null) {
             model.put("statistics", new Statistics());
-            model.put("message", "User statistics not found");
+            model.put("message", "User statistics not found: username doesn't exist or search is empty");
             return "statistics/findStatistics";
         }
 

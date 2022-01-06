@@ -60,6 +60,9 @@
             </tr>
         </div>
     </div>          
-    </table>
+    
+
+<div id="fondo7"></div>
+
 </petclinic:layout>
 
