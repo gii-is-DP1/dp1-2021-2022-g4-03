@@ -172,7 +172,7 @@ public class UserDwarfController {
 		public String UserDwarfProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
 			String view = "usersDwarf/playerProfile";
 			Wrapper wrapper = new Wrapper();
-			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+			UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(userDwarf.getUsername()).get();
 			
 			wrapper.setUserDwarf(userDwarf);
@@ -208,7 +208,7 @@ public class UserDwarfController {
 	public ModelAndView showUserDwarf(@PathVariable("userDwarfId") int userDwarfId) {
 		ModelAndView mav = new ModelAndView("usersDwarf/userDetails");
 		Wrapper wrapper = new Wrapper();
-		UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+		UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 		wrapper.setUserDwarf(userDwarf);
 		wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 		mav.addObject("wrapper", wrapper);
@@ -217,7 +217,7 @@ public class UserDwarfController {
 
 	@GetMapping(value = "/usersDwarf/{userDwarfId}/edit")
 	public String initUpdateUserDwarfForm(@PathVariable("userDwarfId") int userDwarfId, Model model) {
-		UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+		UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 		List<String> roles = authoritiesService.getRolesUserByUsername(userDwarf.getUsername());
 		Wrapper wrapper = new Wrapper();
 		wrapper.setRoles(roles);

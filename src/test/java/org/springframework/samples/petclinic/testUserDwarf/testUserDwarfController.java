@@ -42,7 +42,7 @@ public class testUserDwarfController {
         tauserk.setPass("Taurus98");
         tauserk.setEmail("tauserk@gmail.com");
         tauserk.setActive(true);
-        given(this.userDwarfService.findUserDwarfByUsername2(TEST_USERDWARF_ID)).willReturn(tauserk);
+        given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(tauserk);
     }
 
 

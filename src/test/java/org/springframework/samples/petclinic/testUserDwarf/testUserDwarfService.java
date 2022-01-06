@@ -46,7 +46,7 @@ public class testUserDwarfService {
     @ParameterizedTest
     @CsvSource({"rafjimfer, 1", "serrivroa, 2"})
     public void shouldFindUserDwarfWithCorrectId(String username, int id){
-        UserDwarf uD = this.userDwarfService.findUserDwarfByUsername2(id);
+        UserDwarf uD = this.userDwarfService.findUserDwarfById(id);
         assertThat(uD.getUsername()).isEqualTo(username);
         assertThat(uD.getUsername()).isNotEqualTo("rafa");
     }

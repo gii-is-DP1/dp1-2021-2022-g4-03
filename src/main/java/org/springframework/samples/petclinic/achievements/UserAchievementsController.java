@@ -117,7 +117,7 @@ public class UserAchievementsController {
 	public String playerAchievementsProfile(@PathVariable("userDwarfId") int userDwarfId, ModelMap modelMap){
 		String view = "achievements/achievementsProfile";
 
-		UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(userDwarfId);
+		UserDwarf userDwarf = this.userDwarfService.findUserDwarfById(userDwarfId);
 		Statistics statistic = this.statisticsService.findStatisticsByUsername2(userDwarf.getUsername()).get();
 
 		Class<?> c = statistic.getClass();
