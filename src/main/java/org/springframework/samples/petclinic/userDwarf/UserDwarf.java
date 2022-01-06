@@ -18,18 +18,11 @@ import javax.validation.constraints.Size;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.Authorities;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.user.Authorities;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter

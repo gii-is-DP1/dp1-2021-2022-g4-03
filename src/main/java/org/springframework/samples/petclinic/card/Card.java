@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.card;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -16,16 +17,26 @@ import lombok.Setter;
 public class Card extends BaseEntity{
     
     @Column(name="card_image")
+    @NotNull
     private String cardImage;
+
     @Column(name="card_type")
+    @NotNull
     private CardType cardType;
+
     @Column(name="position")
     private Integer position;
+
     @Column(name="title")
+    @NotNull
     private String title;
+
     @Column(name="description")
+    @NotNull
     private String description;
+    
     @Column(name="effect")
+    @NotNull
     private String effect;
 
 }
