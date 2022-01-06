@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.testStatistics;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -16,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.assertj.core.util.Lists;
 
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,6 +27,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.statistics.StatisticsController;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
+import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
@@ -33,9 +36,7 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.FilterType;
 
 @WebMvcTest(controllers = StatisticsController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
@@ -47,7 +48,9 @@ public class testStatisticsController {
 
     @Autowired
     private MockMvc mockMcv;
+    @Autowired
     private UserDwarf paco;
+    @Autowired
     private Statistics pacoStatistics;
     @MockBean
     private UserDwarfService userDwarfService;
@@ -64,7 +67,7 @@ public class testStatisticsController {
         paco.setEmail("email@gmail.com");
         paco.setId(TEST_UD_ID);
         paco.setPass("Passpass123");
-        paco.setUsername("Paco");
+        paco.setUsername("paco");         
         given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(paco);
        
         Statistics pacoStatistics = new Statistics();
@@ -83,10 +86,11 @@ public class testStatisticsController {
 
 
     }
+
     @WithMockUser(value = "spring")
     @Test
     void testInitStatistics() throws Exception{
-        mockMcv.perform(get("/statistics")).andExpect(status().isOk()).andExpect(model().attributeExists("userDwarf"))
+        mockMcv.perform(get("/statistics")).andExpect(status().isOk()).andExpect(model().attributeExists("statistics"))
         .andExpect(view().name("statistics/findStatistics"));
     }
 
@@ -94,16 +98,16 @@ public class testStatisticsController {
     @Test
     void testProcessStatisticByUsername() throws Exception{
 
-        given(this.userDwarfService.findUserDwarfByUsername(paco.getUsername())).willReturn(Lists.newArrayList(paco));
+        given(this.statisticsService.findStatisticsByUsername(paco.getUsername())).willReturn(pacoStatistics);
 
-        mockMcv.perform(get("/statistics/player").param("username", "rafjimfer")).andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/statistics/player/" + TEST_UD_ID));
+        mockMcv.perform(get("/statistics/player").param("username", "paco")).andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/statistics/player/" + TEST_STATISTICS_ID));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void testProcessStatisticEmpty() throws Exception{
-        given(this.userDwarfService.findUserDwarfByUsername("")).willReturn(Lists.newArrayList(paco, new UserDwarf()));
+        given(this.statisticsService.findStatisticsByUsername("")).willReturn(pacoStatistics, new Statistics());
 
         mockMcv.perform(get("/statistics/player")).andExpect(status().isOk()).andExpect(view().name("statistics/findStatistics"));
     }
