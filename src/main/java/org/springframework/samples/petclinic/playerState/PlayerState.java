@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "playerState")
+@Table(name = "PlayerState")
 public class PlayerState extends BaseEntity {
 
     @Column(name = "iron")
