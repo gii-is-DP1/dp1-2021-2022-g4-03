@@ -14,6 +14,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.hamcrest.Matchers.hasProperty;
@@ -34,7 +35,6 @@ import org.springframework.samples.petclinic.achievements.UserAchievementsServic
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.statistics.StatisticsController;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
-import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
@@ -52,11 +52,12 @@ import org.springframework.context.annotation.FilterType;
 
 public class testUserAchievementController {
 
-    private static final int TEST_UD_ID = 1;
-    private static final int TEST_USERACHIEVEMENTS_ID1 = 1;
-    private static final int TEST_USERACHIEVEMENTS_ID2 = 2;
-    private static final int TEST_ACHIEVEMENTS_ID1 = 1;
-    private static final int TEST_ACHIEVEMENTS_ID2 = 2;
+    private static final int TEST_UD_ID = 10;
+    private static final int TEST_USERACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_USERACHIEVEMENTS_ID2 = 20;
+    private static final int TEST_ACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_ACHIEVEMENTS_ID2 = 20;
+    private static final int TEST_STATISTICS_ID = 10;
 
     @Autowired
     private MockMvc mockMcv;
@@ -77,15 +78,16 @@ public class testUserAchievementController {
 
     private UserDwarf us;
     private Achievements logro1;
-    private Achievements logro2;
+    //private Achievements logro2;
     private UserAchievements ulogro1;
-    private UserAchievements ulogro2;
-    private Collection<UserAchievements> ulogros;
+    //private UserAchievements ulogro2;
+    //private Collection<UserAchievements> ulogros;
+    private Statistics pacoStatistics;
 
     @BeforeEach
     void setup(){
 
-        ulogros = new ArrayList<UserAchievements>();
+        //ulogros = new ArrayList<UserAchievements>();
 
         us = new UserDwarf();
         us.setActive(true);
@@ -95,6 +97,20 @@ public class testUserAchievementController {
         us.setUsername("pancho");
         given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(us);
 
+        pacoStatistics = new Statistics();
+        pacoStatistics.setGamesPlayed(2);
+        pacoStatistics.setGamesWon(1);
+        pacoStatistics.setId(TEST_STATISTICS_ID);
+        Duration d = Duration.ofMinutes(32);
+        pacoStatistics.setTimePlayed(d);
+        pacoStatistics.setTotalGold(25);
+        pacoStatistics.setTotalIron(56);
+        pacoStatistics.setTotalMedal(4);
+        pacoStatistics.setTotalObject(6);
+        pacoStatistics.setTotalSteel(15);
+        pacoStatistics.setUserDwarf(us);
+        given(this.statisticsService.findStatisticsByUsername(us.getUsername())).willReturn(pacoStatistics);
+
         logro1 = new Achievements();
         logro1.setCondition("total_gold=200");
         logro1.setDescription("Consigue 200 de oro");
@@ -102,12 +118,12 @@ public class testUserAchievementController {
         logro1.setLastChange(LocalDate.of(2009, 9, 9));
         logro1.setId(TEST_ACHIEVEMENTS_ID1);
 
-        logro2 = new Achievements();
-        logro2.setCondition("total_iron=200");
-        logro2.setDescription("Consigue 200 de hierro");
-        logro2.setPic("foto");
-        logro2.setLastChange(LocalDate.of(2009, 9, 9));
-        logro2.setId(TEST_ACHIEVEMENTS_ID1);
+        //logro2 = new Achievements();
+        //logro2.setCondition("total_iron=200");
+        //logro2.setDescription("Consigue 200 de hierro");
+       // logro2.setPic("foto");
+        //logro2.setLastChange(LocalDate.of(2009, 9, 9));
+        //logro2.setId(TEST_ACHIEVEMENTS_ID1);
 
         ulogro1 = new UserAchievements();
         ulogro1.setId(TEST_USERACHIEVEMENTS_ID1);
@@ -116,17 +132,17 @@ public class testUserAchievementController {
         ulogro1.setObtainingDate(LocalDate.of(2015, 8, 8));
         ulogro1.setProgress(0.6);
 
-        ulogro2 = new UserAchievements();
-        ulogro2.setId(TEST_USERACHIEVEMENTS_ID2);
-        ulogro2.setUserDwarf(userDwarfService.findUserDwarfById(TEST_UD_ID));
-        ulogro2.setAchievements(achievementsService.findAchievementById(TEST_ACHIEVEMENTS_ID2));
-        ulogro2.setObtainingDate(LocalDate.of(2019, 8, 8));
-        ulogro2.setProgress(0.2);
+       // ulogro2 = new UserAchievements();
+        //ulogro2.setId(TEST_USERACHIEVEMENTS_ID2);
+       // ulogro2.setUserDwarf(userDwarfService.findUserDwarfById(TEST_UD_ID));
+       // ulogro2.setAchievements(achievementsService.findAchievementById(TEST_ACHIEVEMENTS_ID2));
+       // ulogro2.setObtainingDate(LocalDate.of(2019, 8, 8));
+       // ulogro2.setProgress(0.2);
 
-        ulogros.add(ulogro1);
-        ulogros.add(ulogro2);
+       // ulogros.add(ulogro1);
+       // ulogros.add(ulogro2);
 
-        given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
+       // given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
 
     }
 
@@ -135,10 +151,11 @@ public class testUserAchievementController {
     @Test
     void testPlayerAchievementsProfile() throws Exception {
         //http://localhost:8080/profile/playerAchievements/1?pA=1
-        given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
+        //given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
 
-        mockMcv.perform(get("/profile/playerAchievements/" + us.getUsername()))
-        .andExpect(view().name("profile/playerAchievements/1?pA=" + TEST_UD_ID));
+        mockMcv.perform(get("/profile/playerAchievements/" + us.getId()))
+        .andExpect(view().name("achievements/achievementsProfile"));
+        //.andExpect(forwardedUrl("profile/playerAchievements/1?pA=" + TEST_UD_ID));
 
     }
     
@@ -147,6 +164,8 @@ public class testUserAchievementController {
     @WithMockUser(value = "spring")
     @Test
     void testUserDwarfAchievementsProfile() throws Exception {
+
+       // given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
 
         mockMcv.perform(get("/profile/achievements"))
         .andExpect(view().name("achievements/achievementsProfile"));
