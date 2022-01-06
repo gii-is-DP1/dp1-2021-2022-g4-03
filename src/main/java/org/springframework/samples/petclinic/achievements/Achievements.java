@@ -35,6 +35,10 @@ public class Achievements extends BaseEntity{
 	@Size(min=3, max=50)
 	public String description;
 
+	@NotEmpty
+	@Column(name = "pic")
+	public String pic;
+
 
 	
 
