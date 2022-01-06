@@ -1,10 +1,15 @@
 package org.springframework.samples.petclinic.testUserDwarf;
 
+import static org.junit.Assert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasProperty;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,6 +83,119 @@ public class testUserDwarfController {
 		mockMvc.perform(get("/usersDwarf/register")).andExpect(status().isOk()).andExpect(model().attributeExists("wrapper"))
                 .andExpect(model().attributeExists("registerCheck"))
 				.andExpect(view().name("usersDwarf/createOrUpdateUserDwarfForm"));
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void InitCreationFormTest() throws Exception {
+		mockMvc.perform(get("/usersDwarf/new")).andExpect(status().isOk()).andExpect(model().attributeExists("wrapper"))
+                .andExpect(model().attributeExists("boolList"))
+				.andExpect(view().name("usersDwarf/createOrUpdateUserDwarfForm"));
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void ProcessCreationFormSuccessTest() throws Exception {
+		mockMvc.perform(post("/usersDwarf/new").param("userDwarf.username", "Francisco").param("userDwarf.pass", "Passpass456")
+							.with(csrf())
+							.param("userDwarf.email", "email2@gmail.com")
+							.param("userDwarf.active", "true")
+                            .param("roles", "player"))
+				.andExpect(status().is3xxRedirection());
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void ProcessCreationFormHasErrorsTest() throws Exception {
+		mockMvc.perform(post("/usersDwarf/new")
+							.with(csrf())
+							.param("userDwarf.username", "Francisco")
+                            .param("userDwarf.pass", "Passpass456")
+							.param("userDwarf.active", "true"))
+				.andExpect(status().is(302));
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void ProcessCreationFormSuccessTest2() throws Exception {
+		mockMvc.perform(post("/usersDwarf/register").param("userDwarf.username", "Francisco").param("userDwarf.pass", "Passpass456")
+							.with(csrf())
+							.param("userDwarf.email", "email2@gmail.com")
+							.param("userDwarf.active", "true")
+                            .param("roles", "player"))
+				.andExpect(status().is3xxRedirection());
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void ProcessCreationFormHasErrorsTest2() throws Exception {
+		mockMvc.perform(post("/usersDwarf/register")
+							.with(csrf())
+							.param("userDwarf.username", "Francisco")
+                            .param("userDwarf.pass", "Passpass456")
+							.param("userDwarf.active", "true"))
+				.andExpect(status().is(302));
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void UserDwarfFindTest() throws Exception{
+        mockMvc.perform(get("/usersDwarf/find")).andExpect(status().isOk()).andExpect(model().attributeExists(
+            "userDwarf"))
+            .andExpect(view().name("usersDwarf/findUsers"));
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void InitFindFormTest() throws Exception{
+        assertFalse(paco.getUsername().isEmpty());
+        mockMvc.perform(get("/usersDwarf/"+paco.getId())).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void ProcessFindFormTest() throws Exception {
+		mockMvc.perform(post("/usersDwarf")
+							.with(csrf())
+                            .param("username", "paco"))
+				.andExpect(status().isOk());
+	}
+
+    @WithMockUser(value="spring")
+    @Test
+    void ShowUserDwarfTest() throws Exception{
+        mockMvc.perform(get("/usersDwarf/"+paco.getId())).andExpect(status().isOk())
+        .andExpect(view().name("usersDwarf/userDetails"));
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void InformationTest() throws Exception{
+        mockMvc.perform(get("/information")).andExpect(status().isOk())
+        .andExpect(view().name("aboutUs"));
+    }
+
+
+    @WithMockUser(value="spring")
+    @Test
+    void InitUpdateUserDwarfFormTest() throws Exception{
+        mockMvc.perform(get("/usersDwarf/{userDwarfId}/edit", TEST_USERDWARF_ID)).andExpect(status().isOk())
+                .andExpect(model().attributeExists("wrapper"))
+				.andExpect(model().attribute("wrapper", hasProperty("userDwarf")))
+                .andExpect(view().name("usersDwarf/createOrUpdateUserDwarfForm"));
+    }
+
+    @WithMockUser(value = "spring")
+	@Test
+	void ProcessUpdateUserDwarfFormTest() throws Exception {
+		mockMvc.perform(post("/usersDwarf/{userDwarfId}/edit", TEST_USERDWARF_ID)
+                        .param("userDwarf.username", "Francisco").param("userDwarf.pass", "Passpass456")
+                        .with(csrf())
+                        .param("userDwarf.email", "email2@gmail.com")
+                        .param("userDwarf.active", "true")
+                        .param("roles", "player"))
+                .andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/usersDwarf/{userDwarfId}"));
 	}
 
 
