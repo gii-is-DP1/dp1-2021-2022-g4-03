@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -15,13 +13,14 @@ import lombok.Setter;
 @Entity
 @Table(name="cards")
 public class Card extends BaseEntity{
-    
-    @Column(name="cardImage")
+
+    @Column(name="cardimage")
     @NotNull
     private String cardImage;
 
-    @Column(name="cardType")
+    @Column(name="cardtype")
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CardType cardType;
 
     @Column(name="position")
@@ -34,7 +33,7 @@ public class Card extends BaseEntity{
     @Column(name="description")
     @NotNull
     private String description;
-    
+
     @Column(name="effect")
     @NotNull
     private String effect;
