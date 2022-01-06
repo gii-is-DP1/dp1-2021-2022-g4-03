@@ -55,25 +55,25 @@ public class PlayerState extends BaseEntity {
 
     @Column(name = "worker1")
     @NotNull
-    @Max(value = 9)
+    @Max(value = 12)
     @Min(value = -1)
     public Integer worker1 = 12;
 
     @Column(name = "worker2")
     @NotNull
-    @Max(value = 9)
+    @Max(value = 12)
     @Min(value = -1)
     public Integer worker2 = 12;
 
     @Column(name = "worker3")
     @NotNull
-    @Max(value = 9)
+    @Max(value = 12)
     @Min(value = -1)
     public Integer worker3 = -1;
 
     @Column(name = "worker4")
     @NotNull
-    @Max(value = 9)
+    @Max(value = 12)
     @Min(value = -1)
     public Integer worker4 = -1;
 
