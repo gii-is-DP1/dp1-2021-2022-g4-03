@@ -38,18 +38,20 @@ public class UserAchievements extends BaseEntity{
     @Column(name = "progress")
     public Double progress;
 
+    @NotNull
     @PastOrPresent(message = "La fecha no puede ser en el futuro")
 	@Column(name = "obtaining_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	public LocalDate obtainingDate;
     
-    
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
         @JoinColumn(name="userDwarf_id", referencedColumnName = "username")
     })
     private UserDwarf userDwarf;
 
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
         @JoinColumn(name="achievements_id", referencedColumnName = "id")
