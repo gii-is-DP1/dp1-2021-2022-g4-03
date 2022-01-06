@@ -43,4 +43,9 @@ public class UserAchievementsService {
 		return userAchievementsRepository.findById3(id);
 	}
 
+	@Transactional(readOnly = true)
+	public Collection<UserAchievements> findByUser(String user) throws DataAccessException {
+		return userAchievementsRepository.findByUser(user);
+	}
+
 }

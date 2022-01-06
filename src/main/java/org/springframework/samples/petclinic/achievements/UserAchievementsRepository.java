@@ -19,7 +19,9 @@ public interface UserAchievementsRepository extends CrudRepository<UserAchieveme
 
     @Query("SELECT DISTINCT userAchievements FROM UserAchievements userAchievements WHERE userAchievements.id LIKE :id")
     public Collection<UserAchievements> findById3(@Param("id") int id);
-
+    
+    @Query("SELECT DISTINCT userAchievements FROM UserAchievements userAchievements WHERE userAchievements.userDwarf.username LIKE :username")
+    public Collection<UserAchievements> findByUser(@Param("username") String username);
 
 
 }
