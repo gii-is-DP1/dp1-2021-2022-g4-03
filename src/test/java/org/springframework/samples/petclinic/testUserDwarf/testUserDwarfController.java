@@ -27,6 +27,7 @@ import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
+import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,6 +50,8 @@ public class testUserDwarfController {
     private AuthoritiesService authoritiesService;
     @MockBean
     private StatisticsService statisticsService;
+    @MockBean
+    private CurrentUser currentUser;
 
     private UserDwarf paco;
 
@@ -66,6 +69,7 @@ public class testUserDwarfController {
         authority.add(auth);
         paco.setAuthorities(authority);
         given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(paco);
+        given(this.currentUser.getCurrentUser()).willReturn("paco");
     }
 
 

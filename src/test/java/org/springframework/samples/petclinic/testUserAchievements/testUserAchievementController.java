@@ -2,11 +2,7 @@ package org.springframework.samples.petclinic.testUserAchievements;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -28,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.achievements.Achievements;
-import org.springframework.samples.petclinic.achievements.AchievementsService;
-import org.springframework.samples.petclinic.achievements.UserAchievements;
-import org.springframework.samples.petclinic.achievements.UserAchievementsService;
+import org.springframework.samples.petclinic.achievements.*;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.statistics.StatisticsController;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
@@ -47,17 +40,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.FilterType;
 
-@WebMvcTest(controllers = StatisticsController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+@WebMvcTest(controllers = UserAchievementsController.class,excludeFilters = @ComponentScan.Filter(type =
+    FilterType.ASSIGNABLE_TYPE,
              classes = WebSecurityConfigurer.class),excludeAutoConfiguration= SecurityConfiguration.class)
 
 public class testUserAchievementController {
 
-    private static final int TEST_UD_ID = 10;
-    private static final int TEST_USERACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_UD_ID = 1;
+    private static final int TEST_USERACHIEVEMENTS_ID1 = 1;
     private static final int TEST_USERACHIEVEMENTS_ID2 = 20;
-    private static final int TEST_ACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_ACHIEVEMENTS_ID1 = 1;
     private static final int TEST_ACHIEVEMENTS_ID2 = 20;
-    private static final int TEST_STATISTICS_ID = 10;
+    private static final int TEST_STATISTICS_ID = 1;
 
     @Autowired
     private MockMvc mockMcv;
@@ -72,9 +66,10 @@ public class testUserAchievementController {
     private StatisticsService statisticsService;
     @MockBean
     private AuthoritiesService authoritiesService;
-    
 
-   
+    @MockBean
+    private CurrentUser currentUser;
+
 
     private UserDwarf us;
     private Achievements logro1;
@@ -112,7 +107,7 @@ public class testUserAchievementController {
         given(this.statisticsService.findStatisticsByUsername(us.getUsername())).willReturn(pacoStatistics);
 
         logro1 = new Achievements();
-        logro1.setCondition("total_gold=200");
+        logro1.setCondition("totalGold=200");
         logro1.setDescription("Consigue 200 de oro");
         logro1.setPic("foto1");
         logro1.setLastChange(LocalDate.of(2009, 9, 9));
@@ -144,28 +139,31 @@ public class testUserAchievementController {
 
        // given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
 
+        given(this.statisticsService.findStatisticsByUsername2(us.getUsername())).willReturn(Optional.ofNullable(pacoStatistics));
+        given(this.achievementsService.achievementsCount()).willReturn(1);
+        given(this.userAchievementsService.findUserAchievementsById(TEST_USERACHIEVEMENTS_ID1)).willReturn(ulogro1);
+        given(this.achievementsService.findAchievementById(TEST_ACHIEVEMENTS_ID1)).willReturn(logro1);
     }
 
     //Logros de otro jugador
     @WithMockUser(value = "spring")
     @Test
     void testPlayerAchievementsProfile() throws Exception {
-        //http://localhost:8080/profile/playerAchievements/1?pA=1
-        //given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
+        given(this.userDwarfService.findUserDwarfById(us.getId())).willReturn(us);
 
         mockMcv.perform(get("/profile/playerAchievements/" + us.getId()))
         .andExpect(view().name("achievements/achievementsProfile"));
         //.andExpect(forwardedUrl("profile/playerAchievements/1?pA=" + TEST_UD_ID));
 
     }
-    
+
 
     //Logros del propio usuario
     @WithMockUser(value = "spring")
     @Test
     void testUserDwarfAchievementsProfile() throws Exception {
 
-       // given(this.userAchievementsService.findByUser(us.getUsername())).willReturn(ulogros);
+        given(this.currentUser.getCurrentUser()).willReturn(us.getUsername());
 
         mockMcv.perform(get("/profile/achievements"))
         .andExpect(view().name("achievements/achievementsProfile"));
@@ -175,5 +173,5 @@ public class testUserAchievementController {
 
 
 
-    
+
 }

@@ -37,6 +37,7 @@ public class UserAchievements extends BaseEntity{
     @JoinColumns({
         @JoinColumn(name="userDwarf_id", referencedColumnName = "username")
     })
+    @NotNull
     private UserDwarf userDwarf;
 
 
@@ -44,5 +45,6 @@ public class UserAchievements extends BaseEntity{
     @JoinColumns({
         @JoinColumn(name="achievements_id", referencedColumnName = "id")
     })
+    @NotNull
     private Achievements achievements;
 }
