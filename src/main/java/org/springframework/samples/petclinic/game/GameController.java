@@ -1,81 +1,125 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.BoardService;
+import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
+import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 @Controller
 public class GameController {
-    
-	@Autowired
-	private GameService gameService;
 
     @Autowired
-	private UserDwarfService userDwarfService;
+    private CurrentUser currentUser;
 
     @Autowired
-	private BoardService boardService;
+    private GameService gameService;
+
+    @Autowired
+    private UserDwarfService userDwarfService;
+
+    @Autowired
+    private CardService cardService;
 
     @InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        dataBinder.setDisallowedFields("id");
+    }
 
-    @Getter
-	@Setter
-	@EqualsAndHashCode
-	public class Wrapper {
+    @GetMapping(value = "/game/new")
+    public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
+        Game game = gameService.createGame(player);
+        //Unable to test this without cards, nullPointerException
+        game= mainLoop(game.getId(), null, null);
+        return "redirect:/board/" + game.getId();
+    }
 
-		// UserDwarf userDwarf;
 
-		// List<String> roles = new ArrayList<>();
-	}
+    // @GetMapping(value = "/game/connect/{gameId}")
+    // public String connectToGame(@PathVariable("gameId") Integer gameId) {
+    // 	// Hasta que no tengamos currentUser conectamos a un user random
+    // 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
+    // 	gameService.connectToGame(player, gameId);
+    // 	return "redirect:/board/{gameId}";
+    // }
 
-	@GetMapping(value = "/game/new")
-	public String createGame() {
-		// Hasta que no tengamos currentUser creamos la partida con el user frabotrom
-		gameService.createGame(userDwarfService.findById(3));
-		return "redirect:/board/1";
-	}
+    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Game mainLoop(@PathVariable("gameId") Integer gameId,
+                                       @RequestBody(required = false) BoardData data, ModelMap model)
+        throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
-	@GetMapping(value = "/game/connect/{gameId}")
-	public String connectToGame(@PathVariable("gameId") Integer gameId) {
-		// Hasta que no tengamos currentUser conectamos a un user random
-		gameService.connectToGame(userDwarfService.findById(1), gameId);
-		return "redirect:/board/{gameId}";
-	}
+        GameStorage gameStorage = GameStorage.getInstance();
+        Game currentGame = gameStorage.getGame(gameId);
 
-	@GetMapping(value = "/game/{gameId}/surrender")
-	public String surrender(@PathVariable("gameId") Integer gameId) {
-		gameService.surrender(gameId, userDwarfService.findById(1));
-		return "redirect:/";
-	}
+        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS) {
+            switch (currentGame.getPhase()) {
+                case INICIO:
+                    if (currentGame.getGameStatus() == GameStatus.NEW) {
+                        GameLogic.initPlayerStates(currentGame);
+                        //TODO: Can't test this without cards, nullPointerException
+                        /*GameLogic.initBoard(currentGame, cardService.findAllSpecialCards(),
+                            cardService.findAllNormalCards());*/
+                        currentGame.setGameStatus(GameStatus.IN_PROGRESS);
+                        currentGame.setPhase(Phase.ASIGNACION);
+                    }
 
-	@GetMapping(value = "/game/check")
-	public void checkGames() {
-		Map<Integer, Game> games = GameStorage.getInstance().getGames();
-		// List<String> gameIds = new ArrayList<>();
-		// for (Game game : games.values()) gameIds.add(game.getId().toString());
-		// System.out.println(gameIds);
-		System.out.println(games);
-	}
+                    return currentGame;
+
+                case ASIGNACION:
+                    GameLogic.playerTurn(currentGame, data);
+
+                    return currentGame;
+
+                case ESPECIAL:
+                    break;
+
+                case AYUDA:
+                    break;
+
+                case DEFENSA:
+                    break;
+
+                case MINA:
+                    break;
+
+                case FORJA:
+                    return currentGame;
+
+                case FIN:
+                    return currentGame;
+
+                default:
+                    break;
+            }
+        }
+
+        return currentGame;
+    }
+    @GetMapping(value = "/game/{gameId}/surrender")
+    public String surrender(@PathVariable("gameId") Integer gameId) {
+        UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
+        gameService.surrender(gameId, player);
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/game/check")
+    public void checkGames() {
+        Map<Integer, Game> games = GameStorage.getInstance().getGames();
+        // List<String> gameIds = new ArrayList<>();
+        // for (Game game : games.values()) gameIds.add(game.getId().toString());
+        // System.out.println(gameIds);
+        System.out.println(games);
+    }
 
 }

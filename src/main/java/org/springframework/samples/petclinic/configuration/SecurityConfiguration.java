@@ -10,19 +10,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * @author japarejo
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -36,16 +27,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
 				.antMatchers("/users/new").permitAll()
-				.antMatchers("/usersDwarf/userDwarfList").permitAll()
-				.antMatchers("/usersDwarf/userDetails").permitAll()
-				.antMatchers("/usersDwarf/**").permitAll()
-				.antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/achievements/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
-				.antMatchers("/vets/**").authenticated()
+				.antMatchers("/vets/**").authenticated()				
+				.antMatchers("/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/api/game/**").authenticated() /*-------------LO NUESTRO-------------*/
+				.antMatchers("/userDwarf/**").authenticated()
+				.antMatchers("/usersDwarf/register").permitAll()
+				.antMatchers("/usersDwarf/**").hasAnyAuthority("admin")
+				.antMatchers("/achievements/**").hasAnyAuthority("admin")
+				.antMatchers("/ud/**").hasAnyAuthority("player")
+				.antMatchers("/profile/**").authenticated()
 				.antMatchers("/game/**").authenticated()
-				.antMatchers("/statistics/**").permitAll()
+				.antMatchers("/statistics/**").authenticated()
+				.antMatchers("/currentuser").authenticated()
 				.antMatchers("/board/**").authenticated()
+				.antMatchers("/information").permitAll()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
@@ -58,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido
                 // se sirve desde esta misma página.
-                http.csrf().ignoringAntMatchers("/h2-console/**");
+                http.csrf().ignoringAntMatchers("/h2-console/**","/api/**");
                 http.headers().frameOptions().sameOrigin();
 	}
 

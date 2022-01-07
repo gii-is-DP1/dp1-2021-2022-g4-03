@@ -24,51 +24,49 @@ import lombok.Setter;
 @Entity
 @Table(name = "statistics")
 public class Statistics extends BaseEntity{
-    
+
     @Column(name="time_played")
     @NotNull
-    private Duration timePlayed;
+    public Duration timePlayed;
 
     @Column(name="games_played")
     @NotNull
     @PositiveOrZero
-    private Integer gamesPlayed;
+    public Integer gamesPlayed;
 
     @Column(name="games_won")
     @NotNull
     @PositiveOrZero
-    private Integer gamesWon;
+    public Integer gamesWon;
 
     @Column(name="total_iron")
     @NotNull
     @PositiveOrZero
-    private Integer totalIron;
+    public Integer totalIron;
 
     @Column(name="total_gold")
     @NotNull
     @PositiveOrZero
-    private Integer totalGold;
+    public Integer totalGold;
 
     @Column(name="total_steel")
     @NotNull
     @PositiveOrZero
-    private Integer totalSteel;
+    public Integer totalSteel;
 
     @Column(name="total_object")
     @NotNull
     @PositiveOrZero
-    private Integer totalObject;
+    public Integer totalObject;
 
     @Column(name="total_medal")
     @NotNull
     @PositiveOrZero
-    private Integer totalMedal;
+    public Integer totalMedal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumns({
-        @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
-    })
-    private UserDwarf userDwarf;
+    @JoinColumn(name="userDwarf_id", referencedColumnName = "username", unique = true)
+    public UserDwarf userDwarf;
 
 
     public String getTimeFormatted(){
@@ -76,5 +74,8 @@ public class Statistics extends BaseEntity{
         String result = String.format("%dh:%02dm:%02ds", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
         return result;
     }
+
+
+
 }
 

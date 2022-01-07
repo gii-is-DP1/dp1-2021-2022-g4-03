@@ -10,31 +10,43 @@
 
 <petclinic:layout pageName="usersDwarf">
 
-    <h2>Find Users</h2>
-
+    <div class="bodyBackground">
+        <h2>Find Users</h2>
     
-    <form:form modelAttribute="userDwarf" action="/usersDwarf" method="get" class="form-horizontal"
-               id="search-user-form">
-        <div class="form-group">
-            <div class="control-group" id="username">
-                <label class="col-sm-2 control-label">Username </label>
-                <div class="col-sm-10">
-                    <form:input class="form-control" path="username" size="30" maxlength="80"/>
-                    <span class="help-inline"><form:errors path="*"/></span>
+        
+        <form:form modelAttribute="userDwarf" action="/usersDwarf" method="get" class="form-horizontal"
+                   id="search-user-form">
+            <div class="form-group">
+                <div class="col-sm-1">
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        &nbsp;&nbsp;Search</span>
+                    </button>
+                </div>
+                <div class="control-group" id="username">
+                    <div class="col-sm-10">
+                        <form:input class="form-control" placeholder="Username" path="username" size="30" maxlength="80"/>
+                        <span class="help-inline"><form:errors path="*"/></span>
+                        <br>
+                        <div class="panel text-square">
+                            <div class="panel-body">Si se hace una busqueda en blanco o incorrecta se muestra una lista completa de los usuarios</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Find User</button>
-            </div>
-        </div>
 
-    </form:form>
+            <div id="fondo2"></div>
+    
+        </form:form>
 
-    <br/> 
-    <sec:authorize access="hasAuthority('admin')">
-		<a class="btn btn-default" href='<spring:url value="/usersDwarf/new" htmlEscape="true"/>'>Add User</a>
-	</sec:authorize>
+        <br/> 
+        <sec:authorize access="hasAuthority('admin')">
+            <a class="btn btn-default" href='<spring:url value="/usersDwarf/new" htmlEscape="true"/>'>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                &nbsp;Add User
+            </a>
+        </sec:authorize>
+
+    </div>
 	
 </petclinic:layout>
