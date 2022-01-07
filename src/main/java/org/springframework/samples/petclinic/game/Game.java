@@ -2,12 +2,7 @@ package org.springframework.samples.petclinic.game;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -49,27 +44,22 @@ public class Game extends BaseEntity {
     })
     private UserDwarf player2;
 
-    @OneToOne
-    @JoinColumns({
-        @JoinColumn(name = "playerStateId0", referencedColumnName = "id")
-    })
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Transient
     private PlayerState playerState_0 = new PlayerState();
 
-    @OneToOne
-    @JoinColumns({
-        @JoinColumn(name = "playerStateId1", referencedColumnName = "id")
-    })
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Transient
     private PlayerState playerState_1 = new PlayerState();
 
-    @OneToOne
-    @JoinColumns({
-        @JoinColumn(name = "playerStateId2", referencedColumnName = "id")
-    })
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Transient
     private PlayerState playerState_2 = new PlayerState();
 
 
     @ElementCollection
     @Size(min = 3, max = 3)
+    @Transient
     private List<Integer> order;
     @NotNull
     private Phase phase;

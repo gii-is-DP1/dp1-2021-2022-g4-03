@@ -11,6 +11,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.samples.petclinic.achievements.*;
+import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.game.GameStorage;
 import org.springframework.stereotype.Service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

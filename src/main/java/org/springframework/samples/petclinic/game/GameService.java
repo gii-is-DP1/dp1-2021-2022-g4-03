@@ -19,7 +19,7 @@ public class GameService {
     private static GameStorage gameStorage;
 
     @Autowired
-    private static GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     public Game createGame(UserDwarf player0) {
         Game game = new Game();
@@ -64,8 +64,8 @@ public class GameService {
 
     // Guarda la partida en la bbdd y la elimina de la memoria de java
     public void finishGame(Integer gameId) {
-        gameRepository.save(gameStorage.getGame(gameId));
-        gameStorage.getGames().remove(gameId);
+        gameRepository.save(gameStorage.getInstance().getGame(gameId));
+        gameStorage.getInstance().getGames().remove(gameId);
     }
 
     // Método que saca al user de la partida (se activa con un botón) y si no quedan jugadores cierra la partida
@@ -78,7 +78,7 @@ public class GameService {
         } else if (player.equals(game.getPlayer2())) {
             game.setPlayer2(null);
         }
-        if (game.getPlayer0().equals(null) && game.getPlayer1().equals(null) && game.getPlayer2().equals(null)) {
+        if (Optional.ofNullable(game.getPlayer0()).isEmpty() && Optional.ofNullable(game.getPlayer1()).isEmpty() && Optional.ofNullable(game.getPlayer2()).isEmpty()) {
             finishGame(gameId);
         }
     }

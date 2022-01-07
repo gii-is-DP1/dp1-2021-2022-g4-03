@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GameStorage {
-    
+
     private static Map<Integer,Game> games;
     private static GameStorage instance;
 
@@ -23,12 +23,13 @@ public class GameStorage {
     }
 
     public Map<Integer,Game> getGames() {
+        games=new HashMap<>();
         return games;
     }
 
     public Game getGame(Integer gameId) {
         Game game = games.get(gameId);
-        return game; 
+        return game;
     }
 
     public void setGame(Game game) {
