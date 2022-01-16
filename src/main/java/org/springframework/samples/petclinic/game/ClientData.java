@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.samples.petclinic.playerState.PlayerState;
 
 /*
 * Clase tipo wrapper que contiene los datos actuales del tablero
@@ -10,9 +9,10 @@ import org.springframework.samples.petclinic.playerState.PlayerState;
 
 @Getter
 @Setter
-public class BoardData{
+public class ClientData {
     private String currentUser;
 
     //Equates to where does the player put the worker
+    //TODO: Make it possible to use resources instead of workers to invoke special actions
     private Integer playerAction;
 }

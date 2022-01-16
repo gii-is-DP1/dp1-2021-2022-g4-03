@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
@@ -40,7 +39,7 @@ public class GameController {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
         Game game = gameService.createGame(player);
         //Unable to test this without cards, nullPointerException
-        game= mainLoop(game.getId(), null, null);
+        game = mainLoop(game.getId(), null, null);
         return "redirect:/board/" + game.getId();
     }
 
@@ -55,39 +54,52 @@ public class GameController {
 
     @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Game mainLoop(@PathVariable("gameId") Integer gameId,
-                                       @RequestBody(required = false) BoardData data, ModelMap model)
+    public @ResponseBody
+    Game mainLoop(@PathVariable("gameId") Integer gameId,
+                  @RequestBody(required = false) ClientData data, ModelMap model)
         throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         GameStorage gameStorage = GameStorage.getInstance();
         Game currentGame = gameStorage.getGame(gameId);
 
+
         while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (currentGame.getPhase()) {
                 case INICIO:
-                    if (currentGame.getGameStatus() == GameStatus.NEW) {
-                        GameLogic.initPlayerStates(currentGame);
-                        //TODO: Can't test this without cards, nullPointerException
+                    switch (currentGame.getGameStatus()) {
+                        case NEW:
+                            GameLogic.initPlayerStates(currentGame);
+                            //TODO: Can't test this without cards, nullPointerException
                         /*GameLogic.initBoard(currentGame, cardService.findAllSpecialCards(),
                             cardService.findAllNormalCards());*/
-                        currentGame.setGameStatus(GameStatus.IN_PROGRESS);
-                        currentGame.setPhase(Phase.ASIGNACION);
+                            currentGame.setGameStatus(GameStatus.IN_PROGRESS);
+                            currentGame.setPhase(Phase.ASIGNACION);
+                        case IN_PROGRESS:
+                            GameLogic.drawCard();
+                            break;
                     }
 
                     return currentGame;
 
                 case ASIGNACION:
-                    GameLogic.playerTurn(currentGame, data);
+                    currentGame.setTurnsTaken(currentGame.getTurnsTaken() + 1);
+
+                    //Check if it has gone One round
+                    if (!(currentGame.getTurnsTaken() % (currentGame.getNumberOfPlayers() * 2 + 1) == 0)) {
+                        String result = GameLogic.playerTurn(currentGame, data);
+                    }
+
+                    currentGame.setPhase(Phase.AYUDA);
 
                     return currentGame;
 
                 case ESPECIAL:
 
-                    break;
+                    System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
+
+                    return currentGame;
 
                 case AYUDA:
-
-                    System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
 
                     break;
 
@@ -110,6 +122,7 @@ public class GameController {
 
         return currentGame;
     }
+
     @GetMapping(value = "/game/{gameId}/surrender")
     public String surrender(@PathVariable("gameId") Integer gameId) {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();

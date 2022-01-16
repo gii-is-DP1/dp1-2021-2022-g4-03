@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
+import org.springframework.samples.petclinic.card.CardType;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
@@ -63,46 +64,42 @@ public class GameLogic {
 
     }
 
-    public static void playerTurn(Game game, BoardData data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+    public static String playerTurn(Game game, ClientData data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
         IllegalStateException {
+
+        //TODO: Write an ordinal enum for possible return states and change return to an int;
 
         if (!possibleActions.contains(data.getPlayerAction())) {
             throw new IllegalStateException("Action described is not possible.");
         }
 
-        int playerAction= data.getPlayerAction();
-        int playerIndex = 0;
-        PlayerState playerState = null;
-        Method getPlayer;
-        Method getPlayerState;
-        Method setWorker;
-        UserDwarf player;
-
-        for (int i = 0; i < 3; i++) {
-            getPlayer = gameClass.getMethod("getPlayer" + i);
-            player = (UserDwarf) getPlayer.invoke(game);
-
-            if (!(player == null)) {
-                if (player.getUsername().equals(data.getCurrentUser())) {
-                    playerIndex = i;
-                    break;
-                }
-            }
-        }
-
-        getPlayerState = gameClass.getMethod("getPlayerState_" + playerIndex);
+        int playerAction = data.getPlayerAction();
+        int playerIndex = getPlayerIndex(game, data);
+        PlayerState playerState;
 
         if (playerIndex == game.getActivePlayer()) {
-            playerState = (PlayerState) getPlayerState.invoke(game);
-
+            playerState = getIndexedPlayerState(game, playerIndex);
             List<Integer> workerList = playerState.getWorkerList();
+
             //Finding out which worker is available
             int worker = workerList.indexOf(12);
             if (worker == -1) {
-                System.out.println("\n***No worker available, handle this.***\n");
+                return "no worker available";
             }
 
-            if(game.getAllPlayerStates().stream().flatMap(pS->pS.getWorkerList().stream()).anyMatch(w->w==playerAction)){
+            if (List.of(9, 10, 11).contains(playerAction)) {
+                //Check if available worker count is enough and if they aren't special workers
+                if ((workerList.stream().takeWhile(w -> w == 12).count() == 2) && !(worker == 2 || worker == 3)) {
+                    //Temp: specialAction_result
+                    int sa_r = specialAction(game, data);
+                    return "special action done";
+                } else {
+                    return "special action not possible";
+                }
+            }
+
+
+            if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream()).anyMatch(w -> w == playerAction)) {
                 System.out.println("Worker already in position");
             }
 
@@ -112,8 +109,85 @@ public class GameLogic {
             game.setActivePlayer(game.getActivePlayer() + 1);
 
         } else {
-            //Handle player not being the active player. Send message to client, maybe.
+            return "player isn't the active player";
         }
 
+        return "player turn finished";
+    }
+
+
+    public static int specialAction(Game game, ClientData data) {
+
+        /*
+         *   Overview of how it works:
+         *       - Change worker states.
+         *       - Invoke card effect.
+         *       - Get normal card.
+         *       - Check if someone in position of normal card; if true, give player resources of original card. Mark position of card as blocked
+         *         for more workers (somehow).
+         *       - Done.
+         */
+
+
+        return 0;
+    }
+
+    public static int getHelp(Game game, ClientData data) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        Board board = game.getBoard();
+
+        List<Integer> presentHelpCardIds =
+            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().equals(CardType.ESPECIAL)).map(Card::getId).collect(Collectors.toList());
+
+        if (presentHelpCardIds.size() == 0) {
+            return 0;
+        }
+
+        int playerIndex = getPlayerIndex(game, data);
+        PlayerState playerState = getIndexedPlayerState(game, playerIndex);
+
+
+        return 0;
+    }
+
+    public static int defend(Game game, ClientData data) {
+
+        return 0;
+    }
+
+    public static int forge(Game game, ClientData data) {
+
+        return 0;
+    }
+
+    public static int endGame(Game game, ClientData data) {
+
+        return 0;
+    }
+
+    public static int drawCard() {
+
+        return 0;
+    }
+
+    private static int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
+        InvocationTargetException, IllegalAccessException {
+
+        for (int i = 0; i < 3; i++) {
+            Method getPlayer = gameClass.getMethod("getPlayer" + i);
+            UserDwarf player = (UserDwarf) getPlayer.invoke(game);
+
+            if (!(player == null)) {
+                if (player.getUsername().equals(data.getCurrentUser())) {
+                    return i;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private static PlayerState getIndexedPlayerState(Game game, int playerIndex) throws IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException {
+        return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 }

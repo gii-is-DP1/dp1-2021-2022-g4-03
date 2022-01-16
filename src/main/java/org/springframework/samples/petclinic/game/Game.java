@@ -1,21 +1,19 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.samples.petclinic.board.Board;
+import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.playerState.PlayerState;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.samples.petclinic.board.Board;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.playerState.PlayerState;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -23,8 +21,8 @@ import lombok.Setter;
 @Entity
 public class Game extends BaseEntity {
 
-    @Min(value=0)
-    @Max(value=3)
+    @Min(value = 0)
+    @Max(value = 3)
     private Integer numberOfPlayers = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -73,7 +71,9 @@ public class Game extends BaseEntity {
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;
 
-    public List<PlayerState> getAllPlayerStates(){
+    private Integer turnsTaken = 0;
+
+    public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
     }
 
