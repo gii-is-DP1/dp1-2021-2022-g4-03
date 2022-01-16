@@ -149,15 +149,19 @@ public class UserDwarfController {
 
 	//Player
 	@GetMapping(value = "/userDwarf/player")
-	public String processFindFormPlayer(@RequestParam("username") String username) {
+	public String processFindFormPlayer(@RequestParam("username") String username, ModelMap modelmap) {
 
 		if (username == null) {
 			username = ("");
 		}
 		Collection<UserDwarf> results = this.userDwarfService.findUserDwarfByUsername(username);
-		System.out.println(results.size());
+		System.out.println(results.size()+"********************************");
 		if (results.isEmpty()) {
-			return "redirect:/usersDwarf/list";
+
+			modelmap.addAttribute("message","User not found");
+			
+			return "redirect:/userDwarf/searchPlayers";
+
 		} else {
 			UserDwarf userDwarf = results.iterator().next();
 			return "redirect:/profile/" + userDwarf.getId();
