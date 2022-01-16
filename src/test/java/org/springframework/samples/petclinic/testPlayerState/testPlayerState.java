@@ -29,7 +29,7 @@ public class testPlayerState {
     playerState.setSteel(null);
     playerState.setObject(null);
     playerState.setMedal(null);
-    playerState.setActive(null);
+    //playerState.setActive(null);
     playerState.setWorker1(null);
     playerState.setWorker2(null);
     playerState.setWorker3(null);
@@ -117,7 +117,7 @@ public class testPlayerState {
     playerState.setSteel(-1);
     playerState.setObject(-1);
     playerState.setMedal(-1);
-    playerState.setActive(null);
+    //playerState.setActive(null);
     playerState.setWorker1(-2);
     playerState.setWorker2(-2);
     playerState.setWorker3(-2);
@@ -205,7 +205,7 @@ public class testPlayerState {
     playerState.setSteel(1);
     playerState.setObject(1);
     playerState.setMedal(1);
-    playerState.setActive(true);
+    //playerState.setActive(true);
     playerState.setWorker1(13);
     playerState.setWorker2(13);
     playerState.setWorker3(13);
@@ -256,7 +256,7 @@ public class testPlayerState {
     playerState.setSteel(1);
     playerState.setObject(1);
     playerState.setMedal(1);
-    playerState.setActive(true);
+    //playerState.setActive(true);
     playerState.setWorker1(9);
     playerState.setWorker2(9);
     playerState.setWorker3(9);

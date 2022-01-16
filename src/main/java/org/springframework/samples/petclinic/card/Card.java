@@ -38,4 +38,9 @@ public class Card extends BaseEntity{
     @NotNull
     private String effect;
 
+    @Column(name = "initial")
+    @NotNull
+    boolean initial;
+
+
 }
