@@ -29,8 +29,7 @@ public class GameService {
         game.setPlayer0(player0);
         game.setBoard(new Board(game.getId()));
         List<Integer> order = new ArrayList<>(List.of(0, 1, 2));
-        Collections.shuffle(order,
-            new Random(LocalTime.now().getLong(ChronoField.NANO_OF_DAY)));
+        Collections.shuffle(order);
         game.setOrder(order);
         game.setPhase(Phase.INICIO);
         game.setGameStatus(GameStatus.NEW);

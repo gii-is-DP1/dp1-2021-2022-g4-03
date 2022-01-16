@@ -37,6 +37,7 @@ public class Board extends BaseEntity {
     public Board(int id) {
         this.id = id;
         this.background = "resources/images/boardBackground.png";
+        //TODO: Change this values to responsive, maybe won't do because of time constraints.
         this.width = 1000;
         this.height = 700;
         this.cartas = new ArrayList<>();

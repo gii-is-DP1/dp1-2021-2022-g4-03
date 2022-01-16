@@ -44,10 +44,6 @@ public class PlayerState extends BaseEntity {
     @Min(value = 0)
     public Integer medal=0;
 
-    @Column(name = "active")
-    @NotNull
-    public Boolean active=false;
-
     //12 para los trabajadores disponibles pero no usados
     //-1 para los trabajadores no disponibles
     //[0-8] posiciones de la mina, contando desde la esquina izquierda superior en dirección de lectura

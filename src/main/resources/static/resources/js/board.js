@@ -2,18 +2,20 @@
 
 function main(){
     let form = document.getElementById("testForm");
-    let startButton=document.getElementById("startButton");
+    let actionButton=document.getElementById("takeTurn");
 
-    startButton.addEventListener("click", startGame);
+    actionButton.addEventListener("click", takeTurn);
     form.addEventListener("submit", handleClick, false);
 
     window.addEventListener("load", loadBackground, false);
 
 }
- function startGame(event) {
-    console.log("Works");
-    let test="/api/game/"+gameId;
-    let game = fetch(test, {
+ function takeTurn(event) {
+    /*TODO: Change this function to be instead a turn detecting function. Make new function for starting game which
+     only makes aesthetic changes to the page.*/
+    //console.log("Works");
+    let gameURL="/api/game/"+gameId;
+    let game = fetch(gameURL, {
         headers : {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -22,7 +24,7 @@ function main(){
     })
         .then(response => response.json());
 
-    console.log(game);
+    //console.log(game);
 
 }
 

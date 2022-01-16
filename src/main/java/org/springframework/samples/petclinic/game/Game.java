@@ -65,6 +65,8 @@ public class Game extends BaseEntity {
     private Phase phase;
     @NotNull
     private GameStatus gameStatus;
+    @Transient
+    private Integer activePlayer;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "boardId", referencedColumnName = "id")
