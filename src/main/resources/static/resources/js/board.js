@@ -14,6 +14,16 @@ function main(){
     /*TODO: Change this function to be instead a turn detecting function. Make new function for starting game which
      only makes aesthetic changes to the page.*/
     //console.log("Works");
+
+
+    //console.log(game);
+
+}
+
+async function handleClick(event) {
+    //console.log("Works");
+
+    //Block of code to fetch game
     let gameURL="/api/game/"+gameId;
     let game = fetch(gameURL, {
         headers : {
@@ -22,16 +32,6 @@ function main(){
         },
         credentials: 'include'
     })
-        .then(response => response.json());
-
-    //console.log(game);
-
-}
-
-async function handleClick(event) {
-    event.preventDefault();
-    //console.log("Works");
-    let game = await fetch(event.action,)
         .then(response => response.json());
 
 }

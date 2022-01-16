@@ -11,8 +11,8 @@ import org.springframework.samples.petclinic.playerState.PlayerState;
 @Getter
 @Setter
 public class BoardData{
-    public String currentUser;
+    private String currentUser;
 
     //Equates to where does the player put the worker
-    public Integer playerAction;
+    private Integer playerAction;
 }

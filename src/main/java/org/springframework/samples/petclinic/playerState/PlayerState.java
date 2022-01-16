@@ -13,6 +13,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -49,6 +52,12 @@ public class PlayerState extends BaseEntity {
     //[0-8] posiciones de la mina, contando desde la esquina izquierda superior en dirección de lectura
     //[9-11] posiciones montones cartas especiales
 
+    @Column(name = "worker0")
+    @NotNull
+    @Max(value = 12)
+    @Min(value = -1)
+    public Integer worker0 = 12;
+
     @Column(name = "worker1")
     @NotNull
     @Max(value = 12)
@@ -59,7 +68,7 @@ public class PlayerState extends BaseEntity {
     @NotNull
     @Max(value = 12)
     @Min(value = -1)
-    public Integer worker2 = 12;
+    public Integer worker2 = -1;
 
     @Column(name = "worker3")
     @NotNull
@@ -67,10 +76,13 @@ public class PlayerState extends BaseEntity {
     @Min(value = -1)
     public Integer worker3 = -1;
 
-    @Column(name = "worker4")
-    @NotNull
-    @Max(value = 12)
-    @Min(value = -1)
-    public Integer worker4 = -1;
+    public List<Integer> getWorkerList(){
+        return new ArrayList<>(List.of(worker0, worker1, worker2, worker3));
+    }
 
+    public List<Integer> setWorkerList(List<Integer> workerList){
+
+
+        return workerList;
+    }
 }

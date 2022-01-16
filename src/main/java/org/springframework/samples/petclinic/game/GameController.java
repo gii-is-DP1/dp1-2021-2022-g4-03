@@ -82,9 +82,13 @@ public class GameController {
                     return currentGame;
 
                 case ESPECIAL:
+
                     break;
 
                 case AYUDA:
+
+                    System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
+
                     break;
 
                 case DEFENSA:

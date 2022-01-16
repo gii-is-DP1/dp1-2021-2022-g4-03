@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -71,5 +72,9 @@ public class Game extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;
+
+    public List<PlayerState> getAllPlayerStates(){
+        return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
+    }
 
 }

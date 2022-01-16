@@ -22,7 +22,8 @@ public class GameLogic {
     private static CardService cardService;
 
     private static final Class<?> gameClass = Game.class;
-    ;
+    private static final Class<?> playerStateClass = PlayerState.class;
+    private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     public static void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
         IllegalAccessException {
@@ -62,12 +63,19 @@ public class GameLogic {
 
     }
 
-    public static void playerTurn(Game game, BoardData data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void playerTurn(Game game, BoardData data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
 
+        if (!possibleActions.contains(data.getPlayerAction())) {
+            throw new IllegalStateException("Action described is not possible.");
+        }
+
+        int playerAction= data.getPlayerAction();
         int playerIndex = 0;
         PlayerState playerState = null;
         Method getPlayer;
         Method getPlayerState;
+        Method setWorker;
         UserDwarf player;
 
         for (int i = 0; i < 3; i++) {
@@ -75,7 +83,7 @@ public class GameLogic {
             player = (UserDwarf) getPlayer.invoke(game);
 
             if (!(player == null)) {
-                if (player.getUsername().equals(data.currentUser)) {
+                if (player.getUsername().equals(data.getCurrentUser())) {
                     playerIndex = i;
                     break;
                 }
@@ -87,9 +95,24 @@ public class GameLogic {
         if (playerIndex == game.getActivePlayer()) {
             playerState = (PlayerState) getPlayerState.invoke(game);
 
+            List<Integer> workerList = playerState.getWorkerList();
+            //Finding out which worker is available
+            int worker = workerList.indexOf(12);
+            if (worker == -1) {
+                System.out.println("\n***No worker available, handle this.***\n");
+            }
+
+            if(game.getAllPlayerStates().stream().flatMap(pS->pS.getWorkerList().stream()).anyMatch(w->w==playerAction)){
+                System.out.println("Worker already in position");
+            }
+
+            workerList.set(worker, playerAction);
+            playerState.setWorkerList(workerList);
+
+            game.setActivePlayer(game.getActivePlayer() + 1);
 
         } else {
-            //Handle player not being the active player
+            //Handle player not being the active player. Send message to client, maybe.
         }
 
     }
