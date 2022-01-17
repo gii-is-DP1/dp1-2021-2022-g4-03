@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
+import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
@@ -7,6 +8,8 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
+import org.springframework.samples.petclinic.statistics.Statistics;
+import org.springframework.samples.petclinic.statistics.StatisticsRepository;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,12 @@ public class GameService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private StatisticsRepository statisticsRepository;
+
+    @Autowired
+    private static Game game;
 
     public Game createGame(UserDwarf player0) {
         Game game = new Game();
@@ -63,19 +72,43 @@ public class GameService {
 
     // Guarda la partida en la bbdd y la elimina de la memoria de java
     public void finishGame(Integer gameId) {
+
+        //final Integer NUMPLAYERS = 3;
+
         gameRepository.save(gameStorage.getInstance().getGame(gameId));
         gameStorage.getInstance().getGames().remove(gameId);
+
+        // NO VA POR AHORA
+        // Game g = this.gameRepository.findById(gameId).get();
+
+        // for(int i=0;i<NUMPLAYERS;i++){
+
+        //     UserDwarf player = g.getAllPlayersInGame().get(i);
+        //     Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());
+        //     statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed()+1);
+
+        // }
+
     }
 
     // Método que saca al user de la partida (se activa con un botón) y si no quedan jugadores cierra la partida
     public void surrender(Integer gameId, UserDwarf player) {
         Game game = GameStorage.getInstance().getGame(gameId);
+
         if (player.equals(game.getPlayer0())) {
             game.setPlayer0(null);
+            Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());
+            statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed()+1);
+
         } else if (player.equals(game.getPlayer1())) {
             game.setPlayer1(null);
+            Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());
+            statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed()+1);
+
         } else if (player.equals(game.getPlayer2())) {
             game.setPlayer2(null);
+            Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());
+            statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed()+1);
         }
         if (Optional.ofNullable(game.getPlayer0()).isEmpty() && Optional.ofNullable(game.getPlayer1()).isEmpty() && Optional.ofNullable(game.getPlayer2()).isEmpty()) {
             finishGame(gameId);
