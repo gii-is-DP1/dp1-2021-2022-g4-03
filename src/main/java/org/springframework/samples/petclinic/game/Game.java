@@ -71,7 +71,13 @@ public class Game extends BaseEntity {
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;
 
-    private Integer turnsTaken = 0;
+    //Order in which players will take their turn, effectively a stack of ints.
+    @Transient
+    private List<Integer> turnsOrder = new ArrayList<>();
+
+    //Order in which players took help actions, and must take new turns assigning workers.
+    @Transient
+    private List<Integer> helpTurnsOrder = new ArrayList<>();
 
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));

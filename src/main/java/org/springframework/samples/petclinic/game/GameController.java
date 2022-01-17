@@ -60,46 +60,54 @@ public class GameController {
         throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         GameStorage gameStorage = GameStorage.getInstance();
-        Game currentGame = gameStorage.getGame(gameId);
+        Game game = gameStorage.getGame(gameId);
 
 
-        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS) {
-            switch (currentGame.getPhase()) {
+        while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
+            switch (game.getPhase()) {
                 case INICIO:
-                    switch (currentGame.getGameStatus()) {
+                    switch (game.getGameStatus()) {
                         case NEW:
-                            GameLogic.initPlayerStates(currentGame);
-                            //TODO: Can't test this without cards, nullPointerException
-                        /*GameLogic.initBoard(currentGame, cardService.findAllSpecialCards(),
-                            cardService.findAllNormalCards());*/
-                            currentGame.setGameStatus(GameStatus.IN_PROGRESS);
-                            currentGame.setPhase(Phase.ASIGNACION);
+                            GameLogic.initPlayerStates(game);
+                            GameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
+                                cardService.findAllInitialCards());
+                            game.setGameStatus(GameStatus.IN_PROGRESS);
+                            game.setPhase(Phase.ASIGNACION);
                         case IN_PROGRESS:
                             GameLogic.drawCard();
                             break;
                     }
 
-                    return currentGame;
+                    return game;
 
                 case ASIGNACION:
-                    currentGame.setTurnsTaken(currentGame.getTurnsTaken() + 1);
+                    //Check if still has actions to do
+                    if (game.getTurnsOrder().size() != 0) {
+                        String result = GameLogic.playerTurn(game, data);
 
-                    //Check if it has gone One round
-                    if (!(currentGame.getTurnsTaken() % (currentGame.getNumberOfPlayers() * 2 + 1) == 0)) {
-                        String result = GameLogic.playerTurn(currentGame, data);
+                        //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
+                        if (result.equals("player turn finished")) {
+                            Integer playerIndex = GameLogic.checkIfHelpAction(game, data);
+                            if (playerIndex != -1) game.getHelpTurnsOrder().add(playerIndex);
+                        }
+                    } else if (game.getHelpTurnsOrder().size()!=0) {
+                        GameLogic.processHelpTurnOrder(game, data);
+                        game.setPhase(Phase.AYUDA);
                     }
 
-                    currentGame.setPhase(Phase.AYUDA);
-
-                    return currentGame;
+                    return game;
 
                 case ESPECIAL:
-
                     System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
 
-                    return currentGame;
+                    return game;
 
                 case AYUDA:
+                    if (game.getHelpTurnsOrder().size()!=0){
+                        String result = GameLogic.playerTurn(game, data);
+                    }
+
+                    //TODO: Handle special cases here too.
 
                     break;
 
@@ -107,21 +115,19 @@ public class GameController {
                     break;
 
                 case MINA:
-                
-                    GameLogic.resourceRound(currentGame);;
+                    GameLogic.resourceRound(game);
 
                 case FORJA:
-                    return currentGame;
 
                 case FIN:
-                    return currentGame;
+                    return game;
 
                 default:
                     break;
             }
         }
 
-        return currentGame;
+        return game;
     }
 
     @GetMapping(value = "/game/{gameId}/surrender")

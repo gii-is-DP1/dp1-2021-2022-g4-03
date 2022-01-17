@@ -46,7 +46,13 @@ public class CardService {
     @Transactional
     public List<Card> findAllNormalCards(){
         Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-        return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+        return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)||card.isInitial()).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<Card> findAllInitialCards(){
+        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        return stream.takeWhile(card -> card.isInitial()).collect(Collectors.toList());
     }
 
     public Integer translateSpecialToNormalId(String specialEffect){
