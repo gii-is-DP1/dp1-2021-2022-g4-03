@@ -52,6 +52,8 @@ public class GameController {
     // 	return "redirect:/board/{gameId}";
     // }
 
+
+    //TODO: Handle in js to call back to mainloop when player input phases have ended so the rest of the logic can continue
     @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
@@ -61,6 +63,8 @@ public class GameController {
 
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
+
+        int defenseResult = 0;
 
         //Label for breaks, similar to C's goto
         mainLoopStart:
@@ -83,7 +87,7 @@ public class GameController {
 
                 case ASIGNACION:
                     //Check if still has actions to do
-                    if (game.getTurnsOrder().size() != 0) {
+                    if (!game.getTurnsOrder().isEmpty()) {
                         String result = GameLogic.playerTurn(game, data);
 
                         //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
@@ -91,7 +95,7 @@ public class GameController {
                             Integer playerIndex = GameLogic.checkIfHelpAction(game, data);
                             if (playerIndex != -1) game.getHelpTurnsOrder().add(playerIndex);
                         }
-                    } else if (game.getHelpTurnsOrder().size()!=0) {
+                    } else if (!game.getHelpTurnsOrder().isEmpty()) {
                         GameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
                     }
@@ -104,8 +108,10 @@ public class GameController {
                     break mainLoopStart;
 
                 case AYUDA:
-                    if (game.getHelpTurnsOrder().size()!=0){
+                    if (!game.getTurnsOrder().isEmpty()) {
                         String result = GameLogic.playerTurn(game, data);
+                    } else {
+                        game.setPhase(Phase.DEFENSA);
                     }
 
                     //TODO: Handle special cases here too.
@@ -113,13 +119,15 @@ public class GameController {
                     return game;
 
                 case DEFENSA:
-
+                    defenseResult = GameLogic.defense(game);
 
                 case MINA:
-                    GameLogic.resourceRound(game);
+                    if (defenseResult != 1) {
+                        GameLogic.resourceRound(game);
+                    }
 
                 case FORJA:
-
+                
                 case FIN:
                     return game;
 

@@ -168,21 +168,55 @@ public class GameLogic {
         return turnsOrder;
     }
 
-    public static int defend(Game game, ClientData data) {
+    public static int defense(Game game) {
         Board board = game.getBoard();
+        List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
-        List<Card> presentDefenseCardsList =
-            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
+        List<Card> presentDefenseCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
+            .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
-        if (presentDefenseCardsList.size() == 0) {
-            return -1;
+        if (presentDefenseCardsList.isEmpty()) {
+            return 0;
         }
 
-        List<Integer> defenseCardsPositions= presentDefenseCardsList.stream().map(card->card.getPosition()).collect(Collectors.toList());
-        List<Integer> workersPositions=
-            game.getAllPlayerStates().stream().flatMap(playerState -> playerState.getWorkerList().stream()).distinct().filter(defenseCardsPositions::contains).collect(Collectors.toList());
+        List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition).collect(Collectors.toList());
+        List<Integer> occupiedDefenseCards = allPlayerStates.stream().flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
+            .filter(defenseCardsPositions::contains).collect(Collectors.toList());
 
+        presentDefenseCardsList.removeIf(card -> occupiedDefenseCards.contains(card.getPosition()));
+
+        allPlayerStates.stream().filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
+            .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
+
+        if (presentDefenseCardsList.isEmpty()) {
             return 0;
+        }
+
+        for (Card card : presentDefenseCardsList) {
+            String effect = card.getEffect();
+
+            if (effect.equals("*")) {
+                return 1;
+            } else if (effect.equals("?")) {
+                allPlayerStates.forEach(playerState -> {
+                    playerState.setGold(Math.min(playerState.getGold() - 2, 0));
+                    playerState.setIron(playerState.getIron() + 2);
+                });
+            } else if (effect.length() == 3) {
+                switch (effect.charAt(2)) {
+                    case 'g':
+                        allPlayerStates.forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
+                        break;
+                    case 'i':
+                        allPlayerStates.forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
+                        break;
+                }
+            } else {
+                allPlayerStates.forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 100, 0)));
+            }
+        }
+
+        return 0;
     }
 
     public static int forge(Game game, ClientData data) {

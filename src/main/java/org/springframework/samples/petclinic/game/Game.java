@@ -89,7 +89,7 @@ public class Game extends BaseEntity {
         List<UserDwarf> auxList= new ArrayList<>(List.of(player0, player1,player2));
 
         auxList.removeIf(Objects::isNull);
-        
+
         return auxList;
     }
 
