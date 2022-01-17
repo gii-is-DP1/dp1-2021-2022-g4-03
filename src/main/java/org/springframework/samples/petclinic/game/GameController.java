@@ -62,7 +62,8 @@ public class GameController {
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
 
-
+        //Label for breaks, similar to C's goto
+        mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
                 case INICIO:
@@ -99,8 +100,8 @@ public class GameController {
 
                 case ESPECIAL:
                     System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
-
-                    return game;
+                    game.setPhase(Phase.FIN);
+                    break mainLoopStart;
 
                 case AYUDA:
                     if (game.getHelpTurnsOrder().size()!=0){
@@ -109,10 +110,10 @@ public class GameController {
 
                     //TODO: Handle special cases here too.
 
-                    break;
+                    return game;
 
                 case DEFENSA:
-                    break;
+
 
                 case MINA:
                     GameLogic.resourceRound(game);

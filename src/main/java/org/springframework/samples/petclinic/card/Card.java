@@ -42,5 +42,4 @@ public class Card extends BaseEntity{
     @NotNull
     boolean initial;
 
-
 }

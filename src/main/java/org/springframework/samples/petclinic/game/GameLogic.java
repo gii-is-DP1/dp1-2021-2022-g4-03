@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -141,7 +142,7 @@ public class GameLogic {
 
         Card actionableCard = cardService.findCardById(game.getBoard().getCartas().get(clientData.getPlayerAction()));
 
-        if (actionableCard.getCardType().equals(CardType.RECIBIR_AYUDA)) {
+        if (actionableCard.getCardType().isHelp()) {
             return getPlayerIndex(game, clientData);
         }
 
@@ -152,7 +153,7 @@ public class GameLogic {
         //Check if there are actionable help cards on the board
         Board board = game.getBoard();
         List<Card> presentHelpCardsList =
-            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().equals(CardType.RECIBIR_AYUDA)).collect(Collectors.toList());
+            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
             return new ArrayList<>();
@@ -168,8 +169,20 @@ public class GameLogic {
     }
 
     public static int defend(Game game, ClientData data) {
+        Board board = game.getBoard();
 
-        return 0;
+        List<Card> presentDefenseCardsList =
+            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
+
+        if (presentDefenseCardsList.size() == 0) {
+            return -1;
+        }
+
+        List<Integer> defenseCardsPositions= presentDefenseCardsList.stream().map(card->card.getPosition()).collect(Collectors.toList());
+        List<Integer> workersPositions=
+            game.getAllPlayerStates().stream().flatMap(playerState -> playerState.getWorkerList().stream()).distinct().filter(defenseCardsPositions::contains).collect(Collectors.toList());
+
+            return 0;
     }
 
     public static int forge(Game game, ClientData data) {
@@ -214,7 +227,7 @@ public class GameLogic {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : allPlayersStates) {
-            for (Integer workerPosition: playerState.getWorkerList()) {
+            for (Integer workerPosition : playerState.getWorkerList()) {
                 // Mirar la carta que hay en la posición del trabajador y comprobar si es de
                 // tipo EXTRACCION_RECURSOS.
                 // En caso afirmativo incluir los efectos al playerState del jugador.
@@ -228,29 +241,29 @@ public class GameLogic {
                         Card mineCard = cardService.findCardById(j);
                         Integer mineCardPosition = mineCard.getPosition();
 
-                        if (mineCardPosition == workerPosition) {
+                        if (Objects.equals(mineCardPosition, workerPosition)) {
                             if (mineCard.getCardType().equals(CardType.EXTRACCION_RECURSOS)) {
 
-                                String efect = mineCard.getEffect();
-                                String field[] = efect.split(",");
+                                String effect = mineCard.getEffect();
+                                String[] field = effect.split(",");
 
                                 for (int z = 0; z <= field.length; z++) {
 
                                     String campo = field[z];
 
                                     if (campo.contains("i")) {
-                                        Integer index = campo.indexOf("i");
+                                        int index = campo.indexOf("i");
                                         String resource = campo.substring(0, index);
-                                        playerState.setIron(playerState.getIron() + Integer.valueOf(resource));
+                                        playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
 
                                     } else if (campo.contains("g")) {
-                                        Integer index = campo.indexOf("g");
+                                        int index = campo.indexOf("g");
                                         String resource = campo.substring(0, index);
-                                        playerState.setGold(playerState.getGold() + Integer.valueOf(resource));
+                                        playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
                                     } else {
-                                        Integer index = campo.indexOf("s");
+                                        int index = campo.indexOf("s");
                                         String resource = campo.substring(0, index);
-                                        playerState.setSteel(playerState.getSteel() + Integer.valueOf(resource));
+                                        playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
                                     }
                                 }
                             }

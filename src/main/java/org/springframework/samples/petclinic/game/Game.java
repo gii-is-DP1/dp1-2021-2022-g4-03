@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.playerState.PlayerState;
+import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Getter
@@ -81,6 +83,14 @@ public class Game extends BaseEntity {
 
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
+    }
+
+    public List<UserDwarf> getAllPlayersInGame(){
+        List<UserDwarf> auxList= new ArrayList<>(List.of(player0, player1,player2));
+
+        auxList.removeIf(Objects::isNull);
+        
+        return auxList;
     }
 
 }
