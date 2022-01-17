@@ -107,7 +107,8 @@ public class GameController {
                     break;
 
                 case MINA:
-                    break;
+                
+                    GameLogic.resourceRound(currentGame);;
 
                 case FORJA:
                     return currentGame;
