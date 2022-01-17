@@ -26,7 +26,6 @@ public class GameLogic {
     private static CardService cardService;
 
     private static final Class<?> gameClass = Game.class;
-    private static final Class<?> playerStateClass = PlayerState.class;
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     public static void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
@@ -163,6 +162,10 @@ public class GameLogic {
         List<Integer> turnsOrder = game.getTurnsOrder();
         IntStream.range(0, helpTurnsOrder.size()).forEach(i -> turnsOrder.add(i * 2 + 1, helpTurnsOrder.get(i)));
 
+        if (turnsOrder.get(0).equals(game.getOrder().get(0))) {
+            Collections.rotate(game.getOrder(), 1);
+        }
+
         game.setActivePlayer(turnsOrder.remove(0));
 
         return turnsOrder;
@@ -229,7 +232,23 @@ public class GameLogic {
         return 0;
     }
 
-    public static int drawCard() {
+    public static int drawCard(Game game) {
+        Board board = game.getBoard();
+        List<Integer> deck = board.getCartasMontaña();
+        int timesDrawn = 0;
+        List<Integer> positionsDrawn = new ArrayList<>();
+        Integer p;
+
+        while (timesDrawn < 4 && !deck.isEmpty()) {
+            timesDrawn++;
+            Card card = cardService.findCardById(deck.remove(0));
+            p = card.getPosition();
+
+            if (!positionsDrawn.contains(p)) {
+                positionsDrawn.add(p);
+                board.getCartas().add(p, card.getId());
+            }
+        }
 
         return 0;
     }

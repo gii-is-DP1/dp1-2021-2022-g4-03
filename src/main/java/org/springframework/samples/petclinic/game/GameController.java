@@ -79,7 +79,7 @@ public class GameController {
                             game.setGameStatus(GameStatus.IN_PROGRESS);
                             game.setPhase(Phase.ASIGNACION);
                         case IN_PROGRESS:
-                            GameLogic.drawCard();
+                            GameLogic.drawCard(game);
                             break;
                     }
 
@@ -120,6 +120,7 @@ public class GameController {
 
                 case DEFENSA:
                     defenseResult = GameLogic.defense(game);
+                    game.setPhase(Phase.MINA);
 
                 case MINA:
                     if (defenseResult != 1) {
@@ -127,7 +128,7 @@ public class GameController {
                     }
 
                 case FORJA:
-                
+
                 case FIN:
                     return game;
 
