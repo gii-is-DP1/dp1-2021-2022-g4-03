@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class GameController {
@@ -42,6 +43,14 @@ public class GameController {
         //Unable to test this without cards, nullPointerException
         game= mainLoop(game.getId(), null, null);
         return "redirect:/board/" + game.getId();
+    }
+
+    @GetMapping(value = "/game/list")
+    public String gameList(ModelMap modelMap) {
+        String view = "game/gameList";
+		Iterable<Game> games = gameService.findAll();
+		modelMap.addAttribute("games", games);
+		return view;
     }
 
 
@@ -121,5 +130,21 @@ public class GameController {
         // System.out.println(gameIds);
         System.out.println(games);
     }
+
+    @GetMapping(path="/{gameId}/delete")
+	public String deleteGame(@PathVariable("gameId") Integer gameId, ModelMap modelMap) {
+		Optional<Game> game = gameService.findByGameId(gameId);
+		
+		if (game.isPresent()) {
+			if(game.get().getPlayer0().equals(currentUser)) {
+				gameService.finishGame(gameId);
+				modelMap.addAttribute("message", "game finished!");
+			}
+		} else {
+			modelMap.addAttribute("message", "game not found!");
+		}
+		
+		return "redirect:/games/searchGames";
+	}
 
 }

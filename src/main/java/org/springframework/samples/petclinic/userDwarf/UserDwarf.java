@@ -16,6 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.Authorities;
 
@@ -51,6 +53,7 @@ public class UserDwarf extends BaseEntity implements Serializable{
     boolean active;
 
     @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "userDwarf")
+    @JsonIgnore
 	private Set<Authorities> authorities;
 
     @Override

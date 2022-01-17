@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GameService {
@@ -56,6 +57,15 @@ public class GameService {
         }
         return game;
     }
+
+    public Iterable<Game> findAll() {
+		return gameRepository.findAll();
+	}
+
+    @Transactional(readOnly = true)
+	public Optional<Game> findByGameId(int id){
+		return gameRepository.findById(id);
+	}
 
     public Board getBoard(Integer gameId) {
         Game game = GameStorage.getInstance().getGame(gameId);

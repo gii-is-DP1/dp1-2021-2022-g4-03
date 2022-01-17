@@ -38,4 +38,30 @@ public class Card extends BaseEntity{
     @NotNull
     private String effect;
 
+    public Integer getPositionXInPixels(Integer size) {
+        position = 0;
+        if(position.equals(0)||position.equals(3)||position.equals(6)) {
+            return(position*size);
+        } else if(position.equals(1)||position.equals(4)||position.equals(7)) {
+            position = 1;
+            return(position*size);
+        } else {
+            position = 2;
+            return(position*size);
+        }
+    }
+
+    public Integer getPositionYInPixels(Integer size) {
+        position = 0;
+        if(position.equals(0)||position.equals(1)||position.equals(2)) {
+            return(position*size);
+        } else if(position.equals(3)||position.equals(4)||position.equals(5)) {
+            position = 1;
+            return(position*size);
+        } else {
+            position = 2;
+            return(position*size);
+        }
+    }
+
 }

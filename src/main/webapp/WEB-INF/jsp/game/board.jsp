@@ -10,28 +10,24 @@
 
 
 <petclinic:layout pageName="board">
+
     <jsp:attribute name="customHeader">
         <script src="/resources/js/board.js"></script>
     </jsp:attribute>
     <jsp:body>
-        <h2>
-            <fmt:message key="titulo"/>
-        </h2>
-
-        <p>
-        <h2>
-            <c:out value="${now}"/>
-        </h2>
+        <h2><c:out value="Turno para: ${currentUser.username}"/></h2>
+	    <h2><c:out value="Fase de la ronda: ${game.phase.toString()}"/></h2>
 
         <div class="row">
             <div class="col-md-12">
-                <canvas id="canvas" width="${game.board.width}" height="${game.board.height}">
+                <img id="boardBackground" src="/${game.board.background}" style="display:display-box">
+                <petclinic:board board="${board}"/>
 
-                    <img id="carta1" src="/resources/images/pets.png" style="display:none">
-                    <img id="carta2" src="/resources/images/pets.png" style="display:none">
-                    <img id="carta3" src="/resources/images/pets.png" style="display:none">
-                    <img id="boardBackground" src="/${game.board.background}" style="display:none">
-                </canvas>
+                <c:forEach items="${board.cartas}" var="card">
+                    <petclinic:mountainCard padding="20" card="${card}"/>
+                    
+                </c:forEach> 
+
             </div>
             <div class="col-sm-offset-2 col-sm-10">
                 <a class="btn btn-default"
