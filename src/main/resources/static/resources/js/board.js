@@ -2,14 +2,31 @@
 
 function main(){
     let form = document.getElementById("testForm");
-    let actionButton=document.getElementById("takeTurn");
+    let cardButton=document.getElementById("card1");
 
-    actionButton.addEventListener("click", takeTurn);
+    cardButton.addEventListener("click", function (e){
+        sample(e, cardButton.value);
+    });
     form.addEventListener("submit", handleClick, false);
 
     window.addEventListener("load", loadBackground, false);
 
 }
+
+function sample(event, cardValue){
+    let gameURL="/api/game/"+gameId;
+    fetch(gameURL, {
+        method :'POST',
+        headers : {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({playerAction: cardValue})
+    }).then(data=>{
+        console.log(data);
+    })
+}
+
  function takeTurn(event) {
     /*TODO: Change this function to be instead a turn detecting function. Make new function for starting game which
      only makes aesthetic changes to the page.*/
@@ -24,7 +41,7 @@ async function handleClick(event) {
     //console.log("Works");
 
     //Block of code to fetch game
-    let gameURL="/api/game/"+gameId;
+
     let game = fetch(gameURL, {
         headers : {
             'Content-Type': 'application/json',

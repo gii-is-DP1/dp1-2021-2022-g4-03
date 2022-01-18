@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.board;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.game.ClientData;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameStorage;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
@@ -38,6 +39,7 @@ public class BoardController {
         model.put("currentUser", userDwarfService.findUserDwarfByUsername2(currentUserUsername).orElse(null));
         Game game = gameStorage.getGame(gameId);
         model.put("game", game);
+        model.put("clientData", new ClientData());
         return "game/board";
     }
 

@@ -14,24 +14,21 @@
         <script src="/resources/js/board.js"></script>
     </jsp:attribute>
     <jsp:body>
-        <h2>
-            <fmt:message key="titulo"/>
-        </h2>
 
-        <p>
-        <h2>
-            <c:out value="${now}"/>
-        </h2>
+        <c:if test="${game.phase == 'ASIGNACION'}">
+		<h2><c:out value="Turno para: Jugador ${game.activePlayer}"/></h2>
+        </c:if>
+        <h2><c:out value="Fase de la ronda: ${game.phase}"/></h2>
 
         <div class="row">
             <div class="col-md-12">
                 <canvas id="canvas" width="${game.board.width}" height="${game.board.height}">
-
-                    <img id="carta1" src="/resources/images/pets.png" style="display:none">
-                    <img id="carta2" src="/resources/images/pets.png" style="display:none">
-                    <img id="carta3" src="/resources/images/pets.png" style="display:none">
                     <img id="boardBackground" src="/${game.board.background}" style="display:none">
                 </canvas>
+
+
+                <button class="btn-primary" id="card1" value="0">Carta 1</button>
+
             </div>
             <div class="col-sm-offset-2 col-sm-10">
                 <a class="btn btn-default"

@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.samples.petclinic.board.Board;
@@ -73,18 +74,23 @@ public class Game extends BaseEntity {
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;
 
+
     //Order in which players will take their turn, effectively a stack of ints.
     @Transient
+    @JsonIgnore
     private List<Integer> turnsOrder = new ArrayList<>();
 
     //Order in which players took help actions, and must take new turns assigning workers.
     @Transient
+    @JsonIgnore
     private List<Integer> helpTurnsOrder = new ArrayList<>();
 
+    @JsonIgnore
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
     }
 
+    @JsonIgnore
     public List<UserDwarf> getAllPlayersInGame(){
         List<UserDwarf> auxList= new ArrayList<>(List.of(player0, player1,player2));
 

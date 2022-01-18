@@ -22,8 +22,12 @@ import java.util.stream.IntStream;
 @Component
 public class GameLogic {
 
-    @Autowired
+
     private static CardService cardService;
+
+    public GameLogic(@Autowired CardService cardService) {
+        GameLogic.cardService = cardService;
+    }
 
     private static final Class<?> gameClass = Game.class;
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
@@ -244,20 +248,25 @@ public class GameLogic {
     }
 
     public static int drawCard(Game game) {
+        System.out.println("Here");
+
         Board board = game.getBoard();
         List<Integer> deck = board.getCartasMontaña();
         int timesDrawn = 0;
         List<Integer> positionsDrawn = new ArrayList<>();
         Integer p;
 
-        while (timesDrawn < 4 && !deck.isEmpty()) {
+        while (timesDrawn < 3 && !deck.isEmpty()) {
+            System.out.println("there");
             timesDrawn++;
-            Card card = cardService.findCardById(deck.remove(0));
+            Integer cardId = deck.remove(0);
+            Card card = cardService.findCardById(cardId);
             p = card.getPosition();
-
+            System.out.println("fucking cardService");
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
                 board.getCartas().add(p, card.getId());
+                if(timesDrawn==2) break;
             }
         }
 
