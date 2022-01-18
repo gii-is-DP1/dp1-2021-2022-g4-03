@@ -44,17 +44,16 @@ public class GameController {
     }
 
 
-    // @GetMapping(value = "/game/connect/{gameId}")
-    // public String connectToGame(@PathVariable("gameId") Integer gameId) {
-    // 	// Hasta que no tengamos currentUser conectamos a un user random
-    // 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
-    // 	gameService.connectToGame(player, gameId);
-    // 	return "redirect:/board/{gameId}";
-    // }
+    @GetMapping(value = "/game/connect/{gameId}")
+    public String connectToGame(@PathVariable("gameId") Integer gameId) {
+        UserDwarf user = userDwarfService.findUserDwarfByUsername(currentUser.getCurrentUser()).iterator().next();
+    	gameService.connectToGame(user, gameId);
+    	return "redirect:/board/{gameId}";
+    }
 
 
     //TODO: Handle in js to call back to mainloop when player input phases have ended so the rest of the logic can continue
-    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Game mainLoop(@PathVariable("gameId") Integer gameId,
