@@ -12,6 +12,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -129,9 +132,18 @@ public class GameController {
                     if (defenseResult != 1) {
                         gameLogic.resourceRound(game);
                     }
+                    game.setPhase(Phase.FORJA);
 
                 case FORJA:
-                    gameLogic.timeToForge(game);
+                    List<Integer> forgingPlayers= gameLogic.timeToForge(game);
+
+                    if(!forgingPlayers.isEmpty()){
+                        if(forgingPlayers.contains(game.getActivePlayer())){
+                            Collections.rotate(game.getOrder(), 1);
+                        }
+                    }
+
+                    game.setPhase(Phase.FIN);
 
                 case FIN:
                     return game;

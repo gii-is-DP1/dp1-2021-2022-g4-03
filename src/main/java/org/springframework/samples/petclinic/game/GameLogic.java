@@ -49,6 +49,10 @@ public class GameLogic {
         game.getTurnsOrder().addAll(order);
         Collections.reverse(order);
 
+        game.getPlayerState_0().setId(0);
+        game.getPlayerState_1().setId(1);
+        game.getPlayerState_2().setId(2);
+
         game.setActivePlayer(game.getTurnsOrder().remove(0));
 
     }
@@ -152,8 +156,7 @@ public class GameLogic {
         return 0;
     }
 
-    public Integer checkIfHelpAction(Game game, ClientData clientData)
-        throws InvocationTargetException, NoSuchMethodException,
+    public Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
         IllegalAccessException {
 
         Card actionableCard = cardService.findCardById(game.getBoard().getCartas().get(clientData.getPlayerAction()));
@@ -168,7 +171,7 @@ public class GameLogic {
     public List<Integer> processHelpTurnOrder(Game game, ClientData data) {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
-        List<Card> presentHelpCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
+        List<Card> presentHelpCardsList = board.getCartas().stream().map(cardService::findCardById)
             .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
@@ -297,8 +300,7 @@ public class GameLogic {
         return 0;
     }
 
-    private PlayerState getIndexedPlayerState(Game game, int playerIndex)
-        throws IllegalAccessException, InvocationTargetException,
+    private PlayerState getIndexedPlayerState(Game game, int playerIndex) throws IllegalAccessException, InvocationTargetException,
         NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
@@ -351,8 +353,10 @@ public class GameLogic {
         }
     }
 
-    public void timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
+    public List<Integer> timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
         List<PlayerState> playerStates = game.getAllPlayerStates();
+        List<Integer> forgingPlayers = new ArrayList<>();
 
         for (PlayerState playerState : playerStates) {
             List<Integer> listWorkers = playerState.getWorkerList();
@@ -400,11 +404,14 @@ public class GameLogic {
                                     playerState.setObject(playerState.getObject() + objectReward.get());
                                 }
 
+                                forgingPlayers.add(playerState.getId());
                             }
                         }
                     }
                 }
             }
         }
+        return forgingPlayers;
     }
+
 }
