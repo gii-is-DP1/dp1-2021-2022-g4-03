@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,12 +17,6 @@ public class CardService {
 
     @Autowired
     CardRepository cardRepository;
-
-    //TODO: Change values to corresponding card ids.
-    private static final Map<String, Integer> special2normal =
-        Map.of("muster", 0, "hold", 0, "sell", 0,
-            "past", 0, "special", 0, "turn", 0,
-            "apprentice", 0, "collapse", 0, "run", 0);
 
     public void deleteCard(Card card){
         cardRepository.delete(card);
@@ -52,10 +47,7 @@ public class CardService {
     @Transactional
     public List<Card> findAllInitialCards(){
         Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-        return stream.takeWhile(card -> card.isInitial()).collect(Collectors.toList());
+        return stream.takeWhile(Card::isInitial).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
     }
 
-    public Integer translateSpecialToNormalId(String specialEffect){
-        return special2normal.get(specialEffect);
-    }
 }

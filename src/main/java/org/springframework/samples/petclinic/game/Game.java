@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.playerState.PlayerState;
-import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import javax.persistence.*;
@@ -85,14 +84,26 @@ public class Game extends BaseEntity {
     @JsonIgnore
     private List<Integer> helpTurnsOrder = new ArrayList<>();
 
+    @Transient
+    @JsonIgnore
+    private List<Integer> forgingPlayers = new ArrayList<>();
+
+    @Transient
+    @JsonIgnore
+    private boolean doDefend = true;
+
+    @Transient
+    @JsonIgnore
+    private boolean doMine = true;
+
     @JsonIgnore
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
     }
 
     @JsonIgnore
-    public List<UserDwarf> getAllPlayersInGame(){
-        List<UserDwarf> auxList= new ArrayList<>(List.of(player0, player1,player2));
+    public List<UserDwarf> getAllPlayersInGame() {
+        List<UserDwarf> auxList = new ArrayList<>(List.of(player0, player1, player2));
 
         auxList.removeIf(Objects::isNull);
 

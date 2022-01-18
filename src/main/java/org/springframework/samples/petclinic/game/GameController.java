@@ -70,8 +70,6 @@ public class GameController {
         Game game = gameStorage.getGame(gameId);
         gameLogic.getInstance(cardService);
 
-        int defenseResult = 0;
-
         //Label for breaks, similar to C's goto
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
@@ -125,13 +123,17 @@ public class GameController {
                     return game;
 
                 case DEFENSA:
-                    defenseResult = gameLogic.defense(game);
+                    if (game.isDoDefend()){
+                        gameLogic.defense(game);
+                    }
+
                     game.setPhase(Phase.MINA);
 
                 case MINA:
-                    if (defenseResult != 1) {
+                    if (game.isDoMine()) {
                         gameLogic.resourceRound(game);
                     }
+
                     game.setPhase(Phase.FORJA);
 
                 case FORJA:

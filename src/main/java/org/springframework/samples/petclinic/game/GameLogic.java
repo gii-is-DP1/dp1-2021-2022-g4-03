@@ -2,9 +2,9 @@ package org.springframework.samples.petclinic.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
+import org.springframework.samples.petclinic.board.Cell;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
-import org.springframework.samples.petclinic.card.CardType;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
@@ -20,6 +20,10 @@ import java.util.stream.IntStream;
 @Component
 public class GameLogic {
 
+    private static final Map<String, Integer> special2normal =
+        Map.of("muster", 59, "hold", 60, "sell", 61,
+            "past", 62, "special", 63, "turn", 64,
+            "apprentice", 57, "collapse", 65, "run", 58);
 
     private final CardService cardService;
 
@@ -75,14 +79,13 @@ public class GameLogic {
         board.setCartasAccionEspecial_0(specialIdList.subList(6, 9));
 
         // Draw the nine initial cards and put them in the mine slots
-        List<Integer> mine = board.getCartas();
+        List<Integer> allInitialCardsIds = allInitialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
 
         Integer cardId;
         for (int index = 0; index < 9; index++) {
             int finalIndex = index;
-            cardId = allInitialCards.stream().filter(card -> card.getPosition() == finalIndex).map(BaseEntity::getId)
-                .findFirst().orElse(-1);
-            mine.add(cardId);
+            cardId = allInitialCardsIds.get(index);
+            board.getCell(index).addToTop(cardId);
         }
 
     }
@@ -115,9 +118,7 @@ public class GameLogic {
             if (List.of(9, 10, 11).contains(playerAction)) {
                 // Check if available worker count is enough and if they aren't special workers
                 if ((workerList.stream().takeWhile(w -> w == 12).count() == 2) && !(worker == 2 || worker == 3)) {
-                    // Temp: specialAction_result
-                    int sa_r = specialAction(game, data);
-                    return "special action done";
+                    return specialAction(game, data);
                 } else {
                     return "special action not possible";
                 }
@@ -140,7 +141,7 @@ public class GameLogic {
         return "player turn finished";
     }
 
-    public int specialAction(Game game, ClientData data) {
+    public String specialAction(Game game, ClientData data) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
         /*
          * Overview of how it works:
@@ -153,13 +154,102 @@ public class GameLogic {
          * - Done.
          */
 
-        return 0;
+        Board board = game.getBoard();
+
+        switch (data.getPlayerAction()) {
+            case 9:
+                List<Integer> specialCardDeck_0 = board.getCartasAccionEspecial_0();
+                if (specialCardDeck_0.isEmpty()) return "special deck empty";
+
+                Card card = cardService.findCardById(specialCardDeck_0.remove(0));
+                String effect = card.getEffect();
+
+                return invokeEffect(game, effect);
+
+            case 10:
+                if (board.getCartasAccionEspecial_1().isEmpty()) return "special deck empty";
+                break;
+            case 11:
+                if (board.getCartasAccionEspecial_2().isEmpty()) return "special deck empty";
+                break;
+        }
+
+
+        return "something went wrong";
+    }
+
+    private String invokeEffect(Game game, String effect) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        Board board = game.getBoard();
+
+        switch (effect) {
+            case "muster":
+                changeCard(board, 0, game, effect);
+                game.setDoDefend(false);
+
+                return effect;
+
+            case "hold":
+
+                changeCard(board, 1, game, effect);
+
+
+                return effect;
+
+            case "sell":
+                if (getIndexedPlayerState(game, game.getActivePlayer()).getObject() == 0) {
+                    return "not possible";
+                }
+                changeCard(board, 2, game, effect);
+
+                //TODO: Add player action for selecting resource;
+
+                return effect;
+
+            case "past":
+                changeCard(board, 3, game, effect);
+                return effect;
+
+            case "special":
+                changeCard(board, 4, game, effect);
+                return effect;
+
+            case "turn":
+                changeCard(board, 5, game, effect);
+                return effect;
+
+            case "apprentice":
+                changeCard(board, 6, game, effect);
+                return effect;
+
+            case "collapse":
+                changeCard(board, 7, game, effect);
+                return effect;
+
+            case "run":
+                changeCard(board, 8, game, effect);
+                return effect;
+
+        }
+        return "something went wrong";
+    }
+
+    private void changeCard(Board board, int index, Game game, String effect) {
+        Cell cell = board.getCardCells().get(index);
+        Card card = cardService.findCardById(cell.getCardOnTop());
+        game.getAllPlayerStates().forEach(playerState -> {
+            if (playerState.getWorkerList().contains(index)) {
+                forge(game.getForgingPlayers(), playerState, card);
+                mine(playerState, card);
+            }
+        });
+
+        cell.addToTop(special2normal.get(effect));
     }
 
     public Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
         IllegalAccessException {
 
-        Card actionableCard = cardService.findCardById(game.getBoard().getCartas().get(clientData.getPlayerAction()));
+        Card actionableCard = cardService.findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
 
         if (actionableCard.getCardType().isHelp()) {
             return getPlayerIndex(game, clientData);
@@ -171,7 +261,7 @@ public class GameLogic {
     public List<Integer> processHelpTurnOrder(Game game, ClientData data) {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
-        List<Card> presentHelpCardsList = board.getCartas().stream().map(cardService::findCardById)
+        List<Card> presentHelpCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
             .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
@@ -195,7 +285,7 @@ public class GameLogic {
         Board board = game.getBoard();
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
-        List<Card> presentDefenseCardsList = board.getCartas().stream().map(cardService::findCardById)
+        List<Card> presentDefenseCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
             .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
         if (presentDefenseCardsList.isEmpty()) {
@@ -222,7 +312,7 @@ public class GameLogic {
             String effect = card.getEffect();
 
             if (effect.equals("*")) {
-                return 1;
+                game.setDoMine(false);
             } else if (effect.equals("?")) {
                 allPlayerStates.forEach(playerState -> {
                     playerState.setGold(Math.min(playerState.getGold() - 2, 0));
@@ -243,11 +333,6 @@ public class GameLogic {
                 allPlayerStates.forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 100, 0)));
             }
         }
-
-        return 0;
-    }
-
-    public int forge(Game game, ClientData data) {
 
         return 0;
     }
@@ -275,7 +360,7 @@ public class GameLogic {
             System.out.println("fucking cardService");
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
-                board.getCartas().add(p, card.getId());
+                board.getCellContent(p).add(0, card.getId());
                 if (timesDrawn == 2) break;
             }
         }
@@ -313,41 +398,45 @@ public class GameLogic {
 
                 if (workerPosition.toString().matches("[01245678]")) {
 
-                    List<Integer> cards = game.getBoard().getCartas();
+                    List<Integer> cards = game.getBoard().getCellsTopCard();
 
                     for (int j = 0; j <= cards.size(); j++) {
 
-                        Card mineCard = cardService.findCardById(j);
-                        Integer mineCardPosition = mineCard.getPosition();
+                        Card card = cardService.findCardById(j);
+                        Integer cardPosition = card.getPosition();
 
-                        if (Objects.equals(mineCardPosition, workerPosition)) {
-                            if (mineCard.getCardType().equals(CardType.EXTRACCION_RECURSOS)) {
-
-                                String effect = mineCard.getEffect();
-                                String[] field = effect.split(",");
-
-                                for (int z = 0; z <= field.length; z++) {
-
-                                    String campo = field[z];
-
-                                    if (campo.contains("i")) {
-                                        int index = campo.indexOf("i");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
-
-                                    } else if (campo.contains("g")) {
-                                        int index = campo.indexOf("g");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
-                                    } else {
-                                        int index = campo.indexOf("s");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
-                                    }
-                                }
-                            }
+                        if (cardPosition.equals(workerPosition)) {
+                            mine(playerState, card);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private void mine(PlayerState playerState, Card card) {
+        if (card.getCardType().isResource()) {
+
+            String effect = card.getEffect();
+            String[] field = effect.split(",");
+
+            for (int z = 0; z <= field.length; z++) {
+
+                String campo = field[z];
+
+                if (campo.contains("i")) {
+                    int index = campo.indexOf("i");
+                    String resource = campo.substring(0, index);
+                    playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
+
+                } else if (campo.contains("g")) {
+                    int index = campo.indexOf("g");
+                    String resource = campo.substring(0, index);
+                    playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
+                } else {
+                    int index = campo.indexOf("s");
+                    String resource = campo.substring(0, index);
+                    playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
                 }
             }
         }
@@ -356,62 +445,68 @@ public class GameLogic {
     public List<Integer> timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
         IllegalStateException {
         List<PlayerState> playerStates = game.getAllPlayerStates();
-        List<Integer> forgingPlayers = new ArrayList<>();
+        List<Integer> forgingPlayers = game.getForgingPlayers();
 
         for (PlayerState playerState : playerStates) {
             List<Integer> listWorkers = playerState.getWorkerList();
 
             for (Integer workerPosition : listWorkers) {
                 if (workerPosition.toString().matches("[012345678]")) {
-                    List<Integer> cards = game.getBoard().getCartas();
+                    List<Integer> cards = game.getBoard().getCellsTopCard();
 
                     for (Integer integer : cards) {
                         Card card = cardService.findCardById(integer);
                         Integer cardPosition = card.getPosition();
 
                         if (cardPosition.equals(workerPosition)) {
-                            if (card.getCardType().equals(CardType.FORJA)) {
-                                String effect = card.getEffect();
-                                String[] field = effect.split(",");
-                                int fLength = field.length;
-
-                                AtomicReference<Integer> ironRequirement = new AtomicReference<>(0);
-                                AtomicReference<Integer> goldRequirement = new AtomicReference<>(0);
-                                AtomicReference<Integer> steelRequirement = new AtomicReference<>(0);
-                                AtomicReference<Integer> objectReward = new AtomicReference<>(0);
-
-                                Arrays.stream(field).forEach(f -> {
-                                    int newValue = Integer.parseInt(f.substring(1, fLength - 1));
-                                    switch (f.charAt(fLength - 1)) {
-                                        case 'i':
-                                            ironRequirement.set(newValue);
-                                            break;
-                                        case 'g':
-                                            goldRequirement.set(newValue);
-                                            break;
-                                        case 's':
-                                            steelRequirement.set(newValue);
-                                            break;
-                                        case 'o':
-                                            objectReward.set(newValue);
-                                            break;
-                                    }
-                                });
-
-                                if ((playerState.getIron() - ironRequirement.get()) >= 0
-                                    && (playerState.getGold() - goldRequirement.get()) >= 0
-                                    && (playerState.getSteel() - steelRequirement.get()) >= 0) {
-                                    playerState.setObject(playerState.getObject() + objectReward.get());
-                                }
-
-                                forgingPlayers.add(playerState.getId());
-                            }
+                            forge(forgingPlayers, playerState, card);
                         }
                     }
                 }
             }
         }
+
         return forgingPlayers;
+    }
+
+    private void forge(List<Integer> forgingPlayers, PlayerState playerState, Card card) {
+
+        if (card.getCardType().isForging()) {
+            String effect = card.getEffect();
+            String[] field = effect.split(",");
+            int fLength = field.length;
+
+            AtomicReference<Integer> ironRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> goldRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> steelRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> objectReward = new AtomicReference<>(0);
+
+            Arrays.stream(field).forEach(f -> {
+                int newValue = Integer.parseInt(f.substring(1, fLength - 1));
+                switch (f.charAt(fLength - 1)) {
+                    case 'i':
+                        ironRequirement.set(newValue);
+                        break;
+                    case 'g':
+                        goldRequirement.set(newValue);
+                        break;
+                    case 's':
+                        steelRequirement.set(newValue);
+                        break;
+                    case 'o':
+                        objectReward.set(newValue);
+                        break;
+                }
+            });
+
+            if ((playerState.getIron() - ironRequirement.get()) >= 0
+                && (playerState.getGold() - goldRequirement.get()) >= 0
+                && (playerState.getSteel() - steelRequirement.get()) >= 0) {
+                playerState.setObject(playerState.getObject() + objectReward.get());
+            }
+
+            forgingPlayers.add(playerState.getId());
+        }
     }
 
 }
