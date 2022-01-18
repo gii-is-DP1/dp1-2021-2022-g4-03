@@ -78,7 +78,8 @@ public class GameService {
         gameRepository.save(gameStorage.getInstance().getGame(gameId));
         gameStorage.getInstance().getGames().remove(gameId);
 
-        // NO VA POR AHORA
+        // No value present error
+        
         // Game g = this.gameRepository.findById(gameId).get();
 
         // for(int i=0;i<NUMPLAYERS;i++){

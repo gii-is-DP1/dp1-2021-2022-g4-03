@@ -128,6 +128,7 @@ public class GameController {
                     }
 
                 case FORJA:
+                    GameLogic.timeToForge(game);
 
                 case FIN:
                     return game;
