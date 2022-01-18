@@ -21,15 +21,37 @@
         <h2><c:out value="Fase de la ronda: ${game.phase}"/></h2>
 
         <div class="row">
-            <div class="col-md-12">
-                <canvas id="canvas" width="${game.board.width}" height="${game.board.height}">
-                    <img id="boardBackground" src="/${game.board.background}" style="display:none">
-                </canvas>
 
+            <div class="game-board">
+                <div class="cardCell">
+                    <button id="card1" value="0"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card2" value="1"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card3" value="2"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card4" value="3"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card5" value="4"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card6" value="5"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card7" value="6"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card8" value="7"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+                <div class="cardCell">
+                    <button id="card9" value="8"><img width="246" height="336" src="/resources/cards/cardback.png"></button>
+                </div>
+              </div> 
 
-                <button class="btn-primary" id="card1" value="0">Carta 1</button>
-
-            </div>
             <div class="col-sm-offset-2 col-sm-10">
                 <a class="btn btn-default"
                    href='<spring:url value="/game/${game.id}/surrender" htmlEscape="true"/>'>Rendirse</a>
@@ -47,6 +69,10 @@
             </form>
 
         </div>
+
+        <div id="fondo7"></div>
     </jsp:body>
+
+    
 
 </petclinic:layout>
