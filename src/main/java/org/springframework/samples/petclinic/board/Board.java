@@ -28,7 +28,7 @@ public class Board extends BaseEntity {
         this.width = 1000;
         this.height = 700;
         this.cardCells = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
+        this.deck = new ArrayList<>();
         this.cartasAccionEspecial_0= new ArrayList<>();
         this.cartasAccionEspecial_1= new ArrayList<>();
         this.cartasAccionEspecial_2= new ArrayList<>();
@@ -41,7 +41,7 @@ public class Board extends BaseEntity {
         this.width = 1000;
         this.height = 700;
         this.cardCells = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
+        this.deck = new ArrayList<>();
         this.cartasAccionEspecial_0= new ArrayList<>();
         this.cartasAccionEspecial_1= new ArrayList<>();
         this.cartasAccionEspecial_2= new ArrayList<>();
@@ -63,7 +63,7 @@ public class Board extends BaseEntity {
 
     //Mazo, cartas sin asignar
     @ElementCollection
-    List<Integer> cartasMontaña;
+    List<Integer> deck;
 
     @Transient
     @JsonIgnore

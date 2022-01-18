@@ -70,7 +70,7 @@ public class GameLogic {
 
         // Shuffle all normal cards and add them to the draw deck
         Collections.shuffle(normalIdList);
-        board.setCartasMontaña(normalIdList);
+        board.setDeck(normalIdList);
 
         // Shuffle special cards and get them in the special slots
         Collections.shuffle(specialIdList);
@@ -346,7 +346,7 @@ public class GameLogic {
         System.out.println("Here");
 
         Board board = game.getBoard();
-        List<Integer> deck = board.getCartasMontaña();
+        List<Integer> deck = board.getDeck();
         int timesDrawn = 0;
         List<Integer> positionsDrawn = new ArrayList<>();
         Integer p;
