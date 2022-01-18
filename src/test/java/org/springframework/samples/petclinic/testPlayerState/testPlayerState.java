@@ -16,6 +16,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.samples.petclinic.validatorFunction;
 import org.springframework.samples.petclinic.playerState.PlayerState;
 
+/*
 public class testPlayerState {
 
 
@@ -270,3 +271,4 @@ public class testPlayerState {
     }
 
 }
+*/

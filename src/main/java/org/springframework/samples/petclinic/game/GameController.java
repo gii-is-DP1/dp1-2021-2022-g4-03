@@ -29,6 +29,9 @@ public class GameController {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private GameLogic gameLogic;
+
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
@@ -39,7 +42,7 @@ public class GameController {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
         Game game = gameService.createGame(player);
         //Unable to test this without cards, nullPointerException
-        game = mainLoop(game.getId(), null, null);
+        game = mainLoop(game.getId(), null);
         return "redirect:/board/" + game.getId();
     }
 
@@ -53,15 +56,16 @@ public class GameController {
 
 
     //TODO: Handle in js to call back to mainloop when player input phases have ended so the rest of the logic can continue
-    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces =
+    @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Game mainLoop(@PathVariable("gameId") Integer gameId,
-                  @RequestBody(required = false) ClientData data, ModelMap model)
+                  @RequestBody(required = false) ClientData data)
         throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
+
 
         int defenseResult = 0;
 
