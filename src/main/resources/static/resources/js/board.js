@@ -11,6 +11,9 @@ function main(){
     let cardButton7=document.getElementById("card7");
     let cardButton8=document.getElementById("card8");
     let cardButton9=document.getElementById("card9");
+    let cardButton10=document.getElementById("card10");
+    let cardButton11=document.getElementById("card11");
+    let cardButton12=document.getElementById("card12");
 
     cardButton1.addEventListener("click", function (e){
         sample(e, cardButton1.value);
@@ -38,6 +41,15 @@ function main(){
     });
     cardButton9.addEventListener("click", function (e){
         sample(e, cardButton9.value);
+    });
+    cardButton10.addEventListener("click", function (e){
+        sample(e, cardButton10.value);
+    });
+    cardButton11.addEventListener("click", function (e){
+        sample(e, cardButton11.value);
+    });
+    cardButton12.addEventListener("click", function (e){
+        sample(e, cardButton12.value);
     });
     form.addEventListener("submit", handleClick, false);
 
