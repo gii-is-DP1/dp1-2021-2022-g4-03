@@ -12,10 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,7 +40,7 @@ public class GameLogic {
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException {
+        IllegalAccessException {
 
         List<Integer> order = game.getOrder();
 
@@ -56,7 +54,7 @@ public class GameLogic {
     }
 
     public void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
-            List<Card> allInitialCards) {
+                          List<Card> allInitialCards) {
         Board board = game.getBoard();
 
         List<Integer> specialIdList = allSpecialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
@@ -79,15 +77,15 @@ public class GameLogic {
         for (int index = 0; index < 9; index++) {
             int finalIndex = index;
             cardId = allInitialCards.stream().filter(card -> card.getPosition() == finalIndex).map(BaseEntity::getId)
-                    .findFirst().orElse(-1);
+                .findFirst().orElse(-1);
             mine.add(cardId);
         }
 
     }
 
     public String playerTurn(Game game, ClientData data)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-            IllegalStateException {
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
 
         // TODO: Write an ordinal enum for possible return states and change return to
         // an int;
@@ -122,7 +120,7 @@ public class GameLogic {
             }
 
             if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream())
-                    .anyMatch(w -> w == playerAction)) {
+                .anyMatch(w -> w == playerAction)) {
                 return "mine position occupied";
             }
 
@@ -155,8 +153,8 @@ public class GameLogic {
     }
 
     public Integer checkIfHelpAction(Game game, ClientData clientData)
-            throws InvocationTargetException, NoSuchMethodException,
-            IllegalAccessException {
+        throws InvocationTargetException, NoSuchMethodException,
+        IllegalAccessException {
 
         Card actionableCard = cardService.findCardById(game.getBoard().getCartas().get(clientData.getPlayerAction()));
 
@@ -171,7 +169,7 @@ public class GameLogic {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
         List<Card> presentHelpCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
-                .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
+            .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
             return new ArrayList<>();
@@ -194,24 +192,24 @@ public class GameLogic {
         Board board = game.getBoard();
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
-        List<Card> presentDefenseCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
-                .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
+        List<Card> presentDefenseCardsList = board.getCartas().stream().map(cardService::findCardById)
+            .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
         }
 
         List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
         List<Integer> occupiedDefenseCards = allPlayerStates.stream()
-                .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
-                .filter(defenseCardsPositions::contains).collect(Collectors.toList());
+            .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
+            .filter(defenseCardsPositions::contains).collect(Collectors.toList());
 
         presentDefenseCardsList.removeIf(card -> occupiedDefenseCards.contains(card.getPosition()));
 
         allPlayerStates.stream()
-                .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
-                .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
+            .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
+            .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
@@ -231,11 +229,11 @@ public class GameLogic {
                 switch (effect.charAt(2)) {
                     case 'g':
                         allPlayerStates
-                                .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
+                            .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
                         break;
                     case 'i':
                         allPlayerStates
-                                .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
+                            .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
                         break;
                 }
             } else {
@@ -275,7 +273,7 @@ public class GameLogic {
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
                 board.getCartas().add(p, card.getId());
-                if(timesDrawn==2) break;
+                if (timesDrawn == 2) break;
             }
         }
 
@@ -283,7 +281,7 @@ public class GameLogic {
     }
 
     private int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+        InvocationTargetException, IllegalAccessException {
 
         for (int i = 0; i < 3; i++) {
             Method getPlayer = gameClass.getMethod("getPlayer" + i);
@@ -300,14 +298,12 @@ public class GameLogic {
     }
 
     private PlayerState getIndexedPlayerState(Game game, int playerIndex)
-            throws IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
+        throws IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 
-    public void resourceRound(Game game)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-            IllegalStateException {
+    public void resourceRound(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : allPlayersStates) {
@@ -355,69 +351,60 @@ public class GameLogic {
         }
     }
 
-    public void timeToForge(Game game)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-            IllegalStateException {
-
+    public void timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
         List<PlayerState> playerStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : playerStates) {
-
             List<Integer> listWorkers = playerState.getWorkerList();
 
             for (Integer workerPosition : listWorkers) {
-
                 if (workerPosition.toString().matches("[012345678]")) {
-
                     List<Integer> cards = game.getBoard().getCartas();
 
                     for (Integer integer : cards) {
-
                         Card card = cardService.findCardById(integer);
                         Integer cardPosition = card.getPosition();
 
-                        if (Objects.equals(cardPosition, workerPosition)) {
+                        if (cardPosition.equals(workerPosition)) {
                             if (card.getCardType().equals(CardType.FORJA)) {
-
                                 String effect = card.getEffect();
                                 String[] field = effect.split(",");
+                                int fLength = field.length;
 
-                                for (int z = 0; z <= field.length; z++) {
+                                AtomicReference<Integer> ironRequirement = new AtomicReference<>(0);
+                                AtomicReference<Integer> goldRequirement = new AtomicReference<>(0);
+                                AtomicReference<Integer> steelRequirement = new AtomicReference<>(0);
+                                AtomicReference<Integer> objectReward = new AtomicReference<>(0);
 
-                                    String campo = field[z];
-
-                                    if (campo.contains("i")) {
-                                        int index = campo.indexOf("i");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
-
-                                    } else if (campo.contains("g")) {
-                                        int index = campo.indexOf("g");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
-
-                                    } else if (campo.contains("s")) {
-                                        int index = campo.indexOf("s");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
-
-                                    } else {
-                                        int index = campo.indexOf("o");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setObject(playerState.getObject() + Integer.parseInt(resource));
+                                Arrays.stream(field).forEach(f -> {
+                                    int newValue = Integer.parseInt(f.substring(1, fLength - 1));
+                                    switch (f.charAt(fLength - 1)) {
+                                        case 'i':
+                                            ironRequirement.set(newValue);
+                                            break;
+                                        case 'g':
+                                            goldRequirement.set(newValue);
+                                            break;
+                                        case 's':
+                                            steelRequirement.set(newValue);
+                                            break;
+                                        case 'o':
+                                            objectReward.set(newValue);
+                                            break;
                                     }
+                                });
+
+                                if ((playerState.getIron() - ironRequirement.get()) >= 0
+                                    && (playerState.getGold() - goldRequirement.get()) >= 0
+                                    && (playerState.getSteel() - steelRequirement.get()) >= 0) {
+                                    playerState.setObject(playerState.getObject() + objectReward.get());
                                 }
 
                             }
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     }
 }
