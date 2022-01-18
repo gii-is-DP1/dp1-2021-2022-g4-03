@@ -82,4 +82,6 @@ public class Board extends BaseEntity {
     public Cell getCell(Integer index){
         return cardCells.get(index);
     }
+
+
 }

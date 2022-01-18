@@ -28,26 +28,25 @@ public class CardService {
 
     @Transactional
     public List<Card> findAll() {
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        Stream<Card> stream = cardRepository.findAll().stream();
         return stream.collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllSpecialCards(){
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        Stream<Card> stream = cardRepository.findAll().stream();
         return stream.filter(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllNormalCards(){
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        Stream<Card> stream = cardRepository.findAll().stream();
         return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)||card.isInitial()).collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllInitialCards(){
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-        return stream.takeWhile(Card::isInitial).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> card.initial==true).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
     }
 
 }

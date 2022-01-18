@@ -87,10 +87,9 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-default" id="startButton">Start Game</button>
             </div>
-            <script>
-                let gameId= ${game.id};
-                let currentUser= ${currentUser};
-            </script>
+
+        <input type="hidden" id="gameId" value=${game.id}>
+        <input type="hidden" id="currentUser" value=${currentUser}>
 
         <form action="/api/game/${game.id}" method="post" id="testForm">
             <input type="hidden" value="board" name="viewName">

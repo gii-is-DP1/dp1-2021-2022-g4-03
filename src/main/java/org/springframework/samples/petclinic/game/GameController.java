@@ -96,8 +96,7 @@ public class GameController {
 
                         //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
                         if (result.equals("player turn finished")) {
-                            Integer playerIndex = gameLogic.checkIfHelpAction(game, data);
-                            if (playerIndex != -1) game.getHelpTurnsOrder().add(playerIndex);
+                            gameLogic.checkIfHelpAction(game, data);
                         }
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);

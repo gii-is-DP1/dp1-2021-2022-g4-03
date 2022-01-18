@@ -23,7 +23,6 @@ public class GameStorage {
     }
 
     public Map<Integer, Game> getGames() {
-        games = new HashMap<>();
         return games;
     }
 

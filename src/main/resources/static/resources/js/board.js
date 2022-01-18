@@ -58,8 +58,10 @@ function main(){
 }
 
 function sample(event, cardValue){
+    let gameId= document.getElementById("gameId").value;
+    let currentUser= document.getElementById("currentUser").value;
     let gameURL="/api/game/"+gameId;
-    fetch(gameURL, {
+    let game= fetch(gameURL, {
         method :'POST',
         headers : {
             'Content-Type': 'application/json',
@@ -69,6 +71,8 @@ function sample(event, cardValue){
     }).then(data=>{
         console.log(data);
     })
+
+    console.log(game);
 }
 
  function takeTurn(event) {

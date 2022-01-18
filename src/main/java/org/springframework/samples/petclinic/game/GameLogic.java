@@ -81,10 +81,13 @@ public class GameLogic {
         // Draw the nine initial cards and put them in the mine slots
         List<Integer> allInitialCardsIds = allInitialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
 
+        board.setCardCells(new ArrayList<>());
+
         Integer cardId;
         for (int index = 0; index < 9; index++) {
             int finalIndex = index;
             cardId = allInitialCardsIds.get(index);
+            board.getCardCells().add(new Cell());
             board.getCell(index).addToTop(cardId);
         }
 
@@ -111,13 +114,14 @@ public class GameLogic {
 
             // Finding out which worker is available
             int worker = workerList.indexOf(12);
-            if (worker == -1) {
+            if (worker < 0) {
                 return "no worker available";
             }
 
             if (List.of(9, 10, 11).contains(playerAction)) {
                 // Check if available worker count is enough and if they aren't special workers
                 if ((workerList.stream().takeWhile(w -> w == 12).count() == 2) && !(worker == 2 || worker == 3)) {
+                    game.setPhase(Phase.ESPECIAL);
                     return specialAction(game, data);
                 } else {
                     return "special action not possible";
@@ -144,13 +148,13 @@ public class GameLogic {
 
         /*
          * Overview of how it works:
-         * - Change worker states.
-         * - Invoke card effect.
-         * - Get normal card.
-         * - Check if someone in position of normal card; if true, give player resources
-         * of original card. Mark position of card as blocked
-         * for more workers (somehow).
-         * - Done.
+         * x Change worker states.
+         * o Invoke card effect.
+         * x Get normal card.
+         * x Check if someone in position of normal card; if true, give player resources
+         *   of original card. Mark position of card as blocked
+         *   for more workers (somehow).
+         * o Done.
          */
 
         Board board = game.getBoard();
@@ -200,6 +204,8 @@ public class GameLogic {
 
                 Collections.shuffle(board.getDeck());
 
+                board.getCell(1).addToTop(special2normal.get(effect));
+
                 return effect;
 
             case "sell":
@@ -236,7 +242,7 @@ public class GameLogic {
             case "apprentice":
                 changeCard(board, 6, game, effect, true);
 
-
+                //TODO: Be able to select which location you want to put the worker on that's already occupied.
 
                 return effect;
 
@@ -245,10 +251,17 @@ public class GameLogic {
 
                 board.getCardCells().forEach(cell -> Collections.rotate(cell.getCards(), 1));
 
+                board.getCell(7).addToTop(special2normal.get(effect));
+
                 return effect;
 
             case "run":
-                changeCard(board, 8, game, effect, true);
+                changeCard(board, 8, game, effect, false);
+
+                board.getCardCells().forEach(cell->Collections.shuffle(cell.getCards()));
+
+                board.getCell(8).addToTop(special2normal.get(effect));
+
                 return effect;
 
         }
@@ -272,16 +285,13 @@ public class GameLogic {
         }
     }
 
-    public Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
+    public void checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
         IllegalAccessException {
-
         Card actionableCard = cardService.findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
 
         if (actionableCard.getCardType().isHelp()) {
-            return getPlayerIndex(game, clientData);
+            game.getHelpTurnsOrder().add(getPlayerIndex(game, clientData));
         }
-
-        return -1;
     }
 
     public List<Integer> processHelpTurnOrder(Game game, ClientData data) {
@@ -369,8 +379,6 @@ public class GameLogic {
     }
 
     public int drawCard(Game game) {
-        System.out.println("Here");
-
         Board board = game.getBoard();
         List<Integer> deck = board.getDeck();
         int timesDrawn = 0;
@@ -378,12 +386,11 @@ public class GameLogic {
         Integer p;
 
         while (timesDrawn < 3 && !deck.isEmpty()) {
-            System.out.println("there");
             timesDrawn++;
             Integer cardId = deck.remove(0);
             Card card = cardService.findCardById(cardId);
             p = card.getPosition();
-            System.out.println("fucking cardService");
+
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
                 board.getCellContent(p).add(0, card.getId());
@@ -422,7 +429,7 @@ public class GameLogic {
         for (PlayerState playerState : allPlayersStates) {
             for (Integer workerPosition : playerState.getWorkerList()) {
 
-                if (workerPosition.toString().matches("[01245678]")) {
+                if (workerPosition.toString().matches("^[01245678]")) {
 
                     List<Integer> cards = game.getBoard().getCellsTopCard();
 
@@ -477,7 +484,7 @@ public class GameLogic {
             List<Integer> listWorkers = playerState.getWorkerList();
 
             for (Integer workerPosition : listWorkers) {
-                if (workerPosition.toString().matches("[012345678]")) {
+                if (workerPosition.toString().matches("^[012345678]")) {
                     List<Integer> cards = game.getBoard().getCellsTopCard();
 
                     for (Integer integer : cards) {

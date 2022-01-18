@@ -42,6 +42,7 @@ public class GameService {
         game.setOrder(order);
         game.setPhase(Phase.INICIO);
         game.setGameStatus(GameStatus.NEW);
+        game.setNumberOfPlayers(1);
         GameStorage.getInstance().setGame(game);
         return game;
     }
@@ -79,7 +80,7 @@ public class GameService {
         gameStorage.getInstance().getGames().remove(gameId);
 
         // No value present error
-        
+
         // Game g = this.gameRepository.findById(gameId).get();
 
         // for(int i=0;i<NUMPLAYERS;i++){
