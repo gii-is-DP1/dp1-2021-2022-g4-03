@@ -23,16 +23,25 @@ import java.util.stream.IntStream;
 public class GameLogic {
 
 
-    private static CardService cardService;
+    private final CardService cardService;
 
-    public GameLogic(@Autowired CardService cardService) {
-        GameLogic.cardService = cardService;
+    private static GameLogic instance = null;
+
+    private GameLogic(@Autowired CardService cardService) {
+        this.cardService = cardService;
+    }
+
+    public GameLogic getInstance(CardService cardService) {
+        if (instance == null) {
+            instance = new GameLogic(cardService);
+        }
+        return instance;
     }
 
     private static final Class<?> gameClass = Game.class;
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
-    public static void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
+    public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
             IllegalAccessException {
 
         List<Integer> order = game.getOrder();
@@ -46,7 +55,7 @@ public class GameLogic {
 
     }
 
-    public static void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
+    public void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
             List<Card> allInitialCards) {
         Board board = game.getBoard();
 
@@ -76,7 +85,7 @@ public class GameLogic {
 
     }
 
-    public static String playerTurn(Game game, ClientData data)
+    public String playerTurn(Game game, ClientData data)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
             IllegalStateException {
 
@@ -129,7 +138,7 @@ public class GameLogic {
         return "player turn finished";
     }
 
-    public static int specialAction(Game game, ClientData data) {
+    public int specialAction(Game game, ClientData data) {
 
         /*
          * Overview of how it works:
@@ -145,7 +154,7 @@ public class GameLogic {
         return 0;
     }
 
-    public static Integer checkIfHelpAction(Game game, ClientData clientData)
+    public Integer checkIfHelpAction(Game game, ClientData clientData)
             throws InvocationTargetException, NoSuchMethodException,
             IllegalAccessException {
 
@@ -158,7 +167,7 @@ public class GameLogic {
         return -1;
     }
 
-    public static List<Integer> processHelpTurnOrder(Game game, ClientData data) {
+    public List<Integer> processHelpTurnOrder(Game game, ClientData data) {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
         List<Card> presentHelpCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
@@ -181,7 +190,7 @@ public class GameLogic {
         return turnsOrder;
     }
 
-    public static int defense(Game game) {
+    public int defense(Game game) {
         Board board = game.getBoard();
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
@@ -237,17 +246,17 @@ public class GameLogic {
         return 0;
     }
 
-    public static int forge(Game game, ClientData data) {
+    public int forge(Game game, ClientData data) {
 
         return 0;
     }
 
-    public static int endGame(Game game, ClientData data) {
+    public int endGame(Game game, ClientData data) {
 
         return 0;
     }
 
-    public static int drawCard(Game game) {
+    public int drawCard(Game game) {
         System.out.println("Here");
 
         Board board = game.getBoard();
@@ -273,7 +282,7 @@ public class GameLogic {
         return 0;
     }
 
-    private static int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
+    private int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
 
         for (int i = 0; i < 3; i++) {
@@ -290,13 +299,13 @@ public class GameLogic {
         return 0;
     }
 
-    private static PlayerState getIndexedPlayerState(Game game, int playerIndex)
+    private PlayerState getIndexedPlayerState(Game game, int playerIndex)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 
-    public static void resourceRound(Game game)
+    public void resourceRound(Game game)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
             IllegalStateException {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
@@ -346,31 +355,28 @@ public class GameLogic {
         }
     }
 
-    public static void timeToForge(Game game)
+    public void timeToForge(Game game)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
             IllegalStateException {
 
         List<PlayerState> playerStates = game.getAllPlayerStates();
 
-        for (int i = 0; i < playerStates.size(); i++) {
+        for (PlayerState playerState : playerStates) {
 
-            PlayerState playerState = playerStates.get(i);
             List<Integer> listWorkers = playerState.getWorkerList();
 
-            for (int w = 0; w < listWorkers.size(); w++) {
-
-                Integer workerPosition = listWorkers.get(w);
+            for (Integer workerPosition : listWorkers) {
 
                 if (workerPosition.toString().matches("[012345678]")) {
 
                     List<Integer> cards = game.getBoard().getCartas();
 
-                    for (int j = 0; j < cards.size(); j++) {
+                    for (Integer integer : cards) {
 
-                        Card card = cardService.findCardById(cards.get(j));
+                        Card card = cardService.findCardById(integer);
                         Integer cardPosition = card.getPosition();
 
-                        if (cardPosition == workerPosition) {
+                        if (Objects.equals(cardPosition, workerPosition)) {
                             if (card.getCardType().equals(CardType.FORJA)) {
 
                                 String effect = card.getEffect();

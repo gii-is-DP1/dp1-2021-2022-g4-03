@@ -65,7 +65,7 @@ public class GameController {
 
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
-
+        gameLogic.getInstance(cardService);
 
         int defenseResult = 0;
 
@@ -76,13 +76,13 @@ public class GameController {
                 case INICIO:
                     switch (game.getGameStatus()) {
                         case NEW:
-                            GameLogic.initPlayerStates(game);
-                            GameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
+                            gameLogic.initPlayerStates(game);
+                            gameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
                                 cardService.findAllInitialCards());
                             game.setGameStatus(GameStatus.IN_PROGRESS);
                             game.setPhase(Phase.ASIGNACION);
                         case IN_PROGRESS:
-                            GameLogic.drawCard(game);
+                            gameLogic.drawCard(game);
                             break;
                     }
 
@@ -91,15 +91,15 @@ public class GameController {
                 case ASIGNACION:
                     //Check if still has actions to do
                     if (!game.getTurnsOrder().isEmpty()) {
-                        String result = GameLogic.playerTurn(game, data);
+                        String result = gameLogic.playerTurn(game, data);
 
                         //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
                         if (result.equals("player turn finished")) {
-                            Integer playerIndex = GameLogic.checkIfHelpAction(game, data);
+                            Integer playerIndex = gameLogic.checkIfHelpAction(game, data);
                             if (playerIndex != -1) game.getHelpTurnsOrder().add(playerIndex);
                         }
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
-                        GameLogic.processHelpTurnOrder(game, data);
+                        gameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
                     }
 
@@ -112,7 +112,7 @@ public class GameController {
 
                 case AYUDA:
                     if (!game.getTurnsOrder().isEmpty()) {
-                        String result = GameLogic.playerTurn(game, data);
+                        String result = gameLogic.playerTurn(game, data);
                     } else {
                         game.setPhase(Phase.DEFENSA);
                     }
@@ -122,16 +122,16 @@ public class GameController {
                     return game;
 
                 case DEFENSA:
-                    defenseResult = GameLogic.defense(game);
+                    defenseResult = gameLogic.defense(game);
                     game.setPhase(Phase.MINA);
 
                 case MINA:
                     if (defenseResult != 1) {
-                        GameLogic.resourceRound(game);
+                        gameLogic.resourceRound(game);
                     }
 
                 case FORJA:
-                    GameLogic.timeToForge(game);
+                    gameLogic.timeToForge(game);
 
                 case FIN:
                     return game;

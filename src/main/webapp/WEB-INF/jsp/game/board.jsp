@@ -39,6 +39,7 @@
             </div>
             <script>
                 let gameId= ${game.id};
+                let currentUser= ${currentUser};
             </script>
 
             <form action="/api/game/${game.id}" method="post" id="testForm">
