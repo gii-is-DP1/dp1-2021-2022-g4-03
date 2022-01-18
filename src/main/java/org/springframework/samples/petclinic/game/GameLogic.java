@@ -130,7 +130,6 @@ public class GameLogic {
             }
 
             workerList.set(worker, playerAction);
-            playerState.setWorkerList(workerList);
 
             game.setActivePlayer(game.getTurnsOrder().remove(0));
 
@@ -183,15 +182,23 @@ public class GameLogic {
 
         switch (effect) {
             case "muster":
-                changeCard(board, 0, game, effect);
+                changeCard(board, 0, game, effect, true);
                 game.setDoDefend(false);
 
                 return effect;
 
             case "hold":
 
-                changeCard(board, 1, game, effect);
+                changeCard(board, 1, game, effect, false);
 
+                List<Cell> cardCells = board.getCardCells();
+                cardCells.forEach(cell -> {
+                    if(cell.getCards().size()>1){
+                        board.getDeck().add(cell.removeCardOnTop());
+                    }
+                });
+
+                Collections.shuffle(board.getDeck());
 
                 return effect;
 
@@ -199,51 +206,70 @@ public class GameLogic {
                 if (getIndexedPlayerState(game, game.getActivePlayer()).getObject() == 0) {
                     return "not possible";
                 }
-                changeCard(board, 2, game, effect);
+                changeCard(board, 2, game, effect,true);
 
                 //TODO: Add player action for selecting resource;
 
                 return effect;
 
             case "past":
-                changeCard(board, 3, game, effect);
+                changeCard(board, 3, game, effect,true);
+
+                //TODO: Offer list of selected cell to player
+
                 return effect;
 
             case "special":
-                changeCard(board, 4, game, effect);
+                changeCard(board, 4, game, effect, true);
+
+                //TODO: Add player action for selecting resource;
+
                 return effect;
 
             case "turn":
-                changeCard(board, 5, game, effect);
+                changeCard(board, 5, game, effect, false);
+
+                //Player action here will equate to location he wants to apply the effect to.
+
                 return effect;
 
             case "apprentice":
-                changeCard(board, 6, game, effect);
+                changeCard(board, 6, game, effect, true);
+
+
+
                 return effect;
 
             case "collapse":
-                changeCard(board, 7, game, effect);
+                changeCard(board, 7, game, effect, false);
+
+                board.getCardCells().forEach(cell -> Collections.rotate(cell.getCards(), 1));
+
                 return effect;
 
             case "run":
-                changeCard(board, 8, game, effect);
+                changeCard(board, 8, game, effect, true);
                 return effect;
 
         }
         return "something went wrong";
     }
 
-    private void changeCard(Board board, int index, Game game, String effect) {
+    private void changeCard(Board board, int index, Game game, String effect, boolean doAddCard) {
         Cell cell = board.getCardCells().get(index);
         Card card = cardService.findCardById(cell.getCardOnTop());
         game.getAllPlayerStates().forEach(playerState -> {
-            if (playerState.getWorkerList().contains(index)) {
+            List<Integer> workerList = playerState.getWorkerList();
+            if (workerList.contains(index)) {
                 forge(game.getForgingPlayers(), playerState, card);
                 mine(playerState, card);
+                workerList.set(workerList.indexOf(index), -index);
             }
         });
 
-        cell.addToTop(special2normal.get(effect));
+        if(doAddCard){
+            cell.addToTop(special2normal.get(effect));
+        }
     }
 
     public Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,

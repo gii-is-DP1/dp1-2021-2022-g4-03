@@ -30,6 +30,12 @@ public class Cell extends BaseEntity {
 
     @Transient
     @JsonIgnore
+    public Integer removeCardOnTop(){
+        return cards.remove(0);
+    }
+
+    @Transient
+    @JsonIgnore
     public void addToTop(Integer id){
         cards.add(0, id);
     }

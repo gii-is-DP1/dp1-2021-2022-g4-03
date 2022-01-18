@@ -107,9 +107,10 @@ public class GameController {
                     return game;
 
                 case ESPECIAL:
-                    System.out.println("***Game shouldn't come into this function in this state, something has probably gone wrong.***");
-                    game.setPhase(Phase.FIN);
-                    break mainLoopStart;
+
+                    //Here we will manage when game needs to await another action of the same player to complete the special action
+
+                    return game;
 
                 case AYUDA:
                     if (!game.getTurnsOrder().isEmpty()) {
