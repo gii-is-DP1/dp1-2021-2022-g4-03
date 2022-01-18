@@ -2,9 +2,9 @@ package org.springframework.samples.petclinic.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.Board;
+import org.springframework.samples.petclinic.board.Cell;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
-import org.springframework.samples.petclinic.card.CardType;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
@@ -12,27 +12,38 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
 public class GameLogic {
 
+    private static final Map<String, Integer> special2normal =
+        Map.of("muster", 59, "hold", 60, "sell", 61,
+            "past", 62, "special", 63, "turn", 64,
+            "apprentice", 57, "collapse", 65, "run", 58);
 
-    private static CardService cardService;
+    private final CardService cardService;
 
-    public GameLogic(@Autowired CardService cardService) {
-        GameLogic.cardService = cardService;
+    private static GameLogic instance = null;
+
+    private GameLogic(@Autowired CardService cardService) {
+        this.cardService = cardService;
+    }
+
+    public GameLogic getInstance(CardService cardService) {
+        if (instance == null) {
+            instance = new GameLogic(cardService);
+        }
+        return instance;
     }
 
     private static final Class<?> gameClass = Game.class;
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
-    public static void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
+    public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
         IllegalAccessException {
 
         List<Integer> order = game.getOrder();
@@ -42,42 +53,49 @@ public class GameLogic {
         game.getTurnsOrder().addAll(order);
         Collections.reverse(order);
 
+        game.getPlayerState_0().setId(0);
+        game.getPlayerState_1().setId(1);
+        game.getPlayerState_2().setId(2);
+
         game.setActivePlayer(game.getTurnsOrder().remove(0));
 
     }
 
-    public static void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards, List<Card> allInitialCards) {
+    public void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
+                          List<Card> allInitialCards) {
         Board board = game.getBoard();
 
         List<Integer> specialIdList = allSpecialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
         List<Integer> normalIdList = allNormalCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
 
-        //Shuffle all normal cards and add them to the draw deck
+        // Shuffle all normal cards and add them to the draw deck
         Collections.shuffle(normalIdList);
         board.setCartasMontaña(normalIdList);
 
-        //Shuffle special cards and get them in the special slots
+        // Shuffle special cards and get them in the special slots
         Collections.shuffle(specialIdList);
         board.setCartasAccionEspecial_0(specialIdList.subList(0, 3));
         board.setCartasAccionEspecial_0(specialIdList.subList(3, 6));
         board.setCartasAccionEspecial_0(specialIdList.subList(6, 9));
 
-        //Draw the nine initial cards and put them in the mine slots
-        List<Integer> mine = board.getCartas();
+        // Draw the nine initial cards and put them in the mine slots
+        List<Integer> allInitialCardsIds = allInitialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
 
         Integer cardId;
         for (int index = 0; index < 9; index++) {
             int finalIndex = index;
-            cardId = allInitialCards.stream().filter(card -> card.getPosition() == finalIndex).map(BaseEntity::getId).findFirst().orElse(-1);
-            mine.add(cardId);
+            cardId = allInitialCardsIds.get(index);
+            board.getCell(index).addToTop(cardId);
         }
 
     }
 
-    public static String playerTurn(Game game, ClientData data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+    public String playerTurn(Game game, ClientData data)
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
         IllegalStateException {
 
-        //TODO: Write an ordinal enum for possible return states and change return to an int;
+        // TODO: Write an ordinal enum for possible return states and change return to
+        // an int;
 
         if (!possibleActions.contains(data.getPlayerAction())) {
             throw new IllegalStateException("Action described is not possible.");
@@ -91,25 +109,23 @@ public class GameLogic {
             playerState = getIndexedPlayerState(game, playerIndex);
             List<Integer> workerList = playerState.getWorkerList();
 
-            //Finding out which worker is available
+            // Finding out which worker is available
             int worker = workerList.indexOf(12);
             if (worker == -1) {
                 return "no worker available";
             }
 
             if (List.of(9, 10, 11).contains(playerAction)) {
-                //Check if available worker count is enough and if they aren't special workers
+                // Check if available worker count is enough and if they aren't special workers
                 if ((workerList.stream().takeWhile(w -> w == 12).count() == 2) && !(worker == 2 || worker == 3)) {
-                    //Temp: specialAction_result
-                    int sa_r = specialAction(game, data);
-                    return "special action done";
+                    return specialAction(game, data);
                 } else {
                     return "special action not possible";
                 }
             }
 
-
-            if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream()).anyMatch(w -> w == playerAction)) {
+            if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream())
+                .anyMatch(w -> w == playerAction)) {
                 return "mine position occupied";
             }
 
@@ -125,25 +141,115 @@ public class GameLogic {
         return "player turn finished";
     }
 
-    public static int specialAction(Game game, ClientData data) {
+    public String specialAction(Game game, ClientData data) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
         /*
-         *   Overview of how it works:
-         *       - Change worker states.
-         *       - Invoke card effect.
-         *       - Get normal card.
-         *       - Check if someone in position of normal card; if true, give player resources of original card. Mark position of card as blocked
-         *         for more workers (somehow).
-         *       - Done.
+         * Overview of how it works:
+         * - Change worker states.
+         * - Invoke card effect.
+         * - Get normal card.
+         * - Check if someone in position of normal card; if true, give player resources
+         * of original card. Mark position of card as blocked
+         * for more workers (somehow).
+         * - Done.
          */
 
-        return 0;
+        Board board = game.getBoard();
+
+        switch (data.getPlayerAction()) {
+            case 9:
+                List<Integer> specialCardDeck_0 = board.getCartasAccionEspecial_0();
+                if (specialCardDeck_0.isEmpty()) return "special deck empty";
+
+                Card card = cardService.findCardById(specialCardDeck_0.remove(0));
+                String effect = card.getEffect();
+
+                return invokeEffect(game, effect);
+
+            case 10:
+                if (board.getCartasAccionEspecial_1().isEmpty()) return "special deck empty";
+                break;
+            case 11:
+                if (board.getCartasAccionEspecial_2().isEmpty()) return "special deck empty";
+                break;
+        }
+
+
+        return "something went wrong";
     }
 
-    public static Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
+    private String invokeEffect(Game game, String effect) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        Board board = game.getBoard();
+
+        switch (effect) {
+            case "muster":
+                changeCard(board, 0, game, effect);
+                game.setDoDefend(false);
+
+                return effect;
+
+            case "hold":
+
+                changeCard(board, 1, game, effect);
+
+
+                return effect;
+
+            case "sell":
+                if (getIndexedPlayerState(game, game.getActivePlayer()).getObject() == 0) {
+                    return "not possible";
+                }
+                changeCard(board, 2, game, effect);
+
+                //TODO: Add player action for selecting resource;
+
+                return effect;
+
+            case "past":
+                changeCard(board, 3, game, effect);
+                return effect;
+
+            case "special":
+                changeCard(board, 4, game, effect);
+                return effect;
+
+            case "turn":
+                changeCard(board, 5, game, effect);
+                return effect;
+
+            case "apprentice":
+                changeCard(board, 6, game, effect);
+                return effect;
+
+            case "collapse":
+                changeCard(board, 7, game, effect);
+                return effect;
+
+            case "run":
+                changeCard(board, 8, game, effect);
+                return effect;
+
+        }
+        return "something went wrong";
+    }
+
+    private void changeCard(Board board, int index, Game game, String effect) {
+        Cell cell = board.getCardCells().get(index);
+        Card card = cardService.findCardById(cell.getCardOnTop());
+        game.getAllPlayerStates().forEach(playerState -> {
+            if (playerState.getWorkerList().contains(index)) {
+                forge(game.getForgingPlayers(), playerState, card);
+                mine(playerState, card);
+            }
+        });
+
+        cell.addToTop(special2normal.get(effect));
+    }
+
+    public Integer checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
         IllegalAccessException {
 
-        Card actionableCard = cardService.findCardById(game.getBoard().getCartas().get(clientData.getPlayerAction()));
+        Card actionableCard = cardService.findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
 
         if (actionableCard.getCardType().isHelp()) {
             return getPlayerIndex(game, clientData);
@@ -152,11 +258,11 @@ public class GameLogic {
         return -1;
     }
 
-    public static List<Integer> processHelpTurnOrder(Game game, ClientData data) {
-        //Check if there are actionable help cards on the board
+    public List<Integer> processHelpTurnOrder(Game game, ClientData data) {
+        // Check if there are actionable help cards on the board
         Board board = game.getBoard();
-        List<Card> presentHelpCardsList =
-            board.getCartas().stream().map(cardId -> cardService.findCardById(cardId)).takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
+        List<Card> presentHelpCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
+            .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
             return new ArrayList<>();
@@ -175,24 +281,27 @@ public class GameLogic {
         return turnsOrder;
     }
 
-    public static int defense(Game game) {
+    public int defense(Game game) {
         Board board = game.getBoard();
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
-        List<Card> presentDefenseCardsList = board.getCartas().stream().map(cardId -> cardService.findCardById(cardId))
+        List<Card> presentDefenseCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
             .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
         }
 
-        List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition).collect(Collectors.toList());
-        List<Integer> occupiedDefenseCards = allPlayerStates.stream().flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
+        List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition)
+            .collect(Collectors.toList());
+        List<Integer> occupiedDefenseCards = allPlayerStates.stream()
+            .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
             .filter(defenseCardsPositions::contains).collect(Collectors.toList());
 
         presentDefenseCardsList.removeIf(card -> occupiedDefenseCards.contains(card.getPosition()));
 
-        allPlayerStates.stream().filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
+        allPlayerStates.stream()
+            .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
             .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
 
         if (presentDefenseCardsList.isEmpty()) {
@@ -203,7 +312,7 @@ public class GameLogic {
             String effect = card.getEffect();
 
             if (effect.equals("*")) {
-                return 1;
+                game.setDoMine(false);
             } else if (effect.equals("?")) {
                 allPlayerStates.forEach(playerState -> {
                     playerState.setGold(Math.min(playerState.getGold() - 2, 0));
@@ -212,10 +321,12 @@ public class GameLogic {
             } else if (effect.length() == 3) {
                 switch (effect.charAt(2)) {
                     case 'g':
-                        allPlayerStates.forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
+                        allPlayerStates
+                            .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
                         break;
                     case 'i':
-                        allPlayerStates.forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
+                        allPlayerStates
+                            .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
                         break;
                 }
             } else {
@@ -226,17 +337,12 @@ public class GameLogic {
         return 0;
     }
 
-    public static int forge(Game game, ClientData data) {
+    public int endGame(Game game, ClientData data) {
 
         return 0;
     }
 
-    public static int endGame(Game game, ClientData data) {
-
-        return 0;
-    }
-
-    public static int drawCard(Game game) {
+    public int drawCard(Game game) {
         System.out.println("Here");
 
         Board board = game.getBoard();
@@ -254,15 +360,15 @@ public class GameLogic {
             System.out.println("fucking cardService");
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
-                board.getCartas().add(p, card.getId());
-                if(timesDrawn==2) break;
+                board.getCellContent(p).add(0, card.getId());
+                if (timesDrawn == 2) break;
             }
         }
 
         return 0;
     }
 
-    private static int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
+    private int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
         InvocationTargetException, IllegalAccessException {
 
         for (int i = 0; i < 3; i++) {
@@ -279,60 +385,128 @@ public class GameLogic {
         return 0;
     }
 
-    private static PlayerState getIndexedPlayerState(Game game, int playerIndex) throws IllegalAccessException, InvocationTargetException,
+    private PlayerState getIndexedPlayerState(Game game, int playerIndex) throws IllegalAccessException, InvocationTargetException,
         NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 
-    public static void resourceRound(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-        IllegalStateException {
+    public void resourceRound(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : allPlayersStates) {
             for (Integer workerPosition : playerState.getWorkerList()) {
-                // Mirar la carta que hay en la posición del trabajador y comprobar si es de
-                // tipo EXTRACCION_RECURSOS.
-                // En caso afirmativo incluir los efectos al playerState del jugador.
 
                 if (workerPosition.toString().matches("[01245678]")) {
 
-                    List<Integer> mountainCards = game.getBoard().getCartas();
+                    List<Integer> cards = game.getBoard().getCellsTopCard();
 
-                    for (int j = 0; j <= mountainCards.size(); j++) {
+                    for (int j = 0; j <= cards.size(); j++) {
 
-                        Card mineCard = cardService.findCardById(j);
-                        Integer mineCardPosition = mineCard.getPosition();
+                        Card card = cardService.findCardById(j);
+                        Integer cardPosition = card.getPosition();
 
-                        if (Objects.equals(mineCardPosition, workerPosition)) {
-                            if (mineCard.getCardType().equals(CardType.EXTRACCION_RECURSOS)) {
-
-                                String effect = mineCard.getEffect();
-                                String[] field = effect.split(",");
-
-                                for (int z = 0; z <= field.length; z++) {
-
-                                    String campo = field[z];
-
-                                    if (campo.contains("i")) {
-                                        int index = campo.indexOf("i");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
-
-                                    } else if (campo.contains("g")) {
-                                        int index = campo.indexOf("g");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
-                                    } else {
-                                        int index = campo.indexOf("s");
-                                        String resource = campo.substring(0, index);
-                                        playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
-                                    }
-                                }
-                            }
+                        if (cardPosition.equals(workerPosition)) {
+                            mine(playerState, card);
                         }
                     }
                 }
             }
         }
     }
+
+    private void mine(PlayerState playerState, Card card) {
+        if (card.getCardType().isResource()) {
+
+            String effect = card.getEffect();
+            String[] field = effect.split(",");
+
+            for (int z = 0; z <= field.length; z++) {
+
+                String campo = field[z];
+
+                if (campo.contains("i")) {
+                    int index = campo.indexOf("i");
+                    String resource = campo.substring(0, index);
+                    playerState.setIron(playerState.getIron() + Integer.parseInt(resource));
+
+                } else if (campo.contains("g")) {
+                    int index = campo.indexOf("g");
+                    String resource = campo.substring(0, index);
+                    playerState.setGold(playerState.getGold() + Integer.parseInt(resource));
+                } else {
+                    int index = campo.indexOf("s");
+                    String resource = campo.substring(0, index);
+                    playerState.setSteel(playerState.getSteel() + Integer.parseInt(resource));
+                }
+            }
+        }
+    }
+
+    public List<Integer> timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
+        List<PlayerState> playerStates = game.getAllPlayerStates();
+        List<Integer> forgingPlayers = game.getForgingPlayers();
+
+        for (PlayerState playerState : playerStates) {
+            List<Integer> listWorkers = playerState.getWorkerList();
+
+            for (Integer workerPosition : listWorkers) {
+                if (workerPosition.toString().matches("[012345678]")) {
+                    List<Integer> cards = game.getBoard().getCellsTopCard();
+
+                    for (Integer integer : cards) {
+                        Card card = cardService.findCardById(integer);
+                        Integer cardPosition = card.getPosition();
+
+                        if (cardPosition.equals(workerPosition)) {
+                            forge(forgingPlayers, playerState, card);
+                        }
+                    }
+                }
+            }
+        }
+
+        return forgingPlayers;
+    }
+
+    private void forge(List<Integer> forgingPlayers, PlayerState playerState, Card card) {
+
+        if (card.getCardType().isForging()) {
+            String effect = card.getEffect();
+            String[] field = effect.split(",");
+            int fLength = field.length;
+
+            AtomicReference<Integer> ironRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> goldRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> steelRequirement = new AtomicReference<>(0);
+            AtomicReference<Integer> objectReward = new AtomicReference<>(0);
+
+            Arrays.stream(field).forEach(f -> {
+                int newValue = Integer.parseInt(f.substring(1, fLength - 1));
+                switch (f.charAt(fLength - 1)) {
+                    case 'i':
+                        ironRequirement.set(newValue);
+                        break;
+                    case 'g':
+                        goldRequirement.set(newValue);
+                        break;
+                    case 's':
+                        steelRequirement.set(newValue);
+                        break;
+                    case 'o':
+                        objectReward.set(newValue);
+                        break;
+                }
+            });
+
+            if ((playerState.getIron() - ironRequirement.get()) >= 0
+                && (playerState.getGold() - goldRequirement.get()) >= 0
+                && (playerState.getSteel() - steelRequirement.get()) >= 0) {
+                playerState.setObject(playerState.getObject() + objectReward.get());
+            }
+
+            forgingPlayers.add(playerState.getId());
+        }
+    }
+
 }

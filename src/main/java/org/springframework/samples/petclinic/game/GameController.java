@@ -12,6 +12,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -65,9 +68,7 @@ public class GameController {
 
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
-
-
-        int defenseResult = 0;
+        gameLogic.getInstance(cardService);
 
         //Label for breaks, similar to C's goto
         mainLoopStart:
@@ -76,13 +77,13 @@ public class GameController {
                 case INICIO:
                     switch (game.getGameStatus()) {
                         case NEW:
-                            GameLogic.initPlayerStates(game);
-                            GameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
+                            gameLogic.initPlayerStates(game);
+                            gameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
                                 cardService.findAllInitialCards());
                             game.setGameStatus(GameStatus.IN_PROGRESS);
                             game.setPhase(Phase.ASIGNACION);
                         case IN_PROGRESS:
-                            GameLogic.drawCard(game);
+                            gameLogic.drawCard(game);
                             break;
                     }
 
@@ -91,15 +92,15 @@ public class GameController {
                 case ASIGNACION:
                     //Check if still has actions to do
                     if (!game.getTurnsOrder().isEmpty()) {
-                        String result = GameLogic.playerTurn(game, data);
+                        String result = gameLogic.playerTurn(game, data);
 
                         //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
                         if (result.equals("player turn finished")) {
-                            Integer playerIndex = GameLogic.checkIfHelpAction(game, data);
+                            Integer playerIndex = gameLogic.checkIfHelpAction(game, data);
                             if (playerIndex != -1) game.getHelpTurnsOrder().add(playerIndex);
                         }
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
-                        GameLogic.processHelpTurnOrder(game, data);
+                        gameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
                     }
 
@@ -112,7 +113,7 @@ public class GameController {
 
                 case AYUDA:
                     if (!game.getTurnsOrder().isEmpty()) {
-                        String result = GameLogic.playerTurn(game, data);
+                        String result = gameLogic.playerTurn(game, data);
                     } else {
                         game.setPhase(Phase.DEFENSA);
                     }
@@ -122,15 +123,29 @@ public class GameController {
                     return game;
 
                 case DEFENSA:
-                    defenseResult = GameLogic.defense(game);
+                    if (game.isDoDefend()){
+                        gameLogic.defense(game);
+                    }
+
                     game.setPhase(Phase.MINA);
 
                 case MINA:
-                    if (defenseResult != 1) {
-                        GameLogic.resourceRound(game);
+                    if (game.isDoMine()) {
+                        gameLogic.resourceRound(game);
                     }
 
+                    game.setPhase(Phase.FORJA);
+
                 case FORJA:
+                    List<Integer> forgingPlayers= gameLogic.timeToForge(game);
+
+                    if(!forgingPlayers.isEmpty()){
+                        if(forgingPlayers.contains(game.getActivePlayer())){
+                            Collections.rotate(game.getOrder(), 1);
+                        }
+                    }
+
+                    game.setPhase(Phase.FIN);
 
                 case FIN:
                     return game;

@@ -65,7 +65,7 @@ function sample(event, cardValue){
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({playerAction: cardValue})
+        body: JSON.stringify({playerAction: cardValue, currentUser: currentUser})
     }).then(data=>{
         console.log(data);
     })
