@@ -69,6 +69,16 @@ public class Game extends BaseEntity {
     @Transient
     private Integer activePlayer;
 
+    @Transient
+    @Min(value = 1)
+    @Max(value = 4)
+    @NotNull
+    private Integer round = 1;
+
+    @Transient
+    @NotNull
+    private String winner;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;

@@ -20,8 +20,7 @@ import java.util.stream.IntStream;
 @Component
 public class GameLogic {
 
-    private static final Map<String, Integer> special2normal =
-        Map.of("muster", 59, "hold", 60, "sell", 61,
+    private static final Map<String, Integer> special2normal = Map.of("muster", 59, "hold", 60, "sell", 61,
             "past", 62, "special", 63, "turn", 64,
             "apprentice", 57, "collapse", 65, "run", 58);
 
@@ -44,7 +43,7 @@ public class GameLogic {
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
-        IllegalAccessException {
+            IllegalAccessException {
 
         List<Integer> order = game.getOrder();
 
@@ -62,7 +61,7 @@ public class GameLogic {
     }
 
     public void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
-                          List<Card> allInitialCards) {
+            List<Card> allInitialCards) {
         Board board = game.getBoard();
 
         List<Integer> specialIdList = allSpecialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
@@ -94,8 +93,8 @@ public class GameLogic {
     }
 
     public String playerTurn(Game game, ClientData data)
-        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-        IllegalStateException {
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+            IllegalStateException {
 
         // TODO: Write an ordinal enum for possible return states and change return to
         // an int;
@@ -129,7 +128,7 @@ public class GameLogic {
             }
 
             if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream())
-                .anyMatch(w -> w == playerAction)) {
+                    .anyMatch(w -> w == playerAction)) {
                 return "mine position occupied";
             }
 
@@ -144,7 +143,8 @@ public class GameLogic {
         return "player turn finished";
     }
 
-    public String specialAction(Game game, ClientData data) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    public String specialAction(Game game, ClientData data)
+            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
         /*
          * Overview of how it works:
@@ -152,8 +152,8 @@ public class GameLogic {
          * o Invoke card effect.
          * x Get normal card.
          * x Check if someone in position of normal card; if true, give player resources
-         *   of original card. Mark position of card as blocked
-         *   for more workers (somehow).
+         * of original card. Mark position of card as blocked
+         * for more workers (somehow).
          * o Done.
          */
 
@@ -162,7 +162,8 @@ public class GameLogic {
         switch (data.getPlayerAction()) {
             case 9:
                 List<Integer> specialCardDeck_0 = board.getCartasAccionEspecial_0();
-                if (specialCardDeck_0.isEmpty()) return "special deck empty";
+                if (specialCardDeck_0.isEmpty())
+                    return "special deck empty";
 
                 Card card = cardService.findCardById(specialCardDeck_0.remove(0));
                 String effect = card.getEffect();
@@ -170,18 +171,20 @@ public class GameLogic {
                 return invokeEffect(game, effect);
 
             case 10:
-                if (board.getCartasAccionEspecial_1().isEmpty()) return "special deck empty";
+                if (board.getCartasAccionEspecial_1().isEmpty())
+                    return "special deck empty";
                 break;
             case 11:
-                if (board.getCartasAccionEspecial_2().isEmpty()) return "special deck empty";
+                if (board.getCartasAccionEspecial_2().isEmpty())
+                    return "special deck empty";
                 break;
         }
-
 
         return "something went wrong";
     }
 
-    private String invokeEffect(Game game, String effect) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    private String invokeEffect(Game game, String effect)
+            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Board board = game.getBoard();
 
         switch (effect) {
@@ -197,7 +200,7 @@ public class GameLogic {
 
                 List<Cell> cardCells = board.getCardCells();
                 cardCells.forEach(cell -> {
-                    if(cell.getCards().size()>1){
+                    if (cell.getCards().size() > 1) {
                         board.getDeck().add(cell.removeCardOnTop());
                     }
                 });
@@ -212,37 +215,38 @@ public class GameLogic {
                 if (getIndexedPlayerState(game, game.getActivePlayer()).getObject() == 0) {
                     return "not possible";
                 }
-                changeCard(board, 2, game, effect,true);
+                changeCard(board, 2, game, effect, true);
 
-                //TODO: Add player action for selecting resource;
+                // TODO: Add player action for selecting resource;
 
                 return effect;
 
             case "past":
-                changeCard(board, 3, game, effect,true);
+                changeCard(board, 3, game, effect, true);
 
-                //TODO: Offer list of selected cell to player
+                // TODO: Offer list of selected cell to player
 
                 return effect;
 
             case "special":
                 changeCard(board, 4, game, effect, true);
 
-                //TODO: Add player action for selecting resource;
+                // TODO: Add player action for selecting resource;
 
                 return effect;
 
             case "turn":
                 changeCard(board, 5, game, effect, false);
 
-                //Player action here will equate to location he wants to apply the effect to.
+                // Player action here will equate to location he wants to apply the effect to.
 
                 return effect;
 
             case "apprentice":
                 changeCard(board, 6, game, effect, true);
 
-                //TODO: Be able to select which location you want to put the worker on that's already occupied.
+                // TODO: Be able to select which location you want to put the worker on that's
+                // already occupied.
 
                 return effect;
 
@@ -258,7 +262,7 @@ public class GameLogic {
             case "run":
                 changeCard(board, 8, game, effect, false);
 
-                board.getCardCells().forEach(cell->Collections.shuffle(cell.getCards()));
+                board.getCardCells().forEach(cell -> Collections.shuffle(cell.getCards()));
 
                 board.getCell(8).addToTop(special2normal.get(effect));
 
@@ -280,14 +284,16 @@ public class GameLogic {
             }
         });
 
-        if(doAddCard){
+        if (doAddCard) {
             cell.addToTop(special2normal.get(effect));
         }
     }
 
-    public void checkIfHelpAction(Game game, ClientData clientData) throws InvocationTargetException, NoSuchMethodException,
-        IllegalAccessException {
-        Card actionableCard = cardService.findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
+    public void checkIfHelpAction(Game game, ClientData clientData)
+            throws InvocationTargetException, NoSuchMethodException,
+            IllegalAccessException {
+        Card actionableCard = cardService
+                .findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
 
         if (actionableCard.getCardType().isHelp()) {
             game.getHelpTurnsOrder().add(getPlayerIndex(game, clientData));
@@ -298,7 +304,7 @@ public class GameLogic {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
         List<Card> presentHelpCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
-            .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
+                .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
             return new ArrayList<>();
@@ -322,23 +328,23 @@ public class GameLogic {
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
         List<Card> presentDefenseCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
-            .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
+                .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
         }
 
         List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
         List<Integer> occupiedDefenseCards = allPlayerStates.stream()
-            .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
-            .filter(defenseCardsPositions::contains).collect(Collectors.toList());
+                .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
+                .filter(defenseCardsPositions::contains).collect(Collectors.toList());
 
         presentDefenseCardsList.removeIf(card -> occupiedDefenseCards.contains(card.getPosition()));
 
         allPlayerStates.stream()
-            .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
-            .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
+                .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
+                .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
@@ -358,11 +364,11 @@ public class GameLogic {
                 switch (effect.charAt(2)) {
                     case 'g':
                         allPlayerStates
-                            .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
+                                .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
                         break;
                     case 'i':
                         allPlayerStates
-                            .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
+                                .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
                         break;
                 }
             } else {
@@ -394,7 +400,8 @@ public class GameLogic {
             if (!positionsDrawn.contains(p)) {
                 positionsDrawn.add(p);
                 board.getCellContent(p).add(0, card.getId());
-                if (timesDrawn == 2) break;
+                if (timesDrawn == 2)
+                    break;
             }
         }
 
@@ -402,7 +409,7 @@ public class GameLogic {
     }
 
     private int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
-        InvocationTargetException, IllegalAccessException {
+            InvocationTargetException, IllegalAccessException {
 
         for (int i = 0; i < 3; i++) {
             Method getPlayer = gameClass.getMethod("getPlayer" + i);
@@ -418,12 +425,14 @@ public class GameLogic {
         return 0;
     }
 
-    private PlayerState getIndexedPlayerState(Game game, int playerIndex) throws IllegalAccessException, InvocationTargetException,
-        NoSuchMethodException {
+    private PlayerState getIndexedPlayerState(Game game, int playerIndex)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 
-    public void resourceRound(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
+    public void resourceRound(Game game)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : allPlayersStates) {
@@ -475,8 +484,9 @@ public class GameLogic {
         }
     }
 
-    public List<Integer> timeToForge(Game game) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-        IllegalStateException {
+    public List<Integer> timeToForge(Game game)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+            IllegalStateException {
         List<PlayerState> playerStates = game.getAllPlayerStates();
         List<Integer> forgingPlayers = game.getForgingPlayers();
 
@@ -533,13 +543,33 @@ public class GameLogic {
             });
 
             if ((playerState.getIron() - ironRequirement.get()) >= 0
-                && (playerState.getGold() - goldRequirement.get()) >= 0
-                && (playerState.getSteel() - steelRequirement.get()) >= 0) {
+                    && (playerState.getGold() - goldRequirement.get()) >= 0
+                    && (playerState.getSteel() - steelRequirement.get()) >= 0) {
                 playerState.setObject(playerState.getObject() + objectReward.get());
             }
 
             forgingPlayers.add(playerState.getId());
         }
+    }
+
+    public void fin(Game game) {
+
+        game.setRound(game.getRound() + 1);
+
+        List<PlayerState> playerStates = game.getAllPlayerStates();
+
+
+        for (PlayerState playerState : playerStates) {
+
+            playerState.setWorker0(12);
+            playerState.setWorker1(12);
+            playerState.setWorker2(12);
+            playerState.setWorker3(12);
+
+        }
+
+       
+
     }
 
 }
