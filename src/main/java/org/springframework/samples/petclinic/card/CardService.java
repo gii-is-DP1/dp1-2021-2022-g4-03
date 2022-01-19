@@ -34,14 +34,12 @@ public class CardService {
 
     @Transactional
     public List<Card> findAllSpecialCards(){
-        Stream<Card> stream = cardRepository.findAll().stream();
-        return stream.filter(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> card.getCardType().isSpecial()).sorted(Comparator.comparing(Card::getId)).collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllNormalCards(){
-        Stream<Card> stream = cardRepository.findAll().stream();
-        return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)||card.isInitial()).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> !(card.getCardType().isSpecial()||card.isInitial())).sorted(Comparator.comparing(Card::getId)).collect(Collectors.toList());
     }
 
     @Transactional

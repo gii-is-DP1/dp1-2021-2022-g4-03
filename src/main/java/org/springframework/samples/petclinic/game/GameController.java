@@ -7,6 +7,7 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,6 @@ public class GameController {
 		String view = "game/gamesList";
 		Iterable<Game> games = gameService.findAll();
 		modelMap.addAttribute("games", games);
-
 		return view;
 	}
 

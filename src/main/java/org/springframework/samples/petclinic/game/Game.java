@@ -121,9 +121,18 @@ public class Game extends BaseEntity {
 
     @JsonIgnore
     public List<UserDwarf> getAllPlayersInGame() {
-        List<UserDwarf> auxList = new ArrayList<>(List.of(player0, player1, player2));
-
-        auxList.removeIf(Objects::isNull);
+        List<UserDwarf> auxList = new ArrayList<>();
+        
+        if(player0!=null){
+            auxList.add(player0);
+        }
+        if(player1!=null){
+            auxList.add(player1);
+        }
+        if(player2!=null){
+            auxList.add(player2);
+        }
+        
 
         return auxList;
     }
