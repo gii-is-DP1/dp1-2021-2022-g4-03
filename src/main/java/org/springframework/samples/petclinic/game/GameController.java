@@ -92,11 +92,10 @@ public class GameController {
                     if (!game.getTurnsOrder().isEmpty()) {
                         String result = gameLogic.playerTurn(game, data);
 
-                        //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
                         if (result.equals("player turn finished")) {
                             gameLogic.checkIfHelpAction(game, data);
-                        } else {
-                            break mainLoopStart;
+                        } else if(result.equals("special action")){
+                            return game;
                         }
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);
@@ -118,8 +117,6 @@ public class GameController {
                     } else {
                         game.setPhase(Phase.DEFENSA);
                     }
-
-                    //TODO: Handle special cases here too.
 
                     return game;
 

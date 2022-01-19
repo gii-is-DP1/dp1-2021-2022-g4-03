@@ -131,6 +131,7 @@ public class GameLogic {
                     if (resourcesList.get(resourceIndex) >= 4) {
                         resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) - 4);
                         game.setPhase(Phase.ESPECIAL);
+                        data.setPlayerAction(playerAction % 100);
 
                         return specialAction(game, data);
                     }
@@ -190,6 +191,7 @@ public class GameLogic {
                 return "done";
 
         }
+
         Card card;
         String effect;
         List<Integer> specialCardDeck;
@@ -235,7 +237,7 @@ public class GameLogic {
                 changeCard(board, 0, game, effect, true);
                 game.setDoDefend(false);
 
-                return effect;
+                return "done";
 
             case "hold":
                 //Done
@@ -252,7 +254,7 @@ public class GameLogic {
 
                 board.getCell(1).addToTop(special2normal.get(effect));
 
-                return effect;
+                return "done";
 
             case "sell":
                 if (getIndexedPlayerState(game, game.getActivePlayer()).getObject() == 0) {
@@ -280,7 +282,16 @@ public class GameLogic {
                 //Done
                 changeCard(board, 5, game, effect, false);
 
-                return effect;
+                List<PlayerState> allPlayerStates = game.getAllPlayerStates();
+
+                List<Integer> positions =
+                    IntStream.range(0, 9).filter(p -> allPlayerStates.stream().anyMatch(playerState -> playerState.getWorkerList().contains(p)))
+                        .boxed().collect(Collectors.toList());
+
+                game.setAvailablePositions(positions);
+                game.setDoSpecialEffect(true);
+
+                return "special action";
 
             case "apprentice":
                 changeCard(board, 6, game, effect, true);
@@ -298,7 +309,7 @@ public class GameLogic {
 
                 board.getCell(7).addToTop(special2normal.get(effect));
 
-                return effect;
+                return "done";
 
             case "run":
                 //Done
@@ -308,7 +319,7 @@ public class GameLogic {
 
                 board.getCell(8).addToTop(special2normal.get(effect));
 
-                return effect;
+                return "done";
 
         }
         return "something went wrong";

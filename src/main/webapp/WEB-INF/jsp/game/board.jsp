@@ -31,10 +31,6 @@
                 <div class="cardCell">
                     <button id="card1" value="0">
                         <img id= "imagenCarta1" width="123" height="168" src="/resources/cards/cardback.png">
-                        <script>
-                            let imagenCarta1 = document.getElementById("imagenCarta1");
-                            imagenCarta1.src = getCard(game.board.cardCells[0].cards[0]).cardImage;
-                        </script>
                     </button>
                     <img class="worker" width="75" height="75" src="/resources/workers/Dwarf1.png" />
                 </div>
