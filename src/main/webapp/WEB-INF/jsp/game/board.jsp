@@ -96,7 +96,7 @@
             <button class="btn btn-primary" type="submit">Test</button>
         </form>
 
-        <div id="fondo7"></div>
+        <div id="fondo3"></div>
     </jsp:body>
 
     

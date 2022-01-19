@@ -19,7 +19,9 @@
                    id="search-user-form">
             <div class="form-group">
                 <div class="col-sm-1">
-                    <button type="submit" class="btn btn-default">Search</button>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        &nbsp;&nbsp;Search</button>
                 </div>
                 <div class="control-group" id="username">
                     <div class="col-sm-10">
@@ -29,7 +31,7 @@
                 </div>
                 
             </div>
-            <div id="fondo2"></div>
+            <div id="fondo4"></div>
     
         </form:form>
 

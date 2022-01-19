@@ -12,7 +12,7 @@
         </div>
     
         <p>${exception.message}</p>
-        <div id="fondo4"></div>
+        <div id="fondoError"></div>
     </div>
 
     

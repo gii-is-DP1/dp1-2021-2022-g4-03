@@ -66,6 +66,12 @@ public class GameService {
         return game;
     }
 
+    public Iterable<Game> findAll(){
+        Map<Integer, Game> map = gameStorage.getInstance().getGames();
+        Iterable<Game> games = map.values();
+        return games;
+    }
+
     public Board getBoard(Integer gameId) {
         Game game = GameStorage.getInstance().getGame(gameId);
         return game.getBoard();

@@ -40,6 +40,15 @@ public class GameController {
         dataBinder.setDisallowedFields("id");
     }
 
+    @GetMapping(value = "/game/list")
+	public String initFindForm(ModelMap modelMap) {
+		String view = "game/gamesList";
+		Iterable<Game> games = gameService.findAll();
+		modelMap.addAttribute("games", games);
+
+		return view;
+	}
+
     @GetMapping(value = "/game/new")
     public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
