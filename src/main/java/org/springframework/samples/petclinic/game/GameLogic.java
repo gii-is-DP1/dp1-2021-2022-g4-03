@@ -579,7 +579,7 @@ public class GameLogic {
         String winner = manageScore(playersResources);
 
         game.setWinner(winner);
-        
+
 
     }
 
@@ -599,14 +599,30 @@ public class GameLogic {
 
         List<List<Integer>> vipResources = values.stream().map(l -> l.subList(0, 3)).collect(Collectors.toList());
 
-        //Creating score matrix about categories won, if won in 2 or more, winner it is.
-        List<List<Integer>> comparisonMatrix =
-            IntStream.range(0, keys.size()).mapToObj(i -> new ArrayList<Integer>(List.of(compareResources(vipResources.get(i),
-                vipResources.get((i + 1) % keys.size())), compareResources(vipResources.get(i), vipResources.get((i + 2) % keys.size())))))
-                .collect(Collectors.toList());
+        /*
+         *   Creating comparison list consisting of players consisting of their score on winning resources
+         */
+        List<Integer> comparisonList_0 =
+            IntStream.range(0, keys.size()).mapToObj(i -> {
+                    List<Integer> row = new ArrayList<>();
+                    switch (i) {
+                        case 0:
+                            row.addAll(List.of(0, compareResources(vipResources.get(0), vipResources.get(1)),
+                                compareResources(vipResources.get(0), vipResources.get(2))));
+                            break;
+                        case 1:
+                            row.addAll(List.of(compareResources(vipResources.get(1), vipResources.get(0)), 0,
+                                compareResources(vipResources.get(1), vipResources.get(2))));
+                            break;
+                        case 2:
+                            row.addAll(List.of(compareResources(vipResources.get(2), vipResources.get(0)),
+                                compareResources(vipResources.get(2), vipResources.get(1)), 0));
+                            break;
+                    }
+                    return row;
+                }
+            ).map(x -> x.stream().reduce(Integer::sum).get()).collect(Collectors.toList());
 
-        //Score list for determining winner.
-        List<Integer> comparisonList_0 = comparisonMatrix.stream().map(x -> x.stream().reduce(Integer::sum).get()).collect(Collectors.toList());
         Integer winnerIndex = comparisonList_0.stream().anyMatch(x -> x == 2) ? comparisonList_0.indexOf(2) : -1;
 
         if (winnerIndex != -1) {
