@@ -59,13 +59,12 @@ function main() {
 
 
 //Esto pa ti Fran, arregla que encuentre el elemento que cambiar y que tenga el cardId que necesita getCard
-function loadCards() {
-    for (var i = 0; i < 9; i++) {
-        let id = "#card" + i;
-        let cardHTML = document.querySelector(".cardCell " + id);
-        let card = getCard(2);
+async function loadCards() {
+    for (let i = 0; i < 12; i++) {
+        let node = document.getElementById("cell1");
+        let card = await getCard(2);
         console.log(card);
-        cardHTML.firstElementChild.src = card.cardImage;
+        node.src = card.cardImage;
     }
 }
 
@@ -118,8 +117,7 @@ async function handleClick(event) {
             'Accept': 'application/json'
         },
         credentials: 'include'
-    })
-        .then(response => response.json());
+    });
 
 }
 

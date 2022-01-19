@@ -34,8 +34,9 @@
                     </button>
                     <img class="worker" width="75" height="75" src="/resources/workers/Dwarf1.png" />
                 </div>
-                <div class="cardCell">
-                    <button id="card2" value="1"><img width="123" height="168" src="/resources/cards/cardback.png"></button>
+                <div class="cardCell" >
+                    <button id="card2" value="1"><img width="123" height="168" src="/resources/cards/cardback.png"
+                                                      id="cell1"></button>
                 </div>
                 <div class="cardCell">
                     <button id="card3" value="2"><img width="123" height="168" src="/resources/cards/cardback.png"></button>
