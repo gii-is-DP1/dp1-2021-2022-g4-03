@@ -40,7 +40,7 @@ public class GameLogic {
     }
 
     private static final Class<?> gameClass = Game.class;
-    private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 19, 110, 111, 29, 210, 211, 39, 310, 311);
 
     public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
         IllegalAccessException {
@@ -117,11 +117,23 @@ public class GameLogic {
                 return "no worker available";
             }
 
-            if (List.of(9, 10, 11).contains(playerAction)) {
+            if (List.of(9, 10, 11).contains(playerAction % 100)) {
+                long workerCount = workerList.stream().takeWhile(w -> w == 12).count();
                 // Check if available worker count is enough and if they aren't special workers
-                if ((workerList.stream().takeWhile(w -> w == 12).count() == 2) && !(worker == 2 || worker == 3)) {
+                if ((workerCount == 2) && !(worker == 2 || worker == 3)) {
                     game.setPhase(Phase.ESPECIAL);
+
                     return specialAction(game, data);
+                } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {
+                    List<Integer> resourcesList = playerState.getResourcesList();
+                    int resourceIndex = (playerAction / 100) - 1;
+
+                    if (resourcesList.get(resourceIndex) >= 4) {
+                        resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) - 4);
+                        game.setPhase(Phase.ESPECIAL);
+
+                        return specialAction(game, data);
+                    }
                 } else {
                     return "special action not possible";
                 }
@@ -159,25 +171,55 @@ public class GameLogic {
 
         Board board = game.getBoard();
 
-        switch (data.getPlayerAction()) {
+        Integer playerAction = data.getPlayerAction();
+        switch (playerAction / 100) {
+            case 4:
+                data.setPlayerAction(playerAction % 100);
+                String result = playerTurn(game, data);
+
+                board.getCell(5).addToTop(special2normal.get("turn"));
+
+                return result;
+
+            case 5:
+                PlayerState playerState = getIndexedPlayerState(game, game.getActivePlayer());
+                List<Integer> resourcesList = playerState.getResourcesList();
+                int resourceIndex = playerAction % 100 - 1;
+                resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) + 5);
+
+                return "done";
+
+        }
+        Card card;
+        String effect;
+        List<Integer> specialCardDeck;
+        switch (playerAction) {
             case 9:
-                List<Integer> specialCardDeck_0 = board.getCartasAccionEspecial_0();
-                if (specialCardDeck_0.isEmpty())
+                specialCardDeck = board.getCartasAccionEspecial_0();
+                if (specialCardDeck.isEmpty())
                     return "special deck empty";
 
-                Card card = cardService.findCardById(specialCardDeck_0.remove(0));
-                String effect = card.getEffect();
+                card = cardService.findCardById(specialCardDeck.remove(0));
+                effect = card.getEffect();
 
                 return invokeEffect(game, effect);
 
             case 10:
-                if (board.getCartasAccionEspecial_1().isEmpty())
+                specialCardDeck = board.getCartasAccionEspecial_1();
+                if (specialCardDeck.isEmpty())
                     return "special deck empty";
-                break;
+                card = cardService.findCardById(specialCardDeck.remove(0));
+                effect = card.getEffect();
+
+                return invokeEffect(game, effect);
             case 11:
-                if (board.getCartasAccionEspecial_2().isEmpty())
+                specialCardDeck = board.getCartasAccionEspecial_2();
+                if (specialCardDeck.isEmpty())
                     return "special deck empty";
-                break;
+                card = cardService.findCardById(specialCardDeck.remove(0));
+                effect = card.getEffect();
+
+                return invokeEffect(game, effect);
         }
 
         return "something went wrong";
@@ -189,13 +231,14 @@ public class GameLogic {
 
         switch (effect) {
             case "muster":
+                //Done
                 changeCard(board, 0, game, effect, true);
                 game.setDoDefend(false);
 
                 return effect;
 
             case "hold":
-
+                //Done
                 changeCard(board, 1, game, effect, false);
 
                 List<Cell> cardCells = board.getCardCells();
@@ -217,8 +260,6 @@ public class GameLogic {
                 }
                 changeCard(board, 2, game, effect, true);
 
-                // TODO: Add player action for selecting resource;
-
                 return effect;
 
             case "past":
@@ -236,9 +277,8 @@ public class GameLogic {
                 return effect;
 
             case "turn":
+                //Done
                 changeCard(board, 5, game, effect, false);
-
-                // Player action here will equate to location he wants to apply the effect to.
 
                 return effect;
 
@@ -251,6 +291,7 @@ public class GameLogic {
                 return effect;
 
             case "collapse":
+                //Done
                 changeCard(board, 7, game, effect, false);
 
                 board.getCardCells().forEach(cell -> Collections.rotate(cell.getCards(), 1));
@@ -260,6 +301,7 @@ public class GameLogic {
                 return effect;
 
             case "run":
+                //Done
                 changeCard(board, 8, game, effect, false);
 
                 board.getCardCells().forEach(cell -> Collections.shuffle(cell.getCards()));
@@ -375,11 +417,6 @@ public class GameLogic {
                 allPlayerStates.forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 100, 0)));
             }
         }
-
-        return 0;
-    }
-
-    public int endGame(Game game, ClientData data) {
 
         return 0;
     }
@@ -597,7 +634,7 @@ public class GameLogic {
         List<String> keys = new ArrayList<>(playersResources.keySet());
         List<List<Integer>> values = keys.stream().map(playersResources::get).collect(Collectors.toList());
 
-        List<List<Integer>> vipResources = values.stream().map(l -> l.subList(0, 3)).collect(Collectors.toList());
+        List<List<Integer>> vipResources = values.stream().map(l -> l.subList(1, 4)).collect(Collectors.toList());
 
         /*
          *   Creating comparison list consisting of players consisting of their score on winning resources
@@ -630,7 +667,7 @@ public class GameLogic {
         }
 
         //Draw 1
-        List<Integer> comparisonList_1 = values.stream().map(l -> l.get(3)).collect(Collectors.toList());
+        List<Integer> comparisonList_1 = values.stream().map(l -> l.get(4)).collect(Collectors.toList());
 
         Integer maxMedals = comparisonList_1.stream().max(Comparator.naturalOrder()).get();
 
@@ -639,7 +676,7 @@ public class GameLogic {
         }
 
         //Draw 2
-        List<Integer> comparisonList_2 = values.stream().map(l -> l.get(4)).collect(Collectors.toList());
+        List<Integer> comparisonList_2 = values.stream().map(l -> l.get(0)).collect(Collectors.toList());
 
         Integer maxIron = comparisonList_2.stream().max(Comparator.naturalOrder()).get();
 
@@ -648,7 +685,7 @@ public class GameLogic {
         }
 
         //Draw 3
-        List<Integer> comparisonList_3 = values.stream().map(l -> l.get(2)).collect(Collectors.toList());
+        List<Integer> comparisonList_3 = values.stream().map(l -> l.get(3)).collect(Collectors.toList());
 
         Integer maxObjects = comparisonList_3.stream().max(Comparator.naturalOrder()).get();
 

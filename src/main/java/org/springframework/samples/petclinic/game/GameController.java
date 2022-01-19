@@ -7,12 +7,10 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +51,8 @@ public class GameController {
     @GetMapping(value = "/game/connect/{gameId}")
     public String connectToGame(@PathVariable("gameId") Integer gameId) {
         UserDwarf user = userDwarfService.findUserDwarfByUsername(currentUser.getCurrentUser()).iterator().next();
-    	gameService.connectToGame(user, gameId);
-    	return "redirect:/board/{gameId}";
+        gameService.connectToGame(user, gameId);
+        return "redirect:/board/{gameId}";
     }
 
 
@@ -97,6 +95,8 @@ public class GameController {
                         //TODO: Change this if to a switch statement consisting of the possible return states of a player turn.
                         if (result.equals("player turn finished")) {
                             gameLogic.checkIfHelpAction(game, data);
+                        } else {
+                            break mainLoopStart;
                         }
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);
@@ -106,8 +106,9 @@ public class GameController {
                     return game;
 
                 case ESPECIAL:
-
                     //Here we will manage when game needs to await another action of the same player to complete the special action
+
+                    gameLogic.specialAction(game, data);
 
                     return game;
 
@@ -123,7 +124,7 @@ public class GameController {
                     return game;
 
                 case DEFENSA:
-                    if (game.isDoDefend()){
+                    if (game.isDoDefend()) {
                         gameLogic.defense(game);
                     }
 
@@ -137,10 +138,10 @@ public class GameController {
                     game.setPhase(Phase.FORJA);
 
                 case FORJA:
-                    List<Integer> forgingPlayers= gameLogic.timeToForge(game);
+                    List<Integer> forgingPlayers = gameLogic.timeToForge(game);
 
-                    if(!forgingPlayers.isEmpty()){
-                        if(forgingPlayers.contains(game.getActivePlayer())){
+                    if (!forgingPlayers.isEmpty()) {
+                        if (forgingPlayers.contains(game.getActivePlayer())) {
                             Collections.rotate(game.getOrder(), 1);
                         }
                     }
