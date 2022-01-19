@@ -75,6 +75,16 @@ function sample(event, cardValue){
     console.log(game);
 }
 
+function getCard(cardId){
+    let cardURL= "/api/card/"+cardId;
+    return fetch(cardURL, {
+        headers: {
+            'Accept': 'application/json',
+        },
+        credentials: 'include'
+    }).then(response=>response.json());
+}
+
  function takeTurn(event) {
     /*TODO: Change this function to be instead a turn detecting function. Make new function for starting game which
      only makes aesthetic changes to the page.*/

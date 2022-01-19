@@ -50,7 +50,7 @@ public class BoardController {
         return "game/board";
     }
 
-    @GetMapping(value = "/board/card/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/card/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Card getCard(@PathVariable("cardId") Integer cardId) {
         return cardService.findCardById(cardId);
