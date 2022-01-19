@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class GameController {
@@ -51,6 +52,9 @@ public class GameController {
     @GetMapping(value = "/game/connect/{gameId}")
     public String connectToGame(@PathVariable("gameId") Integer gameId) {
         UserDwarf user = userDwarfService.findUserDwarfByUsername(currentUser.getCurrentUser()).iterator().next();
+        if (GameStorage.getInstance().getGame(gameId).getAllPlayersInGame().contains(user)){
+            return "redirect:/board/{gameId}";
+        }
         gameService.connectToGame(user, gameId);
         return "redirect:/board/{gameId}";
     }
