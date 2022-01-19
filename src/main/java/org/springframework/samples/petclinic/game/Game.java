@@ -106,6 +106,14 @@ public class Game extends BaseEntity {
     @JsonIgnore
     private boolean doMine = true;
 
+
+    //For offering the player where to play a worker after special effect
+    @Transient
+    private List<Integer> availablePositions = new ArrayList<>();
+
+    @Transient
+    private boolean doSpecialEffect= false;
+
     @JsonIgnore
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));

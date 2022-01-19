@@ -12,7 +12,10 @@ import lombok.Setter;
 public class ClientData {
     public String currentUser;
 
-    //Equates to where does the player put the worker
-    //TODO: Make it possible to use resources instead of workers to invoke special actions
+    //Format:
+    // [00-08] where he puts a worker on the mine
+    // [1,2,3][09-11] resource to use iron:1 gold:2 steel:3, 9 to 11 what special deck
+    // [4][00-08] turn effect, select worker position
+    // [5][01-03] sell effect, resource to get iron:1 gold:2 steel:3
     public Integer playerAction;
 }
