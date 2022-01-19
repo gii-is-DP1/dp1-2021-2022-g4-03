@@ -82,4 +82,9 @@ public class PlayerState extends BaseEntity {
     public List<Integer> getWorkerList(){
         return new ArrayList<>(List.of(worker0, worker1, worker2, worker3));
     }
+
+    @JsonIgnore
+    public List<Integer> getResourcesList(){
+        return new ArrayList<>(List.of(gold, steel, object, medal, iron));
+    }
 }

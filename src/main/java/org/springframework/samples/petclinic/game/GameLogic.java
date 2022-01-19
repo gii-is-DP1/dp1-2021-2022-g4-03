@@ -21,8 +21,8 @@ import java.util.stream.IntStream;
 public class GameLogic {
 
     private static final Map<String, Integer> special2normal = Map.of("muster", 59, "hold", 60, "sell", 61,
-            "past", 62, "special", 63, "turn", 64,
-            "apprentice", 57, "collapse", 65, "run", 58);
+        "past", 62, "special", 63, "turn", 64,
+        "apprentice", 57, "collapse", 65, "run", 58);
 
     private final CardService cardService;
 
@@ -43,7 +43,7 @@ public class GameLogic {
     private static final List<Integer> possibleActions = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     public void initPlayerStates(Game game) throws NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException {
+        IllegalAccessException {
 
         List<Integer> order = game.getOrder();
 
@@ -61,7 +61,7 @@ public class GameLogic {
     }
 
     public void initBoard(Game game, List<Card> allSpecialCards, List<Card> allNormalCards,
-            List<Card> allInitialCards) {
+                          List<Card> allInitialCards) {
         Board board = game.getBoard();
 
         List<Integer> specialIdList = allSpecialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
@@ -93,8 +93,8 @@ public class GameLogic {
     }
 
     public String playerTurn(Game game, ClientData data)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-            IllegalStateException {
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
 
         // TODO: Write an ordinal enum for possible return states and change return to
         // an int;
@@ -128,7 +128,7 @@ public class GameLogic {
             }
 
             if (game.getAllPlayerStates().stream().flatMap(pS -> pS.getWorkerList().stream())
-                    .anyMatch(w -> w == playerAction)) {
+                .anyMatch(w -> w == playerAction)) {
                 return "mine position occupied";
             }
 
@@ -144,7 +144,7 @@ public class GameLogic {
     }
 
     public String specialAction(Game game, ClientData data)
-            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
         /*
          * Overview of how it works:
@@ -184,7 +184,7 @@ public class GameLogic {
     }
 
     private String invokeEffect(Game game, String effect)
-            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Board board = game.getBoard();
 
         switch (effect) {
@@ -290,10 +290,10 @@ public class GameLogic {
     }
 
     public void checkIfHelpAction(Game game, ClientData clientData)
-            throws InvocationTargetException, NoSuchMethodException,
-            IllegalAccessException {
+        throws InvocationTargetException, NoSuchMethodException,
+        IllegalAccessException {
         Card actionableCard = cardService
-                .findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
+            .findCardById(game.getBoard().getCellsTopCard().get(clientData.getPlayerAction()));
 
         if (actionableCard.getCardType().isHelp()) {
             game.getHelpTurnsOrder().add(getPlayerIndex(game, clientData));
@@ -304,7 +304,7 @@ public class GameLogic {
         // Check if there are actionable help cards on the board
         Board board = game.getBoard();
         List<Card> presentHelpCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
-                .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
+            .takeWhile(card -> card.getCardType().isHelp()).collect(Collectors.toList());
 
         if (presentHelpCardsList.size() == 0) {
             return new ArrayList<>();
@@ -328,23 +328,23 @@ public class GameLogic {
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
 
         List<Card> presentDefenseCardsList = board.getCellsTopCard().stream().map(cardService::findCardById)
-                .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
+            .takeWhile(card -> card.getCardType().isDefense()).collect(Collectors.toList());
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
         }
 
         List<Integer> defenseCardsPositions = presentDefenseCardsList.stream().map(Card::getPosition)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
         List<Integer> occupiedDefenseCards = allPlayerStates.stream()
-                .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
-                .filter(defenseCardsPositions::contains).collect(Collectors.toList());
+            .flatMap(playerState -> playerState.getWorkerList().stream()).distinct()
+            .filter(defenseCardsPositions::contains).collect(Collectors.toList());
 
         presentDefenseCardsList.removeIf(card -> occupiedDefenseCards.contains(card.getPosition()));
 
         allPlayerStates.stream()
-                .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
-                .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
+            .filter(playerState -> playerState.getWorkerList().stream().anyMatch(occupiedDefenseCards::contains))
+            .forEach(playerState -> playerState.setMedal(playerState.getMedal() + 1));
 
         if (presentDefenseCardsList.isEmpty()) {
             return 0;
@@ -364,11 +364,11 @@ public class GameLogic {
                 switch (effect.charAt(2)) {
                     case 'g':
                         allPlayerStates
-                                .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
+                            .forEach(playerState -> playerState.setGold(Math.min(playerState.getGold() - 1, 0)));
                         break;
                     case 'i':
                         allPlayerStates
-                                .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
+                            .forEach(playerState -> playerState.setIron(Math.min(playerState.getIron() - 1, 0)));
                         break;
                 }
             } else {
@@ -409,7 +409,7 @@ public class GameLogic {
     }
 
     private int getPlayerIndex(Game game, ClientData data) throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+        InvocationTargetException, IllegalAccessException {
 
         for (int i = 0; i < 3; i++) {
             Method getPlayer = gameClass.getMethod("getPlayer" + i);
@@ -426,13 +426,13 @@ public class GameLogic {
     }
 
     private PlayerState getIndexedPlayerState(Game game, int playerIndex)
-            throws IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
+        throws IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException {
         return (PlayerState) gameClass.getMethod("getPlayerState_" + playerIndex).invoke(game);
     }
 
     public void resourceRound(Game game)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalStateException {
         List<PlayerState> allPlayersStates = game.getAllPlayerStates();
 
         for (PlayerState playerState : allPlayersStates) {
@@ -485,8 +485,8 @@ public class GameLogic {
     }
 
     public List<Integer> timeToForge(Game game)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-            IllegalStateException {
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        IllegalStateException {
         List<PlayerState> playerStates = game.getAllPlayerStates();
         List<Integer> forgingPlayers = game.getForgingPlayers();
 
@@ -543,8 +543,8 @@ public class GameLogic {
             });
 
             if ((playerState.getIron() - ironRequirement.get()) >= 0
-                    && (playerState.getGold() - goldRequirement.get()) >= 0
-                    && (playerState.getSteel() - steelRequirement.get()) >= 0) {
+                && (playerState.getGold() - goldRequirement.get()) >= 0
+                && (playerState.getSteel() - steelRequirement.get()) >= 0) {
                 playerState.setObject(playerState.getObject() + objectReward.get());
             }
 
@@ -568,8 +568,79 @@ public class GameLogic {
 
         }
 
-       
+        Map<String, List<Integer>> playersResources = new HashMap<>();
 
+        List<UserDwarf> allPlayersInGame = game.getAllPlayersInGame();
+
+        for (int i = 0; i < allPlayersInGame.size(); i++) {
+            playersResources.put(allPlayersInGame.get(i).getUsername(), playerStates.get(i).getResourcesList());
+        }
+
+        String winner = manageScore(playersResources);
+
+        game.setWinner(winner);
+        
+
+    }
+
+
+    private int compareResources(List<Integer> list1, List<Integer> list2) {
+
+        int compareResult = IntStream.range(0, list1.size()).map(i -> Integer.signum(list1.get(i) - list2.get(i)))
+            .reduce(Integer::sum).getAsInt();
+
+        return Integer.compare(compareResult, 0);
+    }
+
+
+    private String manageScore(Map<String, List<Integer>> playersResources) {
+        List<String> keys = new ArrayList<>(playersResources.keySet());
+        List<List<Integer>> values = keys.stream().map(playersResources::get).collect(Collectors.toList());
+
+        List<List<Integer>> vipResources = values.stream().map(l -> l.subList(0, 3)).collect(Collectors.toList());
+
+        //Creating score matrix about categories won, if won in 2 or more, winner it is.
+        List<List<Integer>> comparisonMatrix =
+            IntStream.range(0, keys.size()).mapToObj(i -> new ArrayList<Integer>(List.of(compareResources(vipResources.get(i),
+                vipResources.get((i + 1) % keys.size())), compareResources(vipResources.get(i), vipResources.get((i + 2) % keys.size())))))
+                .collect(Collectors.toList());
+
+        //Score list for determining winner.
+        List<Integer> comparisonList_0 = comparisonMatrix.stream().map(x -> x.stream().reduce(Integer::sum).get()).collect(Collectors.toList());
+        Integer winnerIndex = comparisonList_0.stream().anyMatch(x -> x == 2) ? comparisonList_0.indexOf(2) : -1;
+
+        if (winnerIndex != -1) {
+            return keys.get(winnerIndex);
+        }
+
+        //Draw 1
+        List<Integer> comparisonList_1 = values.stream().map(l -> l.get(3)).collect(Collectors.toList());
+
+        Integer maxMedals = comparisonList_1.stream().max(Comparator.naturalOrder()).get();
+
+        if (comparisonList_1.stream().filter(l -> l.equals(maxMedals)).count() == 1) {
+            return keys.get(comparisonList_0.indexOf(maxMedals));
+        }
+
+        //Draw 2
+        List<Integer> comparisonList_2 = values.stream().map(l -> l.get(4)).collect(Collectors.toList());
+
+        Integer maxIron = comparisonList_2.stream().max(Comparator.naturalOrder()).get();
+
+        if (comparisonList_2.stream().filter(l -> l.equals(maxIron)).count() == 1) {
+            return keys.get(comparisonList_0.indexOf(maxIron));
+        }
+
+        //Draw 3
+        List<Integer> comparisonList_3 = values.stream().map(l -> l.get(2)).collect(Collectors.toList());
+
+        Integer maxObjects = comparisonList_3.stream().max(Comparator.naturalOrder()).get();
+
+        if (comparisonList_3.stream().filter(l -> l.equals(maxObjects)).count() == 1) {
+            return keys.get(comparisonList_0.indexOf(maxMedals));
+        }
+
+        return "complete draw";
     }
 
 }

@@ -46,7 +46,7 @@ public class CardService {
 
     @Transactional
     public List<Card> findAllInitialCards(){
-        return cardRepository.findAll().stream().filter(card -> card.initial==true).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> card.initial).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
     }
 
 }
