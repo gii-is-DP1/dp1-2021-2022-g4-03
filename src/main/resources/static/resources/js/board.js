@@ -15,7 +15,7 @@ function main() {
     let cardButton11 = document.getElementById("card11");
     let cardButton12 = document.getElementById("card12");
     let noColocar = document.getElementById("noColocar");
-    
+
 
     cardButton1.addEventListener("click", function (e) {
         sample(e, cardButton1.value);
@@ -65,7 +65,7 @@ function main() {
 
 async function loadCards() {
     for (let i = 0; i < 9; i++) {
-        let node = document.getElementById("cell"+i);
+        let node = document.getElementById("cell" + i);
         let cardId = node.name;
         let card = await getCard(cardId);
         node.src = card.cardImage;
@@ -74,27 +74,18 @@ async function loadCards() {
 
 async function loadSpecialCards() {
     for (let i = 9; i < 12; i++) {
-        let node = document.getElementById("cell"+i);
+        let node = document.getElementById("cell" + i);
         let cardId = node.name;
         let card = await getCard(cardId);
         node.src = card.cardImage;
     }
 }
 
-function sample(event, cardValue) {
+async function sample(event, cardValue) {
     let gameId = document.getElementById("gameId").value;
     let currentUser = document.getElementById("currentUser").value;
-    let gameURL = "/api/game/" + gameId;
-    let game = fetch(gameURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({playerAction: cardValue, currentUser: currentUser})
-    }).then(data => {
-        data.json();
-    })
+
+    let game = await getGame(gameId, cardValue, currentUser);
     let worker0 = game.playerState_0.worker0;
     let worker1 = game.playerState_0.worker1;
     let worker2 = game.playerState_0.worker2;
@@ -108,15 +99,29 @@ function sample(event, cardValue) {
     let worker10 = game.playerState_2.worker2;
     let worker11 = game.playerState_2.worker3;
     let workerList = [
-        worker0,worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10,worker11];
-    for(i=0;i<9;i++){
+        worker0, worker1, worker2, worker3, worker4, worker5, worker6, worker7, worker8, worker9, worker10, worker11];
+    for (let i = 0; i < 9; i++) {
         if (workerList.includes(i)) {
-            let worker = document.getElementById("worker"+i);
-            worker.style="display: contents";
+            let worker = document.getElementById("worker" + i);
+            worker.style = "display: contents";
         }
     }
 
     console.log(game);
+}
+
+function getGame(gameId, cardValue, currentUser) {
+    let gameURL = "/api/game/" + gameId;
+    return fetch(gameURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({playerAction: cardValue, currentUser: currentUser})
+    }).then(response =>
+        response.json()
+    );
 }
 
 function getCard(cardId) {

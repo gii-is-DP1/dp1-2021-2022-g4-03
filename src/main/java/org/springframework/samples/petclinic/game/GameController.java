@@ -105,7 +105,7 @@ public class GameController {
                     //Check if still has actions to do
                     if (!game.getTurnsOrder().isEmpty()) {
                         String result = gameLogic.playerTurn(game, data);
-
+                        System.out.println("********"+result);
                         if (result.equals("player turn finished")) {
                             gameLogic.checkIfHelpAction(game, data);
                         } else if(result.equals("special action")){
