@@ -42,8 +42,9 @@
                     <b>Objects: <c:out value="${game.playerState_2.object}"/></b>
                     <b>Medals: <c:out value="${game.playerState_2.medal}"/></b>
                 </div>
-                <div>
-                    <button id="noColocar" class="btn" value="12">No colocar</button>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <a class="btn btn-default"
+                       href='<spring:url value="/game/${game.id}/surrender" htmlEscape="true"/>'>Rendirse</a>
                 </div>
             </div>
 
@@ -115,11 +116,6 @@
             </div> 
 
         <div id="fondo7"></div>
-
-        <div class="col-sm-offset-2 col-sm-10">
-            <a class="btn btn-default"
-               href='<spring:url value="/game/${game.id}/surrender" htmlEscape="true"/>'>Rendirse</a>
-        </div>
 
         <input type="hidden" id="gameId" value=${game.id}>
         <input type="hidden" id="currentUser" value=${currentUser}>

@@ -14,7 +14,6 @@ function main() {
     let cardButton10 = document.getElementById("card10");
     let cardButton11 = document.getElementById("card11");
     let cardButton12 = document.getElementById("card12");
-    let noColocar = document.getElementById("noColocar");
 
 
     cardButton1.addEventListener("click", function (e) {
@@ -53,9 +52,6 @@ function main() {
     cardButton12.addEventListener("click", function (e) {
         sample(e, cardButton12.value);
     });
-    noColocar.addEventListener("click", function (e) {
-        sample(e, noColocar.value);
-    });
 
     // window.addEventListener("load", loadBackground, false);
     window.addEventListener("load", loadCards);
@@ -85,8 +81,6 @@ async function sample(event, cardValue) {
     let gameId = document.getElementById("gameId").value;
     let currentUser = document.getElementById("currentUser").value;
 
-    console.log(cardValue);
-
     let game = await getGame(gameId, cardValue, currentUser);
     let worker0 = game.playerState_0.worker0;
     let worker1 = game.playerState_0.worker1;
@@ -105,10 +99,10 @@ async function sample(event, cardValue) {
     for (let i = 0; i < 9; i++) {
         if (workerList.includes(i)) {
             let worker = document.getElementById("worker" + i);
-            worker.style = "display: contents";
+            worker.style = "display: block";
+            console.log(worker.style);
         }
     }
-
     console.log(game);
 }
 
