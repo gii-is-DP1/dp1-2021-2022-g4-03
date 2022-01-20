@@ -51,6 +51,7 @@ public class GameLogic {
         Collections.reverse(order);
         game.getTurnsOrder().addAll(order);
         Collections.reverse(order);
+        game.getTurnsOrder().add(-1);
 
         game.getPlayerState_0().setId(0);
         game.getPlayerState_1().setId(1);

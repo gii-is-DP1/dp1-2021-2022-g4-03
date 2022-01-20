@@ -111,7 +111,7 @@ public class GameController {
                     
                     System.out.println(game.getTurnsOrder());
                     System.out.println(game.getActivePlayer());
-                    if (!game.getTurnsOrder().isEmpty()) {
+                    if (game.getTurnsOrder().get(0)!=-1) {
                         String result = gameLogic.playerTurn(game, data);
                         System.out.println("********"+result);
                         if (result.equals("player turn finished")) {
@@ -124,6 +124,8 @@ public class GameController {
                         game.setPhase(Phase.AYUDA);
                     }
 
+                    game.setPhase(Phase.DEFENSA);
+                    
                     return game;
 
                 case ESPECIAL:
