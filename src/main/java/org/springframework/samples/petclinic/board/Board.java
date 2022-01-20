@@ -2,11 +2,11 @@ package org.springframework.samples.petclinic.board;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
@@ -27,8 +27,8 @@ public class Board extends BaseEntity {
         this.background = "/resources/images/boardBackground.png";
         this.width = 1000;
         this.height = 700;
-        this.cartas = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
+        this.cardCells = new ArrayList<>();
+        this.deck = new ArrayList<>();
         this.cartasAccionEspecial_0= new ArrayList<>();
         this.cartasAccionEspecial_1= new ArrayList<>();
         this.cartasAccionEspecial_2= new ArrayList<>();
@@ -37,18 +37,19 @@ public class Board extends BaseEntity {
     public Board(int id) {
         this.id = id;
         this.background = "resources/images/boardBackground.png";
+        //TODO: Change this values to responsive, maybe won't do because of time constraints.
         this.width = 1000;
         this.height = 700;
-        this.cartas = new ArrayList<>();
-        this.cartasMontaña = new ArrayList<>();
+        this.cardCells = new ArrayList<>();
+        this.deck = new ArrayList<>();
         this.cartasAccionEspecial_0= new ArrayList<>();
         this.cartasAccionEspecial_1= new ArrayList<>();
         this.cartasAccionEspecial_2= new ArrayList<>();
     }
 
     //Mina, array cartas 0-8
-    @ElementCollection
-    List<Integer> cartas;
+    @OneToMany(cascade = {javax.persistence.CascadeType.ALL})
+    List<Cell> cardCells;
 
     //Montones de cartas especiales, array cartas 9-11
     @ElementCollection
@@ -62,6 +63,25 @@ public class Board extends BaseEntity {
 
     //Mazo, cartas sin asignar
     @ElementCollection
-    List<Integer> cartasMontaña;
+    List<Integer> deck;
+
+    @Transient
+    @JsonIgnore
+    public List<Integer> getCellContent(int index){
+        return cardCells.get(index).getCards();
+    }
+
+    @Transient
+    @JsonIgnore
+    public List<Integer> getCellsTopCard(){
+        return cardCells.stream().map(Cell::getCardOnTop).collect(Collectors.toList());
+    }
+
+    @Transient
+    @JsonIgnore
+    public Cell getCell(Integer index){
+        return cardCells.get(index);
+    }
+
 
 }

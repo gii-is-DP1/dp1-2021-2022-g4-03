@@ -8,10 +8,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,37 +48,43 @@ public class PlayerState extends BaseEntity {
     @Min(value = 0)
     public Integer medal=0;
 
-    @Column(name = "active")
-    @NotNull
-    public Boolean active=false;
-
     //12 para los trabajadores disponibles pero no usados
-    //-1 para los trabajadores no disponibles
+    //-13 para los trabajadores no disponibles
     //[0-8] posiciones de la mina, contando desde la esquina izquierda superior en dirección de lectura
     //[9-11] posiciones montones cartas especiales
+    //Las posiciones anteriores en negativo indican que ya han realizado la acción, utilizar valor absoluto para posición en el canvas
+
+    @Column(name = "worker0")
+    @NotNull
+    @Max(value = 12)
+    @Min(value = -13)
+    public Integer worker0 = 12;
 
     @Column(name = "worker1")
     @NotNull
     @Max(value = 12)
-    @Min(value = -1)
+    @Min(value = -13)
     public Integer worker1 = 12;
 
     @Column(name = "worker2")
     @NotNull
     @Max(value = 12)
-    @Min(value = -1)
-    public Integer worker2 = 12;
+    @Min(value = -13)
+    public Integer worker2 = -13;
 
     @Column(name = "worker3")
     @NotNull
     @Max(value = 12)
-    @Min(value = -1)
-    public Integer worker3 = -1;
+    @Min(value = -13)
+    public Integer worker3 = -13;
 
-    @Column(name = "worker4")
-    @NotNull
-    @Max(value = 12)
-    @Min(value = -1)
-    public Integer worker4 = -1;
+    @JsonIgnore
+    public List<Integer> getWorkerList(){
+        return new ArrayList<>(List.of(worker0, worker1, worker2, worker3));
+    }
 
+    @JsonIgnore
+    public List<Integer> getResourcesList(){
+        return new ArrayList<>(List.of(iron, gold, steel, object, medal));
+    }
 }

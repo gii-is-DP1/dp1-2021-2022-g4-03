@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -26,19 +28,23 @@ public class CardService {
 
     @Transactional
     public List<Card> findAll() {
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
+        Stream<Card> stream = cardRepository.findAll().stream();
         return stream.collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllSpecialCards(){
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-        return stream.filter(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> card.getCardType().isSpecial()).sorted(Comparator.comparing(Card::getId)).collect(Collectors.toList());
     }
 
     @Transactional
     public List<Card> findAllNormalCards(){
-        Stream<Card> stream = StreamSupport.stream(cardRepository.findAll().spliterator(), false);
-        return stream.dropWhile(card->card.getCardType().equals(CardType.ESPECIAL)).collect(Collectors.toList());
+        return cardRepository.findAll().stream().filter(card -> !(card.getCardType().isSpecial()||card.isInitial())).sorted(Comparator.comparing(Card::getId)).collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<Card> findAllInitialCards(){
+        return cardRepository.findAll().stream().filter(card -> card.initial).sorted(Comparator.comparing(Card::getPosition)).collect(Collectors.toList());
+    }
+
 }

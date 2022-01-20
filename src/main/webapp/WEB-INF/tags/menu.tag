@@ -31,11 +31,14 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'players'}" url="/userDwarf/searchPlayers"
-					title="find players">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find players</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('player')">
+					<petclinic:menuItem active="${name eq 'players'}" url="/userDwarf/searchPlayers"
+						title="find players">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Find Players</span>
+					</petclinic:menuItem>
+                </sec:authorize>
+
 				<sec:authorize access="hasAuthority('admin')">
 					<petclinic:menuItem active="${name eq 'usersDwarf'}" url="/usersDwarf/find"
 						title="users">
@@ -61,10 +64,10 @@
 				</sec:authorize>
 
 				<sec:authorize access="hasAuthority('player')">
-					<petclinic:menuItem active="${name eq 'games'}" url="/game/new"
+					<petclinic:menuItem active="${name eq 'games'}" url="/game/list"
 						title="new game">
 						<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
-						<span>Create Game</span>
+						<span>Games</span>
 					</petclinic:menuItem>
                 </sec:authorize>
 

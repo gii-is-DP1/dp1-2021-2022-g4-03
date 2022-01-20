@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
@@ -13,7 +12,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class GameController {
@@ -30,82 +32,143 @@ public class GameController {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private GameLogic gameLogic;
+
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
+
+    @GetMapping(value = "/game/list")
+	public String initFindForm(ModelMap modelMap) {
+		String view = "game/gamesList";
+		Iterable<Game> games = gameService.findAll();
+		modelMap.addAttribute("games", games);
+		return view;
+	}
 
     @GetMapping(value = "/game/new")
     public String createGame() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
         Game game = gameService.createGame(player);
         //Unable to test this without cards, nullPointerException
-        game= mainLoop(game.getId(), null, null);
+        game = mainLoop(game.getId(), null);
         return "redirect:/board/" + game.getId();
     }
 
 
-    // @GetMapping(value = "/game/connect/{gameId}")
-    // public String connectToGame(@PathVariable("gameId") Integer gameId) {
-    // 	// Hasta que no tengamos currentUser conectamos a un user random
-    // 	UserDwarf player= userDwarfService.findUserDwarfByUsername2(1);
-    // 	gameService.connectToGame(player, gameId);
-    // 	return "redirect:/board/{gameId}";
-    // }
+    @GetMapping(value = "/game/connect/{gameId}")
+    public String connectToGame(@PathVariable("gameId") Integer gameId) {
+        UserDwarf user = userDwarfService.findUserDwarfByUsername(currentUser.getCurrentUser()).iterator().next();
+        if (GameStorage.getInstance().getGame(gameId).getAllPlayersInGame().contains(user)){
+            return "redirect:/board/{gameId}";
+        }
+        gameService.connectToGame(user, gameId);
+        return "redirect:/board/{gameId}";
+    }
 
+
+    //TODO: Handle in js to call back to mainloop when player input phases have ended so the rest of the logic can continue
     @RequestMapping(value = "/api/game/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Game mainLoop(@PathVariable("gameId") Integer gameId,
-                                       @RequestBody(required = false) BoardData data, ModelMap model)
+    public @ResponseBody
+    Game mainLoop(@PathVariable("gameId") Integer gameId,
+                  @RequestBody(required = false) ClientData data)
         throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         GameStorage gameStorage = GameStorage.getInstance();
-        Game currentGame = gameStorage.getGame(gameId);
+        Game game = gameStorage.getGame(gameId);
+        gameLogic.getInstance(cardService);
 
-        while (currentGame.getGameStatus() == GameStatus.NEW || currentGame.getGameStatus() == GameStatus.IN_PROGRESS) {
-            switch (currentGame.getPhase()) {
+        //Label for breaks, similar to C's goto
+        mainLoopStart:
+        while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
+            switch (game.getPhase()) {
                 case INICIO:
-                    if (currentGame.getGameStatus() == GameStatus.NEW) {
-                        GameLogic.initPlayerStates(currentGame);
-                        //TODO: Can't test this without cards, nullPointerException
-                        /*GameLogic.initBoard(currentGame, cardService.findAllSpecialCards(),
-                            cardService.findAllNormalCards());*/
-                        currentGame.setGameStatus(GameStatus.IN_PROGRESS);
-                        currentGame.setPhase(Phase.ASIGNACION);
+                    switch (game.getGameStatus()) {
+                        case NEW:
+                            gameLogic.initPlayerStates(game);
+                            gameLogic.initBoard(game, cardService.findAllSpecialCards(), cardService.findAllNormalCards(),
+                                cardService.findAllInitialCards());
+                            game.setGameStatus(GameStatus.IN_PROGRESS);
+                            game.setPhase(Phase.ASIGNACION);
+                        case IN_PROGRESS:
+                            gameLogic.drawCard(game);
+                            break;
                     }
 
-                    return currentGame;
+                    return game;
 
                 case ASIGNACION:
-                    GameLogic.playerTurn(currentGame, data);
+                    //Check if still has actions to do
+                    if (!game.getTurnsOrder().isEmpty()) {
+                        String result = gameLogic.playerTurn(game, data);
 
-                    return currentGame;
+                        if (result.equals("player turn finished")) {
+                            gameLogic.checkIfHelpAction(game, data);
+                        } else if(result.equals("special action")){
+                            return game;
+                        }
+                    } else if (!game.getHelpTurnsOrder().isEmpty()) {
+                        gameLogic.processHelpTurnOrder(game, data);
+                        game.setPhase(Phase.AYUDA);
+                    }
+
+                    return game;
 
                 case ESPECIAL:
-                    break;
+                    //Here we will manage when game needs to await another action of the same player to complete the special action
+
+                    gameLogic.specialAction(game, data);
+
+                    return game;
 
                 case AYUDA:
-                    break;
+                    if (!game.getTurnsOrder().isEmpty()) {
+                        String result = gameLogic.playerTurn(game, data);
+                    } else {
+                        game.setPhase(Phase.DEFENSA);
+                    }
+
+                    return game;
 
                 case DEFENSA:
-                    break;
+                    if (game.isDoDefend()) {
+                        gameLogic.defense(game);
+                    }
+
+                    game.setPhase(Phase.MINA);
 
                 case MINA:
-                    break;
+                    if (game.isDoMine()) {
+                        gameLogic.resourceRound(game);
+                    }
+
+                    game.setPhase(Phase.FORJA);
 
                 case FORJA:
-                    return currentGame;
+                    List<Integer> forgingPlayers = gameLogic.timeToForge(game);
+
+                    if (!forgingPlayers.isEmpty()) {
+                        if (forgingPlayers.contains(game.getActivePlayer())) {
+                            Collections.rotate(game.getOrder(), 1);
+                        }
+                    }
+
+                    game.setPhase(Phase.FIN);
 
                 case FIN:
-                    return currentGame;
+                    return game;
 
                 default:
                     break;
             }
         }
 
-        return currentGame;
+        return game;
     }
+
     @GetMapping(value = "/game/{gameId}/surrender")
     public String surrender(@PathVariable("gameId") Integer gameId) {
         UserDwarf player = userDwarfService.findUserDwarfByUsername2(currentUser.getCurrentUser()).get();
