@@ -14,6 +14,8 @@ function main() {
     let cardButton10 = document.getElementById("card10");
     let cardButton11 = document.getElementById("card11");
     let cardButton12 = document.getElementById("card12");
+    let noColocar = document.getElementById("noColocar");
+    
 
     cardButton1.addEventListener("click", function (e) {
         sample(e, cardButton1.value);
@@ -51,19 +53,32 @@ function main() {
     cardButton12.addEventListener("click", function (e) {
         sample(e, cardButton12.value);
     });
+    noColocar.addEventListener("click", function (e) {
+        sample(e, noColocar.value);
+    });
 
     // window.addEventListener("load", loadBackground, false);
     window.addEventListener("load", loadCards);
+    window.addEventListener("load", loadSpecialCards);
 
 }
 
-
-//Esto pa ti Fran, arregla que encuentre el elemento que cambiar y que tenga el cardId que necesita getCard
 async function loadCards() {
-    for (let i = 0; i < 12; i++) {
-        let node = document.getElementById("cell1");
-        let card = await getCard(2);
-        console.log(card);
+    for (let i = 0; i < 9; i++) {
+        let node = document.getElementById("cell"+i);
+        let cardId = node.name;
+        console.log("GUAC: "+cardId);
+        let card = await getCard(cardId);
+        node.src = card.cardImage;
+    }
+}
+
+async function loadSpecialCards() {
+    for (let i = 9; i < 12; i++) {
+        let node = document.getElementById("cell"+i);
+        let cardId = node.name;
+        console.log("GUAC ESPESIAL: "+cardId);
+        let card = await getCard(cardId);
         node.src = card.cardImage;
     }
 }
@@ -117,7 +132,8 @@ async function handleClick(event) {
             'Accept': 'application/json'
         },
         credentials: 'include'
-    });
+    })
+        .then(response => response.json());
 
 }
 

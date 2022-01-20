@@ -74,8 +74,8 @@ public class GameLogic {
         // Shuffle special cards and get them in the special slots
         Collections.shuffle(specialIdList);
         board.setCartasAccionEspecial_0(specialIdList.subList(0, 3));
-        board.setCartasAccionEspecial_0(specialIdList.subList(3, 6));
-        board.setCartasAccionEspecial_0(specialIdList.subList(6, 9));
+        board.setCartasAccionEspecial_1(specialIdList.subList(3, 6));
+        board.setCartasAccionEspecial_2(specialIdList.subList(6, 9));
 
         // Draw the nine initial cards and put them in the mine slots
         List<Integer> allInitialCardsIds = allInitialCards.stream().map(BaseEntity::getId).collect(Collectors.toList());
