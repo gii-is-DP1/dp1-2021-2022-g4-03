@@ -47,6 +47,7 @@ public class GameLogic {
 
         List<Integer> order = game.getOrder();
 
+        game.getTurnsOrder().clear();
         game.getTurnsOrder().addAll(order);
         Collections.reverse(order);
         game.getTurnsOrder().addAll(order);

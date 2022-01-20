@@ -100,6 +100,7 @@ public class GameController {
                             game.setPhase(Phase.ASIGNACION);
                             break;
                         case IN_PROGRESS:
+                            gameLogic.initPlayerStates(game);
                             gameLogic.drawCard(game);
                             break;
                     }
