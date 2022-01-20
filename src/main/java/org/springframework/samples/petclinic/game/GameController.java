@@ -119,11 +119,12 @@ public class GameController {
                         } else if(result.equals("special action")){
                             return game;
                         }
+                        return game;
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
                     }
-
+    
                     game.setPhase(Phase.DEFENSA);
                     
                     return game;
