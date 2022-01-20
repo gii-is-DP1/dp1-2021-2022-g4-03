@@ -219,8 +219,8 @@ label{
 
 .game-board {
   display: grid;
-  width: 75%;
-  grid-gap: 20px;
+  width: 100%;
+  grid-gap: 1px;
   grid-template-columns: auto auto auto;
 }
 
@@ -242,13 +242,20 @@ label{
   display: grid;
   flex-grow: 1;
   grid-gap: 5px;
+  grid-template-rows: 80 80 80;
 }
 
 .player {
   display: flex;
   position: relative;
+  background-color: #db7521;
   align-items: center;
   justify-content: center;
+}
+
+.card-button {
+  background-color: transparent;
+  border: none;
 }
 
 .button {
