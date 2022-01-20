@@ -111,7 +111,7 @@ public class GameController {
                     
                     System.out.println(game.getTurnsOrder());
                     System.out.println(game.getActivePlayer());
-                    if (game.getTurnsOrder().get(0)!=-1) {
+                    if (!game.getTurnsOrder().isEmpty()) {
                         String result = gameLogic.playerTurn(game, data);
                         System.out.println("********"+result);
                         if (result.equals("player turn finished")) {
