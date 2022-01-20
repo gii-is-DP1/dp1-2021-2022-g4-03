@@ -61,6 +61,10 @@ public class UserAchievementsService {
         return this.userAchievementsRepository.findUserAchievementsByAchievementId(id);
     }
 
+	@Transactional(readOnly = true)
+	public UserAchievements findUserAchievementsByAchievementsIdAndUserUsername(Integer id, String username){
+		return this.userAchievementsRepository.findUserAchievementsByAchievementsIdAndUsername(id, username);
+	}
 
 
 

@@ -55,12 +55,15 @@ public class UserAchievementsController {
 
 		Integer numAchievements = this.achievementsService.achievementsCount();
 
-		UserAchievements user = this.userAchievementsService.findUserAchievementsById(1);
+		
 
 
 		for(int i=1; i<= numAchievements;i++){
 
 			Achievements achievement = this.achievementsService.findAchievementById(i);
+
+			UserAchievements user = this.userAchievementsService.findUserAchievementsByAchievementsIdAndUserUsername(i, currentUserUsername);
+
 			String pic = achievement.getPic();
 			String condition = achievement.getCondition();
 			String dp = achievement.getDescription();

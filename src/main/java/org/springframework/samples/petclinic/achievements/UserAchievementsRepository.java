@@ -36,5 +36,7 @@ public interface UserAchievementsRepository extends CrudRepository<UserAchieveme
         ".id =:id")
     public List<UserAchievements> findUserAchievementsByAchievementId(@Param("id")Integer id);
 
+    @Query("SELECT ua FROM UserAchievements ua WHERE ua.achievements.id =:id AND ua.userDwarf.username LIKE :username")
+    public UserAchievements findUserAchievementsByAchievementsIdAndUsername(@Param("id") Integer id ,@Param("username") String username);
 
 }
