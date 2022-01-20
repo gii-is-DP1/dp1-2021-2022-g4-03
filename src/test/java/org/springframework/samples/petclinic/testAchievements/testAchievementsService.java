@@ -22,7 +22,7 @@ import org.springframework.samples.petclinic.achievements.AchievementsService;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class AchievementsServiceTest {
+public class testAchievementsService {
 
     @Autowired
     protected AchievementsService achievementsService;

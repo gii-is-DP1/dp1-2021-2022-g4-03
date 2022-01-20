@@ -17,6 +17,9 @@ public interface AchievementsRepository extends CrudRepository<Achievements, Str
     @Query("SELECT DISTINCT ach FROM Achievements ach WHERE ach.condition LIKE :condition")
 	public Collection<Achievements> findAchievementByCondition(@Param("condition")String condition);
 
+    @Query("SELECT DISTINCT ach FROM Achievements ach WHERE ach.condition LIKE :condition")
+	public Achievements findAchievementByCondition2(@Param("condition")String condition);
+
     Collection<Achievements> findAll() throws DataAccessException;
 
     @Query("SELECT achievements from Achievements achievements WHERE achievements.id =:id")

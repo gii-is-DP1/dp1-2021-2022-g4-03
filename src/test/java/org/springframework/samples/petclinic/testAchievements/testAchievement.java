@@ -15,9 +15,8 @@ import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.samples.petclinic.validatorFunction;
 import org.springframework.samples.petclinic.achievements.Achievements;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-public class AchievementTest {
-    
+
+public class testAchievement {
 
 @Test
 public void shouldNotValidateWhenParametersAreEmpty(){
@@ -28,6 +27,7 @@ public void shouldNotValidateWhenParametersAreEmpty(){
     achievements.setCondition("");
     achievements.setLastChange(null);
     achievements.setPic("");
+    //El atributo userAchievements no tiene ninguna restricción, por lo que no hay que hacerle ningún tipo de prueba
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<Achievements>> constraintViolations =

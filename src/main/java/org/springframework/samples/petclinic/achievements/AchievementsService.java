@@ -41,6 +41,11 @@ public class AchievementsService {
 		return this.achievementsRepository.findAchievementByCondition(condition);
 	}
 
+	@Transactional(readOnly = true)
+	public Achievements findAchievementsByCondition2(final String condition) throws DataAccessException {
+		return this.achievementsRepository.findAchievementByCondition2(condition);
+	}
+
 	@Transactional
 	public void saveAchievement(final Achievements achievement) throws DataAccessException {
 		//creating owner
