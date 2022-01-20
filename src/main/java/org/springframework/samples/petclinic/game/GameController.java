@@ -93,6 +93,7 @@ public class GameController {
                                 cardService.findAllInitialCards());
                             game.setGameStatus(GameStatus.IN_PROGRESS);
                             game.setPhase(Phase.ASIGNACION);
+                            break;
                         case IN_PROGRESS:
                             gameLogic.drawCard(game);
                             break;

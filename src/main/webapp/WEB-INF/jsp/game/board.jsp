@@ -53,54 +53,63 @@
                 <div class="cardCell">
                     <button id="card1" class="card-button" value="0">
                         <img id= "cell0" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[0].cards[0]}"></button>
-                        <c:if test="${game.playerState_0.worker0==0}">
-                            <img class="worker" width="75" height="75" src="/resources/workers/Dwarf1.png" />
-                        </c:if>
+                        <img id= "worker0" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell" >
                     <button id="card2" class="card-button" value="1">
                         <img id= "cell1" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[1].cards[0]}"></button>
+                        <img id= "worker1" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card3" class="card-button" value="2">
                         <img id= "cell2" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[2].cards[0]}"></button>
+                        <img id= "worker2" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card4" class="card-button" value="3">
                         <img id= "cell3" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[3].cards[0]}"></button>
+                        <img id= "worker3" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card5" class="card-button" value="4">
                         <img id= "cell4" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[4].cards[0]}"></button>
+                        <img id= "worker4" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card6" class="card-button" value="5">
                         <img id= "cell5" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[5].cards[0]}"></button>
+                        <img id= "worker5" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card7" class="card-button" value="6">
                         <img id= "cell6" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[6].cards[0]}"></button>
+                        <img id= "worker6" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card8" class="card-button" value="7">
                         <img id= "cell7" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[7].cards[0]}"></button>
+                        <img id= "worker7" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card9" class="card-button" value="8" >
                         <img id= "cell8" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cardCells[8].cards[0]}"></button>
+                        <img id= "worker8" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
 
                 <div class="cardCell">
                     <button id="card10" class="card-button" value="9">
                         <img id= "cell9" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cartasAccionEspecial_0[0]}"></button>
+                        <img id= "worker9" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card11" class="card-button" value="10">
                         <img id= "cell10" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cartasAccionEspecial_1[0]}"></button>
+                        <img id= "worker10" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
                 <div class="cardCell">
                     <button id="card12" class="card-button" value="11">
                         <img id= "cell11" width="123" height="168" src="/resources/cards/cardback.png" name="${game.board.cartasAccionEspecial_2[0]}"></button>
+                        <img id= "worker11" class="worker" width="75" height="75" style="display: none;" src="/resources/workers/Dwarf1.png" />
                 </div>
 
             </div> 
@@ -118,7 +127,6 @@
         <c:if test="${game.phase == 'ASIGNACION'}">
 		<h2><c:out value="Turno para: Jugador ${game.activePlayer+1}"/></h2>
         </c:if>
-        <h2><c:out value="Carta1: ${game.board.cardCells[0].cards[0]}"></c:out></h2>
         <h2><c:out value="Fase de la ronda: ${game.phase}"/></h2>
 
     </jsp:body>

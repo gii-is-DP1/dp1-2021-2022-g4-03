@@ -67,7 +67,6 @@ async function loadCards() {
     for (let i = 0; i < 9; i++) {
         let node = document.getElementById("cell"+i);
         let cardId = node.name;
-        console.log("GUAC: "+cardId);
         let card = await getCard(cardId);
         node.src = card.cardImage;
     }
@@ -77,7 +76,6 @@ async function loadSpecialCards() {
     for (let i = 9; i < 12; i++) {
         let node = document.getElementById("cell"+i);
         let cardId = node.name;
-        console.log("GUAC ESPESIAL: "+cardId);
         let card = await getCard(cardId);
         node.src = card.cardImage;
     }
@@ -95,8 +93,28 @@ function sample(event, cardValue) {
         credentials: 'include',
         body: JSON.stringify({playerAction: cardValue, currentUser: currentUser})
     }).then(data => {
-        console.log(data);
+        data.json();
     })
+    let worker0 = game.playerState_0.worker0;
+    let worker1 = game.playerState_0.worker1;
+    let worker2 = game.playerState_0.worker2;
+    let worker3 = game.playerState_0.worker3;
+    let worker4 = game.playerState_1.worker0;
+    let worker5 = game.playerState_1.worker1;
+    let worker6 = game.playerState_1.worker2;
+    let worker7 = game.playerState_1.worker3;
+    let worker8 = game.playerState_2.worker0;
+    let worker9 = game.playerState_2.worker1;
+    let worker10 = game.playerState_2.worker2;
+    let worker11 = game.playerState_2.worker3;
+    let workerList = [
+        worker0,worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10,worker11];
+    for(i=0;i<9;i++){
+        if (workerList.includes(i)) {
+            let worker = document.getElementById("worker"+i);
+            worker.style="display: contents";
+        }
+    }
 
     console.log(game);
 }
