@@ -81,6 +81,10 @@ public class GameController {
         Game game = gameStorage.getGame(gameId);
         gameLogic.getInstance(cardService);
         
+        if(data!=null){
+            data.setCurrentUser(currentUser.getCurrentUser());
+        }
+        
 
         //Label for breaks, similar to C's goto
         mainLoopStart:
@@ -104,7 +108,7 @@ public class GameController {
 
                 case ASIGNACION:
                     //Check if still has actions to do
-                    data.setCurrentUser(currentUser.getCurrentUser());
+                    
                     System.out.println(game.getTurnsOrder());
                     System.out.println(game.getActivePlayer());
                     if (!game.getTurnsOrder().isEmpty()) {
