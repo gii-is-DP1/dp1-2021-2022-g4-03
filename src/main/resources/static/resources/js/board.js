@@ -85,6 +85,8 @@ async function sample(event, cardValue) {
     let gameId = document.getElementById("gameId").value;
     let currentUser = document.getElementById("currentUser").value;
 
+    console.log(cardValue);
+
     let game = await getGame(gameId, cardValue, currentUser);
     let worker0 = game.playerState_0.worker0;
     let worker1 = game.playerState_0.worker1;

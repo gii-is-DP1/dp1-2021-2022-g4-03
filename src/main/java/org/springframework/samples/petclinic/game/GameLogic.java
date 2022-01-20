@@ -146,6 +146,9 @@ public class GameLogic {
             }
 
             workerList.set(worker, playerAction);
+            
+            playerState.setWorkerList(workerList);
+            
 
             game.setActivePlayer(game.getTurnsOrder().remove(0));
 
