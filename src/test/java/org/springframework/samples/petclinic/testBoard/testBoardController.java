@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.board.Board;
 import org.springframework.samples.petclinic.board.BoardController;
 import org.springframework.samples.petclinic.board.BoardService;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.game.*;
@@ -62,6 +63,8 @@ public class testBoardController {
 
     private Game mockGame;
 
+    private Card mockCard;
+
     private UserDwarf mockPlayer;
 
     @BeforeEach
@@ -87,6 +90,7 @@ public class testBoardController {
         mockGame.setOrder(order);
         mockGame.setPhase(Phase.INICIO);
         mockGame.setGameStatus(GameStatus.NEW);
+        mockCard= new Card();
         gameStorage.getInstance().setGame(mockGame);
 
         given(this.boardService.findById2(0)).willReturn(mockBoard);
@@ -101,8 +105,22 @@ public class testBoardController {
     void testJoinBoard() throws Exception{
 
 
-        mockMvc.perform(get("/board/"+0)).andExpect(status().isOk())
+        mockMvc.perform(get("/board/"+mockGame.getId())).andExpect(status().isOk())
+        .andExpect(model().attributeExists("game"))
+        .andExpect(model().attributeExists("clientData"))
+        .andExpect(model().attributeExists("currentUser"))
+        .andExpect(model().attributeExists("now"))
         .andExpect(view().name("game/board"));
     }
+
+    @WithMockUser(value = "spring")
+    @Test
+    void getCardTest() throws Exception{
+
+
+        mockMvc.perform(get("/api/card/"+mockCard.getId())).andExpect(status().isOk());
+    }
+
+
 
 }
