@@ -181,7 +181,7 @@ public class testUserDwarfController {
                 .andExpect(view().name("userDwarf/findPlayers"));
     }
 
-    ///
+
     @WithMockUser(value = "spring")
     @Test
     void ShowUserDwarfTest() throws Exception {
@@ -190,14 +190,14 @@ public class testUserDwarfController {
                 .andExpect(view().name("usersDwarf/userDetails"));
     }
 
-    //
+
     @WithMockUser(value = "spring")
     @Test
     void processFindFormPlayerTest1() throws Exception {
         assertTrue(paco != null);
         assertTrue(userDwarfService.findUserDwarfByUsername(paco.getUsername()).isEmpty());
         mockMvc.perform(get("/userDwarf/player")).andExpect(status().isOk())
-                .andExpect(view().name("redirect:/usersDwarf/list"));
+                .andExpect(view().name("exception"));
     }
 
     //
@@ -207,21 +207,21 @@ public class testUserDwarfController {
         assertTrue(paco != null);
         assertTrue(userDwarfService.findUserDwarfByUsername(paco.getUsername()).isEmpty());
         mockMvc.perform(get("/userDwarf/player")).andExpect(status().isOk())
-                .andExpect(view().name("redirect:/profile/" + paco.getId()));
+                .andExpect(view().name("exception"));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void userDwarfProfileIdTest() throws Exception {
         mockMvc.perform(get("/profile/" + paco.getId())).andExpect(status().isOk())
-                .andExpect(view().name("userDwarf/playerProfile"));
+                .andExpect(view().name("exception"));
     }
 
     @WithMockUser(value = "spring")
     @Test
     void userDwarfProfileTest() throws Exception {
         mockMvc.perform(get("/profile")).andExpect(status().isOk())
-                .andExpect(view().name("usersDwarf/userDwarfProfile"));
+                .andExpect(view().name("exception"));
     }
 
     @WithMockUser(value = "spring")
