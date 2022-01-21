@@ -85,7 +85,7 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
-        if(game.getNumberOfPlayers()<3) return game;
+        
         
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
@@ -109,7 +109,8 @@ public class GameController {
                     return game;
 
                 case ASIGNACION:
-                    //Check if still has actions to do
+                    
+                    if(game.getNumberOfPlayers()<3) return game;
                     
                     System.out.println(game.getTurnsOrder());
                     System.out.println(game.getActivePlayer());
