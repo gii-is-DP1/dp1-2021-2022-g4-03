@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -141,7 +142,7 @@ public class testUserAchievementController {
         given(this.currentUser.getCurrentUser()).willReturn(us.getUsername());
         given(this.statisticsService.findStatisticsByUsername(currentUser.getCurrentUser())).willReturn(pacoStatistics);
         given(this.achievementsService.achievementsCount()).willReturn(1);
-        given(pacoStatistics.getClass()).willReturn(Statistics.class);
+        given(this.userAchievementsService.findUserAchievementsByAchievementsIdAndUserUsername(1, us.getUsername())).willReturn(ulogro1);
 
         mockMcv.perform(get("/profile/achievements"))
         .andExpect(view().name("achievements/achievementsProfile"));
