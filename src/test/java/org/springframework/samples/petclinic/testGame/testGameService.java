@@ -8,7 +8,10 @@ import java.util.stream.StreamSupport;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@TestMethodOrder(OrderAnnotation.class)
 public class testGameService {
 
     private static final int TEST_UD_ID = 1;
@@ -63,12 +67,14 @@ public class testGameService {
     }
 
     @Test
+    @Order(1)
     public void shouldNotFindAny(){
         Iterable<Game> map = this.gameService.findAll();
         assertThat(StreamSupport.stream(map.spliterator(), false).count()).isEqualTo(0);
     }
 
     @Test
+    @Order(2)
     public void shouldCreateGame(){
         GameStorage.getInstance().getGames().clear();
         Game g = this.gameService.createGame(ud);
@@ -81,6 +87,7 @@ public class testGameService {
     }
 
     @Test
+    @Order(3)
     public void shouldConnectToGame(){
         Game g = this.gameService.createGame(ud);
         this.gameService.connectToGame(ud2, g.getId());
@@ -89,6 +96,7 @@ public class testGameService {
     }
 
     @Test
+    @Order(4)
     public void shouldFindAll(){
         Game g = this.gameService.createGame(ud);
         Iterable<Game> map = this.gameService.findAll();
@@ -96,6 +104,7 @@ public class testGameService {
     }
 
     @Test
+    @Order(5)
     public void shouldGetBoard(){
         Game g = this.gameService.createGame(ud);
         Board b = this.gameService.getBoard(g.getId());
@@ -103,17 +112,19 @@ public class testGameService {
     }
 
     @Test
+    @Order(6)
     public void shouldFinishGame(){
-        Game g = this.gameService.createGame(ud);
-        g.setWinner(ud.getUsername());
-        g.setRound(2);
+        Game gg = this.gameService.createGame(ud);
+        gg.setWinner(ud.getUsername());
+        gg.setRound(2);
         assertThat(StreamSupport.stream(this.gameService.findAll().spliterator(), false).count()).isEqualTo(1);
-        this.gameService.finishGame(g.getId());
+        this.gameService.finishGame(gg.getId());
         assertThat(StreamSupport.stream(this.gameService.findAll().spliterator(), false).count()).isEqualTo(0);
 
     }
 
     @Test
+    @Order(7)
     public void shouldSurrender(){
         
         Game g = this.gameService.createGame(ud);

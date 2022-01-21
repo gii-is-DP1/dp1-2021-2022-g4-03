@@ -26,10 +26,8 @@ import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.user.Authorities;
-<<<<<<< Updated upstream
-=======
+
 import org.springframework.samples.petclinic.web.CurrentUser;
->>>>>>> Stashed changes
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
@@ -62,15 +60,6 @@ public class testAchievementsController {
     private UserAchievements ulogro1;
 
     @BeforeEach
-<<<<<<< Updated upstream
-    public void setup() {
-        us = new UserDwarf();
-        us.setActive(true);
-        us.setEmail("email@gmail.com");
-        us.setId(TEST_UD_ID);
-        us.setPass("Passpass123");
-        us.setUsername("paco");
-=======
     void setup() {
         paco = new UserDwarf();
         paco.setActive(true);
@@ -78,13 +67,13 @@ public class testAchievementsController {
         paco.setId(TEST_USERDWARF_ID);
         paco.setPass("Passpass123");
         paco.setUsername("paco");
->>>>>>> Stashed changes
+
         Authorities auth = new Authorities();
         auth.setAuthority("admin");
         Set<Authorities> authority = new HashSet<Authorities>();
         authority.add(auth);
-        us.setAuthorities(authority);
-        given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(us);
+        paco.setAuthorities(authority);
+        given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(paco);
         given(this.currentUser.getCurrentUser()).willReturn("paco");
 
         logro1 = new Achievements();
