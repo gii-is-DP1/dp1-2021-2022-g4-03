@@ -73,7 +73,7 @@ public class Game extends BaseEntity {
     @Min(value = 1)
     @Max(value = 4)
     @NotNull
-    private Integer round = 1;
+    private Integer round = 0;
 
     @Transient
     @NotNull

@@ -85,9 +85,6 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
-
-        //Label for breaks, similar to C's goto
-        mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
                 case INICIO:
@@ -152,6 +149,7 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.MINA);
+                    continue;
 
                 case MINA:
                     if (game.isDoMine()) {
@@ -159,7 +157,8 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FORJA);
-
+                    continue;
+                    
                 case FORJA:
                     List<Integer> forgingPlayers = gameLogic.timeToForge(game);
 
@@ -170,8 +169,13 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FIN);
+                    continue;
 
                 case FIN:
+                    boolean endCheck = gameLogic.end(game);
+                    
+                    if(endCheck) gameService.finishGame(game.getId());
+                    
                     return game;
 
                 default:

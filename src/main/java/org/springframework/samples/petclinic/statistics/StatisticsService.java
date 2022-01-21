@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.statistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.dao.DataAccessException;
@@ -86,6 +87,11 @@ public class StatisticsService {
     @Transactional(readOnly = true)
     public List<Integer> getRankGW(){
         return statisticsRepository.getRankGW();
+    }
+    
+    @Transactional
+    public void updateStatistics(PlayerState playerState, Statistics statistics){
+    
     }
 
     
