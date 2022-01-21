@@ -15,14 +15,14 @@
  */
 package org.springframework.samples.petclinic.pet;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.pet.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.Collection;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -33,9 +33,9 @@ import org.springframework.util.StringUtils;
 @Service
 public class PetService {
 
-	private PetRepository petRepository;
+	private final PetRepository petRepository;
 	
-	private VisitRepository visitRepository;
+	private final VisitRepository visitRepository;
 	
 
 	@Autowired

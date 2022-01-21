@@ -1,44 +1,36 @@
 package org.springframework.samples.petclinic.testUserDwarf;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.notNull;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasProperty;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.validation.constraints.NotEmpty;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
-import org.springframework.samples.petclinic.userDwarf.UserDwarfController;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-
+import org.springframework.samples.petclinic.userDwarf.UserDwarfController;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.FilterType;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = UserDwarfController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 

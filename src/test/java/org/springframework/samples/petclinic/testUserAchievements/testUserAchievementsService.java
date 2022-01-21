@@ -1,29 +1,18 @@
 package org.springframework.samples.petclinic.testUserAchievements;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
-
-import org.springframework.samples.petclinic.achievements.*;
-import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.game.GameStorage;
-import org.springframework.stereotype.Service;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.userDwarf.UserDwarfRepository;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
+import org.springframework.samples.petclinic.achievements.*;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

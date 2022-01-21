@@ -1,17 +1,17 @@
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 @Service
 public class OwnerService {
 
-	private OwnerRepository ownerRepository;	
+	private final OwnerRepository ownerRepository;
 	
 	@Autowired
 	private UserService userService;

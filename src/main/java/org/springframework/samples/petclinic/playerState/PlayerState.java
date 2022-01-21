@@ -1,19 +1,17 @@
 package org.springframework.samples.petclinic.playerState;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.samples.petclinic.model.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.samples.petclinic.model.BaseEntity;
-
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 

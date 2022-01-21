@@ -15,14 +15,13 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Collection;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
+
+import java.util.Collection;
 
 /**
  * Spring Data JPA OwnerRepository interface
@@ -47,7 +46,7 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * <code>Collection</code> if none found)
 	 */	
 	@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
-	public Collection<Owner> findByLastName(@Param("lastName") String lastName);
+    Collection<Owner> findByLastName(@Param("lastName") String lastName);
 
 
 	/**
@@ -57,6 +56,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
 	 */	
 	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
-	public Owner findById(@Param("id") int id);
+    Owner findById(@Param("id") int id);
 
 }

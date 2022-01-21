@@ -6,7 +6,6 @@ import org.springframework.samples.petclinic.playerState.PlayerState;
 import org.springframework.samples.petclinic.statistics.Statistics;
 import org.springframework.samples.petclinic.statistics.StatisticsRepository;
 import org.springframework.samples.petclinic.statistics.StatisticsService;
-import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.stereotype.Service;
 
@@ -80,10 +79,8 @@ public class GameService {
     
     // Guarda la partida en la bbdd y la elimina de la memoria de java
     public void finishGame(Integer gameId) {
-        gameRepository.save(GameStorage.getInstance().getGame(gameId));
-        GameStorage.getInstance().getGames().remove(gameId);
-        
-        Game game = this.gameRepository.findById(gameId).orElseThrow(NullPointerException::new);
+        Game game = GameStorage.getInstance().getGame(gameId);
+
         List<UserDwarf> allPlayersInGame = game.getAllPlayersInGame();
         List<PlayerState> allPlayerStates= game.getAllPlayerStates();
     
@@ -102,9 +99,6 @@ public class GameService {
         
         if (player.equals(game.getPlayer0())) {
             game.setPlayer0(null);
-            Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());
-            statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed() + 1);
-            
         } else if (player.equals(game.getPlayer1())) {
             game.setPlayer1(null);
             Statistics statisticPlayer = this.statisticsRepository.findByUsername(player.getUsername());

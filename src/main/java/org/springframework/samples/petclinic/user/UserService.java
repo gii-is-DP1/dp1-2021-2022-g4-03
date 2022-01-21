@@ -16,12 +16,12 @@
 package org.springframework.samples.petclinic.user;
 
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {

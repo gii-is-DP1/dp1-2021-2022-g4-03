@@ -1,11 +1,5 @@
 package org.springframework.samples.petclinic.testCard;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,6 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardRepository;
 import org.springframework.samples.petclinic.card.CardService;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -59,7 +60,7 @@ public class testCardsService {
     
     @Test
     public void testFindAllCards(){
-        List<Card> fAll = (List<Card>) cardService.findAll();
+        List<Card> fAll = cardService.findAll();
         assertEquals(fAll.size(), cardRepository.count());
         assertThat(fAll.isEmpty()).isFalse();
 
@@ -67,7 +68,7 @@ public class testCardsService {
 
     @Test
     public void testFindAllEspecialCards(){
-        List<Card> fAll = (List<Card>) cardService.findAllSpecialCards();
+        List<Card> fAll = cardService.findAllSpecialCards();
         assertEquals(fAll.size(), 9);
         assertThat(fAll.isEmpty()).isFalse();
 
@@ -75,7 +76,7 @@ public class testCardsService {
 
     @Test
     public void testFindAllNormalCards(){
-        List<Card> fAll = (List<Card>) cardService.findAllNormalCards();
+        List<Card> fAll = cardService.findAllNormalCards();
         assertEquals(fAll.size(), 47);
         assertThat(fAll.isEmpty()).isFalse();
 
@@ -83,7 +84,7 @@ public class testCardsService {
 
     @Test
     public void testFindAllInitialCards(){
-        List<Card> fAll = (List<Card>) cardService.findAllInitialCards();
+        List<Card> fAll = cardService.findAllInitialCards();
         assertEquals(fAll.size(), 9);
         assertThat(fAll.isEmpty()).isFalse();
 

@@ -1,7 +1,8 @@
 package org.springframework.samples.petclinic;
 
-import javax.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import javax.validation.Validator;
 
 public class validatorFunction {
 

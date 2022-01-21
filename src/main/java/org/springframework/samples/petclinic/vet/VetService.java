@@ -15,12 +15,12 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VetService {
 
-	private VetRepository vetRepository;
+	private final VetRepository vetRepository;
 
 
 	@Autowired

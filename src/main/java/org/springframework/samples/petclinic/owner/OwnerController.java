@@ -15,11 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
@@ -32,6 +27,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Juergen Hoeller

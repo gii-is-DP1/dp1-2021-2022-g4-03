@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.configuration;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice

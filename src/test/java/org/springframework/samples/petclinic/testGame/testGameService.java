@@ -1,32 +1,29 @@
 package org.springframework.samples.petclinic.testGame;
 
-import static org.mockito.BDDMockito.given;
-
-import java.util.Map;
-import java.util.stream.StreamSupport;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.board.Board;
-import org.springframework.samples.petclinic.game.Game;
-import org.springframework.samples.petclinic.game.GameLogic;
-import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.game.GameStatus;
-import org.springframework.samples.petclinic.game.GameStorage;
+import org.springframework.samples.petclinic.game.*;
+import org.springframework.samples.petclinic.statistics.Statistics;
+import org.springframework.samples.petclinic.statistics.StatisticsRepository;
+import org.springframework.samples.petclinic.statistics.StatisticsService;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.StreamSupport;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @TestMethodOrder(OrderAnnotation.class)
@@ -41,9 +38,18 @@ public class testGameService {
     private UserDwarfService udService;
     @MockBean
     private GameLogic gameLogic;
+    @MockBean
+    private GameStorage gameStorage;
+    @Autowired
+    private GameRepository gameRepository;
+    @MockBean
+    private StatisticsService statisticsService;
+    @MockBean
+    private StatisticsRepository statisticsRepository;
     
     private UserDwarf ud;
     private UserDwarf ud2;
+    private Statistics statistics;
 
     @BeforeEach
     void setup(){
@@ -62,7 +68,20 @@ public class testGameService {
         ud2.setPass("palabrasecreta");
         ud2.setUsername("identidad");
         given(this.udService.findUserDwarfById(TEST_UD_ID2)).willReturn(ud2);
-
+    
+        statistics= new Statistics();
+        statistics.setGamesPlayed(0);
+        statistics.setTotalGold(0);
+        statistics.setTotalObject(0);
+        statistics.setTotalSteel(0);
+        statistics.setTotalIron(0);
+        statistics.setTotalMedal(0);
+        statistics.setGamesWon(0);
+        statistics.setTimePlayed(Duration.of(0, ChronoUnit.DAYS));
+        statistics.setUserDwarf(ud);
+        statistics.setId(0);
+        given(statisticsService.findStatisticsByUsername(ud.getUsername())).willReturn(statistics);
+        
         GameStorage.getInstance().getGames().clear();
     }
 
@@ -126,13 +145,14 @@ public class testGameService {
     @Test
     @Order(7)
     public void shouldSurrender(){
-        
+        given(statisticsRepository.findByUsername(ud.getUsername())).willReturn(statistics);
         Game g = this.gameService.createGame(ud);
         this.gameService.connectToGame(ud2, g.getId());
         assertThat(g.getPlayer0()).isEqualTo(ud);
         assertThat(g.getPlayer1()).isEqualTo(ud2);
         this.gameService.surrender(g.getId(), ud);
-        assertThat(g.getPlayer0()).isEqualTo(ud2);
+        assertThat(g.getPlayer0()).isEqualTo(null);
+        assertThat(g.getPlayer1()).isEqualTo(ud2);
     }
     
 }

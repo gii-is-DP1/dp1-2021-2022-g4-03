@@ -1,14 +1,6 @@
 package org.springframework.samples.petclinic.testAchievements;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -19,6 +11,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.achievements.Achievements;
 import org.springframework.samples.petclinic.achievements.AchievementsRepository;
 import org.springframework.samples.petclinic.achievements.AchievementsService;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

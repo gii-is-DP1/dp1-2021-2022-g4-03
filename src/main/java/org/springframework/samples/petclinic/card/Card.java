@@ -1,12 +1,11 @@
 package org.springframework.samples.petclinic.card;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.samples.petclinic.model.BaseEntity;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.samples.petclinic.model.BaseEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
