@@ -26,6 +26,10 @@ import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.user.Authorities;
+<<<<<<< Updated upstream
+=======
+import org.springframework.samples.petclinic.web.CurrentUser;
+>>>>>>> Stashed changes
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
 import org.springframework.samples.petclinic.web.CurrentUser;
@@ -39,7 +43,7 @@ public class testAchievementsController {
 
     private static final int TEST_ACHIEVEMENTS_ID1 = 10;
     private static final int TEST_USERACHIEVEMENTS_ID1 = 10;
-    private static final int TEST_UD_ID = 10;
+    private static final int TEST_USERDWARF_ID = 10;
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,11 +56,13 @@ public class testAchievementsController {
     @MockBean
     CurrentUser currentUser;
 
-    private UserDwarf us;
+    
+    private UserDwarf paco;
     private Achievements logro1;
     private UserAchievements ulogro1;
 
     @BeforeEach
+<<<<<<< Updated upstream
     public void setup() {
         us = new UserDwarf();
         us.setActive(true);
@@ -64,6 +70,15 @@ public class testAchievementsController {
         us.setId(TEST_UD_ID);
         us.setPass("Passpass123");
         us.setUsername("paco");
+=======
+    void setup() {
+        paco = new UserDwarf();
+        paco.setActive(true);
+        paco.setEmail("email@gmail.com");
+        paco.setId(TEST_USERDWARF_ID);
+        paco.setPass("Passpass123");
+        paco.setUsername("paco");
+>>>>>>> Stashed changes
         Authorities auth = new Authorities();
         auth.setAuthority("admin");
         Set<Authorities> authority = new HashSet<Authorities>();
@@ -81,7 +96,7 @@ public class testAchievementsController {
 
         ulogro1 = new UserAchievements();
         ulogro1.setId(TEST_USERACHIEVEMENTS_ID1);
-        ulogro1.setUserDwarf(userDwarfService.findUserDwarfById(TEST_UD_ID));
+        ulogro1.setUserDwarf(userDwarfService.findUserDwarfById(TEST_USERDWARF_ID));
         ulogro1.setAchievements(aService.findAchievementById(TEST_ACHIEVEMENTS_ID1));
         ulogro1.setObtainingDate(LocalDate.of(2015, 8, 8));
         ulogro1.setProgress(0.6);
