@@ -70,9 +70,10 @@ public class testGameService {
 
     @Test
     public void shouldCreateGame(){
+        GameStorage.getInstance().getGames().clear();
         Game g = this.gameService.createGame(ud);
         assertThat(g.getPlayer0()).isEqualTo(ud);
-        assertThat(g.getId()).isEqualTo(1);
+        assertThat(g.getId()).isEqualTo(0);
         assertThat(g.getGameStatus()).isEqualTo(GameStatus.NEW);
         assertThat(g.getNumberOfPlayers()).isEqualTo(1);
         assertThat(g.getOrder()).contains(0, 1, 2);
@@ -114,6 +115,7 @@ public class testGameService {
 
     @Test
     public void shouldSurrender(){
+        
         Game g = this.gameService.createGame(ud);
         this.gameService.connectToGame(ud2, g.getId());
         assertThat(g.getPlayer0()).isEqualTo(ud);
