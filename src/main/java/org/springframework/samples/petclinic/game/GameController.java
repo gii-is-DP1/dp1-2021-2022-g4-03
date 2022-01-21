@@ -85,8 +85,8 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
-
-        //Label for breaks, similar to C's goto
+        
+        
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
@@ -102,13 +102,15 @@ public class GameController {
                         case IN_PROGRESS:
                             gameLogic.initPlayerStates(game);
                             gameLogic.drawCard(game);
+                            game.setPhase(Phase.ASIGNACION);
                             break;
                     }
 
                     return game;
 
                 case ASIGNACION:
-                    //Check if still has actions to do
+                    
+                    if(game.getNumberOfPlayers()<3) return game;
                     
                     System.out.println(game.getTurnsOrder());
                     System.out.println(game.getActivePlayer());
@@ -152,6 +154,7 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.MINA);
+                    continue;
 
                 case MINA:
                     if (game.isDoMine()) {
@@ -159,7 +162,8 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FORJA);
-
+                    continue;
+                    
                 case FORJA:
                     List<Integer> forgingPlayers = gameLogic.timeToForge(game);
 
@@ -170,9 +174,14 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FIN);
+                    continue;
 
                 case FIN:
-                    return game;
+                    boolean endCheck = gameLogic.end(game);
+                    
+                    if(endCheck) gameService.finishGame(game.getId());
+                    
+                    break mainLoopStart;
 
                 default:
                     break;
