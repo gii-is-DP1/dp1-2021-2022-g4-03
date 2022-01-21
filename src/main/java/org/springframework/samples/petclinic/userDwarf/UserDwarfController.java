@@ -190,6 +190,7 @@ public class UserDwarfController {
 			UserDwarf userDwarf = this.userDwarfService.findUserDwarfByUsername2(currentUserUsername).get();
 			Statistics statistic = this.statisticsService.findStatisticsByUsername2(currentUserUsername).get();
 
+
 			wrapper.setUserDwarf(userDwarf);
 			wrapper.setRoles(authoritiesService.getRolesUserByUsername(userDwarf.getUsername()));
 			modelMap.addAttribute("wrapper",wrapper);

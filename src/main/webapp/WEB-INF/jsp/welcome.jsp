@@ -39,6 +39,10 @@
                     <td><c:out value="${ttp}"/></td>
                 </tr>
                 <tr>
+                    <th> Max time played:</th>
+                    <td><c:out value="${ttpMax}"/></td>            
+                </tr>
+                <tr>
                     <th>Global games played:</th>
                     <td><c:out value="${tgp}"/></td>            
                 </tr>
@@ -65,6 +69,58 @@
                 <tr>
                     <th>Global medal acquired:</th>
                     <td><c:out value="${tm}"/></td>
+                </tr>
+                <tr>
+                    <th> Average gold:</th>
+                    <td><c:out value="${mediaOro}"/></td>            
+                </tr>
+                <tr>
+                    <th> Average iron:</th>
+                    <td><c:out value="${mediaHierro}"/></td>            
+                </tr>
+                <tr>
+                    <th> Average steel:</th>
+                    <td><c:out value="${mediaAcero}"/></td>            
+                </tr>
+                <tr>
+                    <th> Average object:</th>
+                    <td><c:out value="${mediaObject}"/></td>            
+                </tr>
+                <tr>
+                    <th> Average medal:</th>
+                    <td><c:out value="${mediaMedallas}"/></td>            
+                </tr>
+                <tr>
+                    <th> Min gold:</th>
+                    <td><c:out value="${minGold}"/></td>            
+                </tr>
+                <tr>
+                    <th> Min iron:</th>
+                    <td><c:out value="${minIron}"/></td>            
+                </tr>
+                <tr>
+                    <th> Min steel:</th>
+                    <td><c:out value="${minSteel}"/></td>            
+                </tr>
+                <tr>
+                    <th> Min object:</th>
+                    <td><c:out value="${minObject}"/></td>            
+                </tr>
+                <tr>
+                    <th> Max gold:</th>
+                    <td><c:out value="${maxGold}"/></td>            
+                </tr>
+                <tr>
+                    <th> Max iron:</th>
+                    <td><c:out value="${maxIron}"/></td>            
+                </tr>
+                <tr>
+                    <th> Max steel:</th>
+                    <td><c:out value="${maxSteel}"/></td>            
+                </tr>
+                <tr>
+                    <th> Max object:</th>
+                    <td><c:out value="${maxObject}"/></td>            
                 </tr>
             </table>
 
