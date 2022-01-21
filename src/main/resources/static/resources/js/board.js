@@ -106,6 +106,9 @@ async function sample(event, cardValue) {
             console.log(worker.style);
         }
     }
+    if (game.activePlayer===-1){
+        game = await getGame(gameId, cardValue, currentUser);
+    }
     console.log(game);
 }
 

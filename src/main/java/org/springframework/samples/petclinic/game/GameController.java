@@ -123,9 +123,11 @@ public class GameController {
                             continue;
                         }
                         return game;
-                    } else if (!game.getHelpTurnsOrder().isEmpty()) {
+                    }
+                    if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
+                        continue;
                     }
     
                     game.setPhase(Phase.DEFENSA);

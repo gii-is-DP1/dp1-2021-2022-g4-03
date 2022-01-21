@@ -33,9 +33,9 @@ import org.springframework.context.annotation.FilterType;
 @WebMvcTest(controllers = AchievementsController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 public class testAchievementsController {
 
-    private static final int TEST_ACHIEVEMENTS_ID1 = 99;
-    private static final int TEST_USERACHIEVEMENTS_ID1 = 99;
-    private static final int TEST_UD_ID = 99;
+    private static final int TEST_ACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_USERACHIEVEMENTS_ID1 = 10;
+    private static final int TEST_UD_ID = 10;
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,17 +51,23 @@ public class testAchievementsController {
     private UserAchievements ulogro1;
 
     @BeforeEach
-    void setup() {
-        us = new UserDwarf();
-        us.setActive(true);
-        us.setEmail("email@gmail.com");
-        us.setId(TEST_UD_ID);
-        us.setPass("Passpass123");
-        us.setUsername("pancho");
-        given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(us);
+    public void setup() {
+        paco = new UserDwarf();
+        paco.setActive(true);
+        paco.setEmail("email@gmail.com");
+        paco.setId(TEST_USERDWARF_ID);
+        paco.setPass("Passpass123");
+        paco.setUsername("paco");
+        Authorities auth = new Authorities();
+        auth.setAuthority("admin");
+        Set<Authorities> authority = new HashSet<Authorities>();
+        authority.add(auth);
+        paco.setAuthorities(authority);
+        given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(paco);
+        given(this.currentUser.getCurrentUser()).willReturn("paco");
 
         logro1 = new Achievements();
-        logro1.setCondition("total_gold=200");
+        logro1.setCondition("totalGold=200");
         logro1.setDescription("Consigue 200 de oro");
         logro1.setPic("foto1");
         logro1.setLastChange(LocalDate.of(2009, 9, 9));
