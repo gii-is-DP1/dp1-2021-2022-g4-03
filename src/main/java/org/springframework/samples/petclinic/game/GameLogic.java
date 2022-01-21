@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -129,16 +128,16 @@ public class GameLogic {
                 // Check if available worker count is enough and if they aren't special workers
                 if ((workerCount == 2) && !(worker == 2 || worker == 3)) {
                     game.setPhase(Phase.ESPECIAL);
-                    workerList.set(worker, playerAction%100);
-                    workerList.set(worker+1, playerAction%100);
-                    game.setTurnsOrder(game.getTurnsOrder().stream().filter(r->r!=playerIndex).collect(Collectors.toList()));
+                    workerList.set(worker, playerAction % 100);
+                    workerList.set(worker + 1, playerAction % 100);
+                    game.setTurnsOrder(game.getTurnsOrder().stream().filter(r -> r != playerIndex).collect(Collectors.toList()));
                     game.setActivePlayer(game.getTurnsOrder().remove(0));
                     return specialAction(game, data);
                 } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {
                     List<Integer> resourcesList = playerState.getResourcesList();
                     int resourceIndex = (playerAction / 100) - 1;
                     
-                    if(resourceIndex==-1) return "special action not possible";
+                    if (resourceIndex == -1) return "special action not possible";
                     
                     if (resourcesList.get(resourceIndex) >= 4) {
                         resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) - 4);
@@ -210,10 +209,10 @@ public class GameLogic {
             case 6:
                 data.setPlayerAction(playerAction % 100);
                 String result1 = playerTurn(game, data);
-    
+                
                 board.getCell(6).addToTop(SPECIAL_2_NORMAL.get("apprentice"));
                 game.setDoApprenticeEffect(false);
-    
+                
                 return result1;
             
         }
@@ -228,9 +227,9 @@ public class GameLogic {
                 Integer cardId_0 = board.getCartasAccionEspecial_0().get(0);
                 card = cardService.findCardById(cardId_0);
                 effect = card.getEffect();
-    
+                
                 String s = invokeEffect(game, effect);
-                if(!s.equals("not possible")){
+                if (!s.equals("not possible")) {
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_0());
                     integers.remove(0);
                     board.setCartasAccionEspecial_0(integers);
@@ -244,9 +243,9 @@ public class GameLogic {
                 Integer cardId_1 = board.getCartasAccionEspecial_1().get(0);
                 card = cardService.findCardById(cardId_1);
                 effect = card.getEffect();
-    
+                
                 String s1 = invokeEffect(game, effect);
-                if(!s1.equals("not possible")){
+                if (!s1.equals("not possible")) {
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_1());
                     integers.remove(0);
                     board.setCartasAccionEspecial_1(integers);
@@ -259,16 +258,16 @@ public class GameLogic {
                 Integer cardId_2 = board.getCartasAccionEspecial_2().get(0);
                 card = cardService.findCardById(cardId_2);
                 effect = card.getEffect();
-    
+                
                 String s2 = invokeEffect(game, effect);
-                if(!s2.equals("not possible")){
+                if (!s2.equals("not possible")) {
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_2());
                     integers.remove(0);
                     board.setCartasAccionEspecial_2(integers);
                     game.setPhase(Phase.ASIGNACION);
                 }
                 return s2;
-                
+            
         }
         
         return "something went wrong";
@@ -277,7 +276,7 @@ public class GameLogic {
     private String invokeEffect(Game game, String effect)
             throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Board board = game.getBoard();
-    
+        
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
         List<Integer> positions;
         
@@ -340,7 +339,7 @@ public class GameLogic {
                 changeCard(board, 5, game, effect, false);
                 
                 allPlayerStates = game.getAllPlayerStates();
-    
+                
                 List<PlayerState> finalAllPlayerStates = allPlayerStates;
                 positions =
                         IntStream.range(0, 9).filter(p -> finalAllPlayerStates.stream().noneMatch(playerState -> playerState.getWorkerList().contains(p)))
@@ -353,11 +352,12 @@ public class GameLogic {
             
             case "apprentice":
                 changeCard(board, 6, game, effect, false);
-    
-    
+                
+                
                 List<PlayerState> finalAllPlayerStates1 = allPlayerStates;
-                positions= IntStream.range(0, 9).filter(p -> finalAllPlayerStates1.stream().anyMatch(playerState -> playerState.getWorkerList().contains(p)))
-                        .boxed().collect(Collectors.toList());
+                positions =
+                        IntStream.range(0, 9).filter(p -> finalAllPlayerStates1.stream().anyMatch(playerState -> playerState.getWorkerList().contains(p)))
+                                .boxed().collect(Collectors.toList());
                 
                 game.setDoApprenticeEffect(true);
                 
@@ -433,6 +433,7 @@ public class GameLogic {
             Collections.rotate(game.getOrder(), 1);
         }
         
+        game.setActivePlayer(turnsOrder.remove(0));
         game.setActivePlayer(turnsOrder.remove(0));
         
         return turnsOrder;
@@ -603,16 +604,10 @@ public class GameLogic {
             
             for (Integer workerPosition : listWorkers) {
                 if (workerPosition.toString().matches("^[012345678]")) {
-                    List<Integer> cards = game.getBoard().getCellsTopCard();
+                    Integer cardId = game.getBoard().getCell(workerPosition).getCardOnTop();
+                    Card card = cardService.findCardById(cardId);
                     
-                    for (Integer integer : cards) {
-                        Card card = cardService.findCardById(integer);
-                        Integer cardPosition = card.getPosition();
-                        
-                        if (cardPosition.equals(workerPosition)) {
-                            forge(forgingPlayers, playerState, card);
-                        }
-                    }
+                    forge(forgingPlayers, playerState, card);
                 }
             }
         }
@@ -627,33 +622,33 @@ public class GameLogic {
             String[] field = effect.split(",");
             int fLength = field.length;
             
-            AtomicReference<Integer> ironRequirement = new AtomicReference<>(0);
-            AtomicReference<Integer> goldRequirement = new AtomicReference<>(0);
-            AtomicReference<Integer> steelRequirement = new AtomicReference<>(0);
-            AtomicReference<Integer> objectReward = new AtomicReference<>(0);
+            Integer ironRequirement = 0;
+            Integer goldRequirement = 0;
+            Integer steelRequirement = 0;
+            Integer objectReward = 0;
             
-            Arrays.stream(field).forEach(f -> {
+            for (String f : field) {
                 int newValue = Integer.parseInt(f.substring(1, fLength));
                 switch (f.charAt(fLength - 1)) {
                     case 'i':
-                        ironRequirement.set(newValue);
-                        break;
+                        ironRequirement = newValue;
+                        continue;
                     case 'g':
-                        goldRequirement.set(newValue);
-                        break;
+                        goldRequirement = newValue;
+                        continue;
                     case 's':
-                        steelRequirement.set(newValue);
-                        break;
+                        steelRequirement = newValue;
+                        continue;
                     case 'o':
-                        objectReward.set(newValue);
-                        break;
+                        objectReward = newValue;
+                        continue;
                 }
-            });
+            }
             
-            if ((playerState.getIron() - ironRequirement.get()) >= 0
-                    && (playerState.getGold() - goldRequirement.get()) >= 0
-                    && (playerState.getSteel() - steelRequirement.get()) >= 0) {
-                playerState.setObject(playerState.getObject() + objectReward.get());
+            if ((playerState.getIron() - ironRequirement) >= 0
+                    && (playerState.getGold() - goldRequirement) >= 0
+                    && (playerState.getSteel() - steelRequirement) >= 0) {
+                playerState.setObject(playerState.getObject() + objectReward);
             }
             
             forgingPlayers.add(playerState.getId());
