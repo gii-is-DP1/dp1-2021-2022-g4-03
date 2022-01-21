@@ -57,10 +57,12 @@ public class GameService {
         } else if (game.getPlayer1() == null) {
             game.setPlayer1(additionalPlayer);
             game.setGameStatus(GameStatus.IN_PROGRESS);
+            game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
             GameStorage.getInstance().setGame(game);
         } else if (game.getPlayer2() == null) {
             game.setPlayer2(additionalPlayer);
             game.setGameStatus(GameStatus.IN_PROGRESS);
+            game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
             GameStorage.getInstance().setGame(game);
         }
         return game;
