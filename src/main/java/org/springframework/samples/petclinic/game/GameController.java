@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Controller
@@ -80,8 +81,12 @@ public class GameController {
         GameStorage gameStorage = GameStorage.getInstance();
         Game game = gameStorage.getGame(gameId);
         gameLogic.getInstance(cardService);
-
-        //Label for breaks, similar to C's goto
+        
+        if(data!=null) {
+            data.setCurrentUser(currentUser.getCurrentUser());
+            if (data.getPlayerAction() == -1) return game;
+        }
+        
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
@@ -93,34 +98,56 @@ public class GameController {
                                 cardService.findAllInitialCards());
                             game.setGameStatus(GameStatus.IN_PROGRESS);
                             game.setPhase(Phase.ASIGNACION);
-                        case IN_PROGRESS:
-                            gameLogic.drawCard(game);
                             break;
+                        case IN_PROGRESS:
+                            gameLogic.initPlayerStates(game);
+                            gameLogic.drawCard(game);
+                            game.setPhase(Phase.ASIGNACION);
+                            break mainLoopStart;
                     }
 
                     return game;
 
                 case ASIGNACION:
-                    //Check if still has actions to do
+                    
+                    if(game.getNumberOfPlayers()<3) return game;
+                    
+                    System.out.println(game.getTurnsOrder());
+                    System.out.println(game.getActivePlayer());
                     if (!game.getTurnsOrder().isEmpty()) {
                         String result = gameLogic.playerTurn(game, data);
-
+                        System.out.println("********"+result);
                         if (result.equals("player turn finished")) {
                             gameLogic.checkIfHelpAction(game, data);
                         } else if(result.equals("special action")){
-                            return game;
+                            continue;
                         }
-                    } else if (!game.getHelpTurnsOrder().isEmpty()) {
+                        return game;
+                    }
+                    if (!game.getHelpTurnsOrder().isEmpty()) {
                         gameLogic.processHelpTurnOrder(game, data);
                         game.setPhase(Phase.AYUDA);
+                        continue;
                     }
-
-                    return game;
+    
+                    game.setPhase(Phase.DEFENSA);
+                    
+                    continue;
 
                 case ESPECIAL:
-                    //Here we will manage when game needs to await another action of the same player to complete the special action
-
+                    if(game.isDoTurnEffect()){
+                        data.setPlayerAction(new Random().nextInt(9)+400);
+                        game.setPhase(Phase.ASIGNACION);
+                    }else if(game.isDoSellEffect()){
+                        data.setPlayerAction(new Random().nextInt(4)+500);
+                        game.setPhase(Phase.ASIGNACION);
+                    }else if (game.isDoApprenticeEffect()){
+                        data.setPlayerAction(new Random().nextInt(9)+600);
+                        game.setPhase(Phase.ASIGNACION);
+                    }
+                    
                     gameLogic.specialAction(game, data);
+                    game.setActivePlayer(game.getTurnsOrder().remove(0));
 
                     return game;
 
@@ -139,6 +166,7 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.MINA);
+                    continue;
 
                 case MINA:
                     if (game.isDoMine()) {
@@ -146,7 +174,8 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FORJA);
-
+                    continue;
+                    
                 case FORJA:
                     List<Integer> forgingPlayers = gameLogic.timeToForge(game);
 
@@ -157,9 +186,14 @@ public class GameController {
                     }
 
                     game.setPhase(Phase.FIN);
+                    continue;
 
                 case FIN:
-                    return game;
+                    boolean endCheck = gameLogic.end(game);
+                    
+                    if(endCheck) gameService.finishGame(game.getId());
+                    
+                    break mainLoopStart;
 
                 default:
                     break;

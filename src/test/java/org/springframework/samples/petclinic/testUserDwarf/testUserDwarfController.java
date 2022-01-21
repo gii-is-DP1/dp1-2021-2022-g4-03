@@ -176,8 +176,8 @@ public class testUserDwarfController {
     @WithMockUser(value = "spring")
     @Test
     void initFindFormPlayers() throws Exception {
-        mockMvc.perform(get("/userDwarf/searchPlayers")).andExpect(status().isOk()).andExpect(model().attributeExists(
-                "userDwarf"))
+        mockMvc.perform(get("/userDwarf/searchPlayers")).andExpect(status().isOk())
+        .andExpect(model().attributeExists("userDwarf"))
                 .andExpect(view().name("userDwarf/findPlayers"));
     }
 

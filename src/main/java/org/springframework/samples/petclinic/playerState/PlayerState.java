@@ -82,6 +82,14 @@ public class PlayerState extends BaseEntity {
     public List<Integer> getWorkerList(){
         return new ArrayList<>(List.of(worker0, worker1, worker2, worker3));
     }
+    
+    @JsonIgnore
+    public void setWorkerList(List<Integer> workerList){
+        this.worker0=workerList.get(0);
+        this.worker1=workerList.get(1);
+        this.worker2=workerList.get(2);
+        this.worker3=workerList.get(3);
+    }
 
     @JsonIgnore
     public List<Integer> getResourcesList(){
