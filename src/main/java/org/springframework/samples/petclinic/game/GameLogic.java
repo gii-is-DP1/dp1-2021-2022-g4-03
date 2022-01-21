@@ -132,7 +132,7 @@ public class GameLogic {
                     workerList.set(worker, playerAction%100);
                     workerList.set(worker+1, playerAction%100);
                     game.setTurnsOrder(game.getTurnsOrder().stream().filter(r->r!=playerIndex).collect(Collectors.toList()));
-                    
+                    game.setActivePlayer(game.getTurnsOrder().remove(0));
                     return specialAction(game, data);
                 } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {
                     List<Integer> resourcesList = playerState.getResourcesList();
@@ -145,7 +145,7 @@ public class GameLogic {
                         game.setPhase(Phase.ESPECIAL);
                         data.setPlayerAction(playerAction % 100);
                         workerList.set(worker, playerAction);
-                        
+                        game.setActivePlayer(game.getTurnsOrder().remove(0));
                         return specialAction(game, data);
                     }
                 } else {
