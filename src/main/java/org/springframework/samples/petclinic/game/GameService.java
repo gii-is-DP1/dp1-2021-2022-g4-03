@@ -83,19 +83,17 @@ public class GameService {
         gameRepository.save(GameStorage.getInstance().getGame(gameId));
         GameStorage.getInstance().getGames().remove(gameId);
         
-        // No value present error
-        
         Game game = this.gameRepository.findById(gameId).orElseThrow(NullPointerException::new);
         List<UserDwarf> allPlayersInGame = game.getAllPlayersInGame();
         List<PlayerState> allPlayerStates= game.getAllPlayerStates();
     
         for (int i=0; i< allPlayersInGame.size(); i++) {
-            Statistics statisticPlayer = statisticsService.findStatisticsByUsername(allPlayersInGame.get(i).getUsername());
-            statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed() + 1);
-            statisticsService.updateStatistics(allPlayerStates.get(i), statisticPlayer);
-            
+            String playerUsername = allPlayersInGame.get(i).getUsername();
+            Statistics statisticPlayer = statisticsService.findStatisticsByUsername(playerUsername);
+            statisticsService.updateStatistics(allPlayerStates.get(i), statisticPlayer, playerUsername.equals(game.getWinner()));
         }
         
+        GameStorage.getInstance().getGames().remove(gameId);
     }
     
     // Método que saca al user de la partida (se activa con un botón) y si no quedan jugadores cierra la partida
