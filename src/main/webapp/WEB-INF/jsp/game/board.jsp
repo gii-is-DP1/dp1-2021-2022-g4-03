@@ -27,7 +27,8 @@
 
             <div class="player-grid">
                 <div class="player">
-                    <img width="75" height="75" src="/resources/workers/Dwarf0.png" />
+                    <img width="75" height="75" src="/resources/workers/Dwarf0.png"/>
+                    <b><c:out value="${game.player0.username}"/></b>
                     <b>Iron: <c:out value="${game.playerState_0.iron}"/></b>
                     <b>Gold: <c:out value="${game.playerState_0.gold}"/></b>
                     <b>Steel: <c:out value="${game.playerState_0.steel}"/></b>
@@ -36,6 +37,7 @@
                 </div>
                 <div class="player">
                     <img width="75" height="75" src="/resources/workers/Dwarf2.png" />
+                    <b><c:out value="${game.player1.username}"/></b>
                     <b>Iron: <c:out value="${game.playerState_1.iron}"/></b>
                     <b>Gold: <c:out value="${game.playerState_1.gold}"/></b>
                     <b>Steel: <c:out value="${game.playerState_1.steel}"/></b>
@@ -44,6 +46,7 @@
                 </div>
                 <div class="player">
                     <img width="75" height="75" src="/resources/workers/Dwarf3.png" />
+                    <b><c:out value="${game.player0.username}"/></b>
                     <b>Iron: <c:out value="${game.playerState_2.iron}"/></b>
                     <b>Gold: <c:out value="${game.playerState_2.gold}"/></b>
                     <b>Steel: <c:out value="${game.playerState_2.steel}"/></b>
