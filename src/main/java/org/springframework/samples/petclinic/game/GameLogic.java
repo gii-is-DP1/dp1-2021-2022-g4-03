@@ -194,6 +194,7 @@ public class GameLogic {
                 String result = playerTurn(game, data);
                 
                 board.getCell(5).addToTop(SPECIAL_2_NORMAL.get("turn"));
+                game.setDoTurnEffect(false);
                 
                 return result;
             
@@ -202,8 +203,17 @@ public class GameLogic {
                 List<Integer> resourcesList = playerState.getResourcesList();
                 int resourceIndex = playerAction % 100 - 1;
                 resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) + 5);
+                game.setDoSellEffect(false);
                 
                 return "done";
+            case 6:
+                data.setPlayerAction(playerAction % 100);
+                String result1 = playerTurn(game, data);
+    
+                board.getCell(6).addToTop(SPECIAL_2_NORMAL.get("apprentice"));
+                game.setDoApprenticeEffect(false);
+    
+                return result1;
             
         }
         
@@ -245,6 +255,9 @@ public class GameLogic {
     private String invokeEffect(Game game, String effect)
             throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Board board = game.getBoard();
+    
+        List<PlayerState> allPlayerStates = game.getAllPlayerStates();
+        List<Integer> positions= new ArrayList<>();
         
         switch (effect) {
             case "muster":
@@ -276,20 +289,24 @@ public class GameLogic {
                     return "not possible";
                 }
                 changeCard(board, 2, game, effect, true);
+                game.setDoSellEffect(true);
                 
                 return effect;
             
             case "past":
-                changeCard(board, 3, game, effect, true);
+                changeCard(board, 3, game, effect, false);
                 
                 // TODO: Offer list of selected cell to player
                 
+                game.setDoPastEffect(false);
+                System.out.println("This doesn't work");
                 return effect;
             
             case "special":
-                changeCard(board, 4, game, effect, true);
+                changeCard(board, 4, game, effect, false);
                 
                 // TODO: Add player action for selecting resource;
+                System.out.println("Parejo apruebame por favor");
                 
                 return effect;
             
@@ -297,22 +314,27 @@ public class GameLogic {
                 //Done
                 changeCard(board, 5, game, effect, false);
                 
-                List<PlayerState> allPlayerStates = game.getAllPlayerStates();
-                
-                List<Integer> positions =
-                        IntStream.range(0, 9).filter(p -> allPlayerStates.stream().anyMatch(playerState -> playerState.getWorkerList().contains(p)))
+                allPlayerStates = game.getAllPlayerStates();
+    
+                List<PlayerState> finalAllPlayerStates = allPlayerStates;
+                positions =
+                        IntStream.range(0, 9).filter(p -> finalAllPlayerStates.stream().noneMatch(playerState -> playerState.getWorkerList().contains(p)))
                                 .boxed().collect(Collectors.toList());
                 
                 game.setAvailablePositions(positions);
-                game.setDoSpecialEffect(true);
+                game.setDoTurnEffect(true);
                 
                 return "special action";
             
             case "apprentice":
-                changeCard(board, 6, game, effect, true);
+                changeCard(board, 6, game, effect, false);
+    
+    
+                List<PlayerState> finalAllPlayerStates1 = allPlayerStates;
+                positions= IntStream.range(0, 9).filter(p -> finalAllPlayerStates1.stream().anyMatch(playerState -> playerState.getWorkerList().contains(p)))
+                        .boxed().collect(Collectors.toList());
                 
-                // TODO: Be able to select which location you want to put the worker on that's
-                // already occupied.
+                game.setDoApprenticeEffect(true);
                 
                 return effect;
             
@@ -586,7 +608,7 @@ public class GameLogic {
             AtomicReference<Integer> objectReward = new AtomicReference<>(0);
             
             Arrays.stream(field).forEach(f -> {
-                int newValue = Integer.parseInt(f.substring(1, fLength - 1));
+                int newValue = Integer.parseInt(f.substring(1, fLength));
                 switch (f.charAt(fLength - 1)) {
                     case 'i':
                         ironRequirement.set(newValue);

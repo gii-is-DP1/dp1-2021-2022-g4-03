@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Getter
@@ -112,8 +111,18 @@ public class Game extends BaseEntity {
     private List<Integer> availablePositions = new ArrayList<>();
 
     @Transient
-    private boolean doSpecialEffect= false;
-
+    private boolean doTurnEffect = false;
+    
+    @Transient
+    private boolean doSellEffect = false;
+    
+    @Transient
+    private boolean doApprenticeEffect = false;
+    
+    @Transient
+    private boolean doPastEffect = false;
+    
+    
     @JsonIgnore
     public List<PlayerState> getAllPlayerStates() {
         return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
