@@ -85,7 +85,6 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
-        
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {

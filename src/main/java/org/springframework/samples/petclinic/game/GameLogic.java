@@ -129,16 +129,21 @@ public class GameLogic {
                 // Check if available worker count is enough and if they aren't special workers
                 if ((workerCount == 2) && !(worker == 2 || worker == 3)) {
                     game.setPhase(Phase.ESPECIAL);
+                    workerList.set(worker, playerAction%100);
+                    workerList.set(worker+1, playerAction%100);
                     
                     return specialAction(game, data);
                 } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {
                     List<Integer> resourcesList = playerState.getResourcesList();
                     int resourceIndex = (playerAction / 100) - 1;
                     
+                    if(resourceIndex==-1) return "special action not possible";
+                    
                     if (resourcesList.get(resourceIndex) >= 4) {
                         resourcesList.set(resourceIndex, resourcesList.get(resourceIndex) - 4);
                         game.setPhase(Phase.ESPECIAL);
                         data.setPlayerAction(playerAction % 100);
+                        workerList.set(worker, playerAction);
                         
                         return specialAction(game, data);
                     }
