@@ -85,6 +85,8 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
+        if(game.getNumberOfPlayers()<3) return game;
+        
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
@@ -100,6 +102,7 @@ public class GameController {
                         case IN_PROGRESS:
                             gameLogic.initPlayerStates(game);
                             gameLogic.drawCard(game);
+                            game.setPhase(Phase.ASIGNACION);
                             break;
                     }
 
