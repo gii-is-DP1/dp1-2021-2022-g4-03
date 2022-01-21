@@ -1,18 +1,12 @@
 package org.springframework.samples.petclinic.user;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter

@@ -1,20 +1,20 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.samples.petclinic.board.Board;
+import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.playerState.PlayerState;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.samples.petclinic.board.Board;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.playerState.PlayerState;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -22,8 +22,8 @@ import lombok.Setter;
 @Entity
 public class Game extends BaseEntity {
 
-    @Min(value=0)
-    @Max(value=3)
+    @Min(value = 0)
+    @Max(value = 3)
     private Integer numberOfPlayers = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -65,9 +65,85 @@ public class Game extends BaseEntity {
     private Phase phase;
     @NotNull
     private GameStatus gameStatus;
+    @Transient
+    private Integer activePlayer;
+
+    @Transient
+    @Min(value = 1)
+    @Max(value = 4)
+    @NotNull
+    private Integer round = 0;
+
+    @Transient
+    @NotNull
+    private String winner;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "boardId", referencedColumnName = "id")
     private Board board;
+
+
+    //Order in which players will take their turn, effectively a stack of ints.
+    @Transient
+    @JsonIgnore
+    private List<Integer> turnsOrder = new ArrayList<>();
+
+    //Order in which players took help actions, and must take new turns assigning workers.
+    @Transient
+    @JsonIgnore
+    private List<Integer> helpTurnsOrder = new ArrayList<>();
+
+    @Transient
+    @JsonIgnore
+    private List<Integer> forgingPlayers = new ArrayList<>();
+
+    @Transient
+    @JsonIgnore
+    private boolean doDefend = true;
+
+    @Transient
+    @JsonIgnore
+    private boolean doMine = true;
+
+
+    //For offering the player where to play a worker after special effect
+    @Transient
+    private List<Integer> availablePositions = new ArrayList<>();
+
+    @Transient
+    private boolean doTurnEffect = false;
+    
+    @Transient
+    private boolean doSellEffect = false;
+    
+    @Transient
+    private boolean doApprenticeEffect = false;
+    
+    @Transient
+    private boolean doPastEffect = false;
+    
+    
+    @JsonIgnore
+    public List<PlayerState> getAllPlayerStates() {
+        return new ArrayList<>(List.of(playerState_0, playerState_1, playerState_2));
+    }
+
+    @JsonIgnore
+    public List<UserDwarf> getAllPlayersInGame() {
+        List<UserDwarf> auxList = new ArrayList<>();
+        
+        if(player0!=null){
+            auxList.add(player0);
+        }
+        if(player1!=null){
+            auxList.add(player1);
+        }
+        if(player2!=null){
+            auxList.add(player2);
+        }
+        
+
+        return auxList;
+    }
 
 }

@@ -1,29 +1,28 @@
 package org.springframework.samples.petclinic.game;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class GameStorage {
 
-    private static Map<Integer,Game> games;
+    private static Map<Integer, Game> games;
     private static GameStorage instance;
 
     private GameStorage() {
         games = new HashMap<>();
     }
 
-    public static synchronized GameStorage getInstance(){
-        if(instance==null){
+    public static synchronized GameStorage getInstance() {
+        if (instance == null) {
             instance = new GameStorage();
         }
         return instance;
     }
 
-    public Map<Integer,Game> getGames() {
-        games=new HashMap<>();
+    public Map<Integer, Game> getGames() {
         return games;
     }
 

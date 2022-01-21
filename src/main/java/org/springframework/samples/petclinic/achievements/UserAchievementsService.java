@@ -1,14 +1,13 @@
 package org.springframework.samples.petclinic.achievements;
 
-import java.util.Collection;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAchievementsService {
@@ -61,6 +60,10 @@ public class UserAchievementsService {
         return this.userAchievementsRepository.findUserAchievementsByAchievementId(id);
     }
 
+	@Transactional(readOnly = true)
+	public UserAchievements findUserAchievementsByAchievementsIdAndUserUsername(Integer id, String username){
+		return this.userAchievementsRepository.findUserAchievementsByAchievementsIdAndUsername(id, username);
+	}
 
 
 

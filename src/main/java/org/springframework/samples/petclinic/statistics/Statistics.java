@@ -1,23 +1,15 @@
 package org.springframework.samples.petclinic.statistics;
 
 
-import java.time.Duration;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import java.time.Duration;
 
 @Getter
 @Setter

@@ -1,29 +1,17 @@
 package org.springframework.samples.petclinic.userDwarf;
 
-import java.io.Serializable;
-import java.util.Set;
-
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.user.Authorities;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.user.Authorities;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -50,6 +38,7 @@ public class UserDwarf extends BaseEntity implements Serializable{
     @NotNull
     boolean active;
 
+    @JsonIgnore
     @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "userDwarf")
 	private Set<Authorities> authorities;
 

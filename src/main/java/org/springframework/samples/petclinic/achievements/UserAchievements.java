@@ -1,19 +1,17 @@
 package org.springframework.samples.petclinic.achievements;
 
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter

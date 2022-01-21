@@ -1,24 +1,22 @@
 package org.springframework.samples.petclinic.testUserAchievements;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import org.junit.Test;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.samples.petclinic.achievements.Achievements;
+import org.springframework.samples.petclinic.achievements.UserAchievements;
+import org.springframework.samples.petclinic.userDwarf.UserDwarf;
+import org.springframework.samples.petclinic.validatorFunction;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import org.junit.Test;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.samples.petclinic.validatorFunction;
-import org.springframework.samples.petclinic.achievements.Achievements;
-import org.springframework.samples.petclinic.achievements.AchievementsService;
-import org.springframework.samples.petclinic.achievements.UserAchievements;
-import org.springframework.samples.petclinic.userDwarf.UserDwarf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class testUserAchievements {
 
@@ -28,7 +26,7 @@ public void shouldNotValidateWhenParametersAreEmpty(){
     LocaleContextHolder.setLocale(Locale.ENGLISH);
     UserAchievements userAchievements = new UserAchievements();
     userAchievements.setProgress(null);
-    userAchievements.setObtainingDate(null);;
+    userAchievements.setObtainingDate(null);
     userAchievements.setUserDwarf(null);
     userAchievements.setAchievements(null);
 
@@ -73,8 +71,8 @@ public void shouldNotValidateWhenParametersAreEmpty(){
     LocaleContextHolder.setLocale(Locale.ENGLISH);
     UserAchievements userAchievements = new UserAchievements();
     userAchievements.setProgress(0.4);
-    userAchievements.setObtainingDate(LocalDate.of(2020, 05, 05));;
-    userAchievements.setUserDwarf(new UserDwarf());
+    userAchievements.setObtainingDate(LocalDate.of(2020, 05, 05));
+        userAchievements.setUserDwarf(new UserDwarf());
     userAchievements.setAchievements(new Achievements());
 
     Validator validator = validatorFunction.createValidator();
