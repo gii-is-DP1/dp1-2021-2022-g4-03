@@ -261,7 +261,7 @@ public class GameLogic {
                 effect = card.getEffect();
     
                 String s2 = invokeEffect(game, effect);
-                if(s2.equals("done")){
+                if(!s2.equals("not possible")){
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_2());
                     integers.remove(0);
                     board.setCartasAccionEspecial_2(integers);
