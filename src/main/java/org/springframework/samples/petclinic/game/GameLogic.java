@@ -131,6 +131,7 @@ public class GameLogic {
                     game.setPhase(Phase.ESPECIAL);
                     workerList.set(worker, playerAction%100);
                     workerList.set(worker+1, playerAction%100);
+                    game.getTurnsOrder().removeIf(p->p==playerIndex);
                     
                     return specialAction(game, data);
                 } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {

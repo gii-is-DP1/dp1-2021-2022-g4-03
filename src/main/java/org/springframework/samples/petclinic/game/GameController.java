@@ -103,7 +103,7 @@ public class GameController {
                             gameLogic.initPlayerStates(game);
                             gameLogic.drawCard(game);
                             game.setPhase(Phase.ASIGNACION);
-                            break;
+                            break mainLoopStart;
                     }
 
                     return game;
@@ -130,7 +130,7 @@ public class GameController {
     
                     game.setPhase(Phase.DEFENSA);
                     
-                    return game;
+                    continue;
 
                 case ESPECIAL:
                     if(game.isDoTurnEffect()){
@@ -145,6 +145,7 @@ public class GameController {
                     }
                     
                     gameLogic.specialAction(game, data);
+                    game.setActivePlayer(game.getTurnsOrder().remove(0));
 
                     return game;
 
