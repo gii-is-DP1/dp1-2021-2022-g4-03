@@ -37,11 +37,26 @@ public class AchievementsServiceTest {
         assertThat(fAll.size()).isEqualTo(4);
     }
 
+    @Test
+    public void testNotFindAllAchievements(){
+        List<Achievements> fAll = (List<Achievements>) achievementsService.findAll();
+        assertThat(fAll.size()).isNotEqualTo(5);
+    }
+
     @ParameterizedTest
     @CsvSource({"totalGold=100, 1", "totalIron=300, 2"})
     public void shouldFindAchievementsWithCorrectId(String x, int id){
         Achievements uD = this.achievementsService.findAchievementById(id);
         assertThat(uD.getCondition()).isEqualTo(x);
+        assertThat(uD.getCondition()).isNotEqualTo("totalFire=999");
+    }
+
+    
+    @ParameterizedTest
+    @CsvSource({"totalGold=100, 2", "totalIron=300, 1"})
+    public void shouldFindAchievementsWitIncorrectId(String x, int id){
+        Achievements uD = this.achievementsService.findAchievementById(id);
+        assertThat(uD.getCondition()).isNotEqualTo(x);
         assertThat(uD.getCondition()).isNotEqualTo("gwhraewg");
     }
 
