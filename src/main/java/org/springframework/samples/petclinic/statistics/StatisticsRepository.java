@@ -95,12 +95,5 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
     @Query(value = "SELECT MAX(time_played) FROM Statistics", nativeQuery = true)
     public Long getMaxTimePlayed();
 
-    @Query(value = "SELECT s MIN(total_gold) FROM Statistics WHERE s.username =:username", nativeQuery = true)
-    public Long getMinGold(@Param("username") String username);
-    @Query(value = "SELECT MAX(total_gold) FROM Statistics", nativeQuery = true)
-    public Long getMaxGold(@Param("username") String username);
-    @Query(value = "SELECT SUM(total_gold)/COUNT(*) FROM Statistics", nativeQuery = true)
-    public Long getMediaOro(@Param("username") String username);
     
-    Long getUserMinGold(String username);
 }
