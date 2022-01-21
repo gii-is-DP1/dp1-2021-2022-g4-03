@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.testAchievements;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
@@ -23,8 +25,10 @@ import org.springframework.samples.petclinic.achievements.AchievementsService;
 import org.springframework.samples.petclinic.achievements.UserAchievements;
 import org.springframework.samples.petclinic.achievements.UserAchievementsService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.userDwarf.UserDwarf;
 import org.springframework.samples.petclinic.userDwarf.UserDwarfService;
+import org.springframework.samples.petclinic.web.CurrentUser;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,6 +49,8 @@ public class testAchievementsController {
     private UserAchievementsService uaService;
     @MockBean
     private UserDwarfService userDwarfService;
+    @MockBean
+    CurrentUser currentUser;
 
     private UserDwarf us;
     private Achievements logro1;
@@ -52,18 +58,18 @@ public class testAchievementsController {
 
     @BeforeEach
     public void setup() {
-        paco = new UserDwarf();
-        paco.setActive(true);
-        paco.setEmail("email@gmail.com");
-        paco.setId(TEST_USERDWARF_ID);
-        paco.setPass("Passpass123");
-        paco.setUsername("paco");
+        us = new UserDwarf();
+        us.setActive(true);
+        us.setEmail("email@gmail.com");
+        us.setId(TEST_UD_ID);
+        us.setPass("Passpass123");
+        us.setUsername("paco");
         Authorities auth = new Authorities();
         auth.setAuthority("admin");
         Set<Authorities> authority = new HashSet<Authorities>();
         authority.add(auth);
-        paco.setAuthorities(authority);
-        given(this.userDwarfService.findUserDwarfById(TEST_USERDWARF_ID)).willReturn(paco);
+        us.setAuthorities(authority);
+        given(this.userDwarfService.findUserDwarfById(TEST_UD_ID)).willReturn(us);
         given(this.currentUser.getCurrentUser()).willReturn("paco");
 
         logro1 = new Achievements();
