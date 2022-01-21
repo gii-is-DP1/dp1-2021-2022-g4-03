@@ -101,4 +101,6 @@ public interface StatisticsRepository extends CrudRepository<Statistics, Integer
     public Long getMaxGold(@Param("username") String username);
     @Query(value = "SELECT SUM(total_gold)/COUNT(*) FROM Statistics", nativeQuery = true)
     public Long getMediaOro(@Param("username") String username);
+    
+    Long getUserMinGold(String username);
 }

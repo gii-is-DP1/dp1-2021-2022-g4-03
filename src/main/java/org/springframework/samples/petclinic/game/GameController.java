@@ -84,8 +84,9 @@ public class GameController {
         if(data!=null){
             data.setCurrentUser(currentUser.getCurrentUser());
         }
-        
-        
+    
+        assert data != null;
+        if(data.getPlayerAction()==-1) return game;
         
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
