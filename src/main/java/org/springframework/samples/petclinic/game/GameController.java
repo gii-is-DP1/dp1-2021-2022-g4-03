@@ -85,6 +85,8 @@ public class GameController {
             data.setCurrentUser(currentUser.getCurrentUser());
         }
         
+        
+        mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
             switch (game.getPhase()) {
                 case INICIO:
@@ -176,7 +178,7 @@ public class GameController {
                     
                     if(endCheck) gameService.finishGame(game.getId());
                     
-                    return game;
+                    break mainLoopStart;
 
                 default:
                     break;

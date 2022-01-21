@@ -90,7 +90,7 @@ public class GameService {
         for (int i=0; i< allPlayersInGame.size(); i++) {
             Statistics statisticPlayer = statisticsService.findStatisticsByUsername(allPlayersInGame.get(i).getUsername());
             statisticPlayer.setGamesPlayed(statisticPlayer.getGamesPlayed() + 1);
-            statisticsService.updateStatistics();
+            statisticsService.updateStatistics(allPlayerStates.get(i), statisticPlayer);
             
         }
         
