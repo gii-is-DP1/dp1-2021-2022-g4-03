@@ -18,6 +18,5 @@ public class ClientData {
     // [4][00-08] turn effect, select worker position
     // [5][01-03] sell effect, resource to get iron:1 gold:2 steel:3
     // [6][00-08] apprentice effect, select worker position
-    // [7][00-08]
     public Integer playerAction;
 }

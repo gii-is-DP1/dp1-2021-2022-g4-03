@@ -219,34 +219,55 @@ public class GameLogic {
         
         Card card;
         String effect;
-        List<Integer> specialCardDeck;
+        
         switch (playerAction) {
             case 9:
-                specialCardDeck = board.getCartasAccionEspecial_0();
-                if (specialCardDeck.isEmpty())
+                if (board.getCartasAccionEspecial_0().isEmpty())
                     return "special deck empty";
-                
-                card = cardService.findCardById(specialCardDeck.remove(0));
+                Integer cardId_0 = board.getCartasAccionEspecial_0().get(0);
+                card = cardService.findCardById(cardId_0);
                 effect = card.getEffect();
-                
-                return invokeEffect(game, effect);
+    
+                String s = invokeEffect(game, effect);
+                if(s.equals("done")){
+                    ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_0());
+                    integers.remove(0);
+                    board.setCartasAccionEspecial_0(integers);
+                    game.setPhase(Phase.ASIGNACION);
+                }
+                return s;
             
             case 10:
-                specialCardDeck = board.getCartasAccionEspecial_1();
-                if (specialCardDeck.isEmpty())
+                if (board.getCartasAccionEspecial_1().isEmpty())
                     return "special deck empty";
-                card = cardService.findCardById(specialCardDeck.remove(0));
+                Integer cardId_1 = board.getCartasAccionEspecial_1().get(0);
+                card = cardService.findCardById(cardId_1);
                 effect = card.getEffect();
-                
-                return invokeEffect(game, effect);
+    
+                String s1 = invokeEffect(game, effect);
+                if(s1.equals("done")){
+                    ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_1());
+                    integers.remove(0);
+                    board.setCartasAccionEspecial_1(integers);
+                    game.setPhase(Phase.ASIGNACION);
+                }
+                return s1;
             case 11:
-                specialCardDeck = board.getCartasAccionEspecial_2();
-                if (specialCardDeck.isEmpty())
+                if (board.getCartasAccionEspecial_2().isEmpty())
                     return "special deck empty";
-                card = cardService.findCardById(specialCardDeck.remove(0));
+                Integer cardId_2 = board.getCartasAccionEspecial_2().get(0);
+                card = cardService.findCardById(cardId_2);
                 effect = card.getEffect();
+    
+                String s2 = invokeEffect(game, effect);
+                if(s2.equals("done")){
+                    ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_2());
+                    integers.remove(0);
+                    board.setCartasAccionEspecial_2(integers);
+                    game.setPhase(Phase.ASIGNACION);
+                }
+                return s2;
                 
-                return invokeEffect(game, effect);
         }
         
         return "something went wrong";
@@ -257,7 +278,7 @@ public class GameLogic {
         Board board = game.getBoard();
     
         List<PlayerState> allPlayerStates = game.getAllPlayerStates();
-        List<Integer> positions= new ArrayList<>();
+        List<Integer> positions;
         
         switch (effect) {
             case "muster":
@@ -291,7 +312,7 @@ public class GameLogic {
                 changeCard(board, 2, game, effect, true);
                 game.setDoSellEffect(true);
                 
-                return effect;
+                return "special action";
             
             case "past":
                 changeCard(board, 3, game, effect, false);
@@ -300,7 +321,7 @@ public class GameLogic {
                 
                 game.setDoPastEffect(false);
                 System.out.println("This doesn't work");
-                return effect;
+                return "special action";
             
             case "special":
                 changeCard(board, 4, game, effect, false);
@@ -308,7 +329,7 @@ public class GameLogic {
                 // TODO: Add player action for selecting resource;
                 System.out.println("Parejo apruebame por favor");
                 
-                return effect;
+                return "done";
             
             case "turn":
                 //Done
@@ -336,7 +357,7 @@ public class GameLogic {
                 
                 game.setDoApprenticeEffect(true);
                 
-                return effect;
+                return "special action";
             
             case "collapse":
                 //Done

@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Controller
@@ -81,12 +82,10 @@ public class GameController {
         Game game = gameStorage.getGame(gameId);
         gameLogic.getInstance(cardService);
         
-        if(data!=null){
+        if(data!=null) {
             data.setCurrentUser(currentUser.getCurrentUser());
+            if (data.getPlayerAction() == -1) return game;
         }
-    
-        assert data != null;
-        if(data.getPlayerAction()==-1) return game;
         
         mainLoopStart:
         while (game.getGameStatus() == GameStatus.NEW || game.getGameStatus() == GameStatus.IN_PROGRESS) {
@@ -121,7 +120,7 @@ public class GameController {
                         if (result.equals("player turn finished")) {
                             gameLogic.checkIfHelpAction(game, data);
                         } else if(result.equals("special action")){
-                            return game;
+                            continue;
                         }
                         return game;
                     } else if (!game.getHelpTurnsOrder().isEmpty()) {
@@ -134,8 +133,14 @@ public class GameController {
                     return game;
 
                 case ESPECIAL:
-                    //Here we will manage when game needs to await another action of the same player to complete the special action
-
+                    if(game.isDoTurnEffect()){
+                        data.setPlayerAction(new Random().nextInt(9)+400);
+                    }else if(game.isDoSellEffect()){
+                        data.setPlayerAction(new Random().nextInt(4)+500);
+                    }else if (game.isDoApprenticeEffect()){
+                        data.setPlayerAction(new Random().nextInt(9)+600);
+                    }
+                    
                     gameLogic.specialAction(game, data);
 
                     return game;
