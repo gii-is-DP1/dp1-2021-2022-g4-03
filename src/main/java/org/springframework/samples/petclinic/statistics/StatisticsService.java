@@ -168,10 +168,7 @@ public class StatisticsService {
     public Long getMaxTimePlayed(){
         return this.statisticsRepository.getMaxTimePlayed()/1000000000 ;
     }
-    @Transactional(readOnly = true)
-    public Long getUserMinGold(String username){
-        return this.statisticsRepository.getUserMinGold(username);
-    }
+    
     
     @Transactional
     public void updateStatistics(PlayerState playerState, Statistics statistics, boolean winner) {
