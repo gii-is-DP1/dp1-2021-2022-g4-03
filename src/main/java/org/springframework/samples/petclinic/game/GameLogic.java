@@ -321,6 +321,8 @@ public class GameLogic {
                 
                 game.setDoPastEffect(false);
                 System.out.println("This doesn't work");
+                game.setPhase(Phase.ASIGNACION);
+                
                 return "special action";
             
             case "special":
@@ -328,6 +330,7 @@ public class GameLogic {
                 
                 // TODO: Add player action for selecting resource;
                 System.out.println("Parejo apruebame por favor");
+                game.setPhase(Phase.ASIGNACION);
                 
                 return "done";
             

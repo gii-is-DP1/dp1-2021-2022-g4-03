@@ -135,10 +135,13 @@ public class GameController {
                 case ESPECIAL:
                     if(game.isDoTurnEffect()){
                         data.setPlayerAction(new Random().nextInt(9)+400);
+                        game.setPhase(Phase.ASIGNACION);
                     }else if(game.isDoSellEffect()){
                         data.setPlayerAction(new Random().nextInt(4)+500);
+                        game.setPhase(Phase.ASIGNACION);
                     }else if (game.isDoApprenticeEffect()){
                         data.setPlayerAction(new Random().nextInt(9)+600);
+                        game.setPhase(Phase.ASIGNACION);
                     }
                     
                     gameLogic.specialAction(game, data);
