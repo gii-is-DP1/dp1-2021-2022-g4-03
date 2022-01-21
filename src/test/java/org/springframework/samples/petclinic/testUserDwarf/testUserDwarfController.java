@@ -81,7 +81,8 @@ public class testUserDwarfController {
     @WithMockUser(value = "spring")
     @Test
     void UserDwarfListTest() throws Exception {
-        mockMvc.perform(get("/usersDwarf/list")).andExpect(status().isOk()).andExpect(model().attributeExists(
+        mockMvc.perform(get("/usersDwarf/list")).andExpect(status().isOk())
+        .andExpect(model().attributeExists(
                 "usersDwarf"))
                 .andExpect(view().name("/usersDwarf/userDwarfList"));
     }
