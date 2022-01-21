@@ -56,6 +56,9 @@ function main() {
     // window.addEventListener("load", loadBackground, false);
     window.addEventListener("load", loadCards);
     window.addEventListener("load", loadSpecialCards);
+    wondow.addEventListener("load", function (e) {
+        sample(e, -1);
+    });
 
 }
 

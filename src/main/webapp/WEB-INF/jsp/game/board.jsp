@@ -13,13 +13,21 @@
     <jsp:attribute name="customHeader">
         <script src="/resources/js/board.js"></script>
     </jsp:attribute>
+
     <jsp:body>
+        <meta http-equiv="refresh" content="3">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript">
+            const element = document.getElementById("board");
+            setInterval(function(){ 
+                $('#board').load(" #board");
+            }, 1000);   
+        </script>
 
         <div class="board">
 
             <div class="player-grid">
                 <div class="player">
-                    <img width="75" height="75" src="/resources/workers/Dwarf1.png" />
+                    <img width="75" height="75" src="/resources/workers/Dwarf0.png" />
                     <b>Iron: <c:out value="${game.playerState_0.iron}"/></b>
                     <b>Gold: <c:out value="${game.playerState_0.gold}"/></b>
                     <b>Steel: <c:out value="${game.playerState_0.steel}"/></b>
@@ -45,6 +53,9 @@
                 <div class="col-sm-offset-2 col-sm-10">
                     <a class="btn btn-default"
                        href='<spring:url value="/game/${game.id}/surrender" htmlEscape="true"/>'>Rendirse</a>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <!--Clientdata extra options-->
                 </div>
             </div>
 
