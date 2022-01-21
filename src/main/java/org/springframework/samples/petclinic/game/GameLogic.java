@@ -131,7 +131,7 @@ public class GameLogic {
                     game.setPhase(Phase.ESPECIAL);
                     workerList.set(worker, playerAction%100);
                     workerList.set(worker+1, playerAction%100);
-                    game.getTurnsOrder().removeIf(p->p==playerIndex);
+                    game.setTurnsOrder(game.getTurnsOrder().stream().filter(r->r!=playerIndex).collect(Collectors.toList()));
                     
                     return specialAction(game, data);
                 } else if ((workerCount == 1) && !(worker == 2 || worker == 3)) {
@@ -230,7 +230,7 @@ public class GameLogic {
                 effect = card.getEffect();
     
                 String s = invokeEffect(game, effect);
-                if(s.equals("done")){
+                if(!s.equals("not possible")){
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_0());
                     integers.remove(0);
                     board.setCartasAccionEspecial_0(integers);
@@ -246,7 +246,7 @@ public class GameLogic {
                 effect = card.getEffect();
     
                 String s1 = invokeEffect(game, effect);
-                if(s1.equals("done")){
+                if(!s1.equals("not possible")){
                     ArrayList<Integer> integers = new ArrayList<>(board.getCartasAccionEspecial_1());
                     integers.remove(0);
                     board.setCartasAccionEspecial_1(integers);
