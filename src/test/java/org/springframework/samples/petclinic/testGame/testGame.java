@@ -32,12 +32,14 @@ public class testGame {
         game.setOrder(List.of());
         game.setPhase(null);
         game.setGameStatus(null);
+        game.setRound(null);
+        game.setWinner(null);
 
         Validator validator = validatorFunction.createValidator();
         Set<ConstraintViolation<Game>> constraintViolations =
         validator.validate(game);
 
-        assertThat(constraintViolations.size()).isEqualTo(3);
+        assertThat(constraintViolations.size()).isEqualTo(5);
 
         assertAll("constrainViolations",
             () -> {
@@ -57,6 +59,18 @@ public class testGame {
                         .filter(c -> c.getPropertyPath().toString().equals("gameStatus")).map(v -> v.getMessage())
                         .collect(Collectors.toList());
                 assertThat(violationsList).containsExactlyInAnyOrder("must not be null");
+            },
+            () -> {
+                List<String> violationsList = constraintViolations.stream()
+                        .filter(c -> c.getPropertyPath().toString().equals("round")).map(v -> v.getMessage())
+                        .collect(Collectors.toList());
+                assertThat(violationsList).containsExactlyInAnyOrder("must not be null");
+            },
+            () -> {
+                List<String> violationsList = constraintViolations.stream()
+                        .filter(c -> c.getPropertyPath().toString().equals("winner")).map(v -> v.getMessage())
+                        .collect(Collectors.toList());
+                assertThat(violationsList).containsExactlyInAnyOrder("must not be null");
             }
         );
 
@@ -71,6 +85,8 @@ public class testGame {
         game.setOrder(List.of(1,2,3));
         game.setPhase(Phase.INICIO);
         game.setGameStatus(GameStatus.NEW);
+        game.setRound(1);
+        game.setWinner("winner");
 
     Validator validator = validatorFunction.createValidator();
     Set<ConstraintViolation<Game>> constraintViolations =
