@@ -15,7 +15,7 @@
     </jsp:attribute>
 
     <jsp:body>
-
+        <meta http-equiv="refresh" content="3">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript">
             const element = document.getElementById("board");
             setInterval(function(){ 
